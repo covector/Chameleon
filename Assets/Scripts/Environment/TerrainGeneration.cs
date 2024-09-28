@@ -1,92 +1,111 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
-[RequireComponent (typeof(MeshCollider))]
 public class TerrainGeneration : MonoBehaviour
 {
-    public float size = 10f;
+    public float chunkSize = 10f;
     public int step = 25;
-    public int colStep = 20;
-    public Perlin[] perlins;
+    public ChunkGeneration.Perlin[] perlins;
+    public Dictionary<Vector2Int, GameObject> chunks = new Dictionary<Vector2Int, GameObject>();
+    public Transform player;
+    public Material groundMaterial;
+    int counter = 0;
 
-    [System.Serializable]
-    public struct Perlin
+    void Update()
     {
-        public float frequency;
-        public float amplitude;
+        if (counter++ % 30 == 0)
+        {
+            GenerateTerrain();
+        }
     }
 
-    void Start()
-    //void Update()
+    void GenerateTerrain()
     {
-        GenerateTerrain(size, step, colStep);
+        LoadChunks();
     }
 
-    void GenerateTerrain(float size, int step, int colStep)
+    void LoadChunks()
     {
-        GetComponent<MeshFilter>().mesh = CreateTerrainMesh(size, step);
-        GetComponent<MeshCollider>().sharedMesh = CreateTerrainMesh(size, colStep);
+        int sqrRadius = 25;
+        Vector2Int playerLoc = GetChunkIndFromCoord(player.position);
+
+        // remove chunks
+        List<Vector2Int> removeKeys = new List<Vector2Int>();
+        foreach (KeyValuePair<Vector2Int, GameObject> entry in chunks)
+        {
+            if ((entry.Key - playerLoc).sqrMagnitude > sqrRadius)
+            {
+                removeKeys.Add(entry.Key);
+            }
+        }
+        foreach(Vector2Int removeKey in removeKeys)
+        {
+            DeleteChunk(removeKey);
+        }
+
+        // create chunks
+        for (int i = 0; i < sqrRadius; i++)
+        {
+            for (int j = 0; j < sqrRadius; j++)
+            {
+                if (i < j) { continue; }
+                if (i * i + j * j > sqrRadius) { break; }
+                {
+                    TryCreateChunk(playerLoc + new Vector2Int(i, j));
+                    TryCreateChunk(playerLoc + new Vector2Int(i, -j));
+                    TryCreateChunk(playerLoc + new Vector2Int(-i, -j));
+                    TryCreateChunk(playerLoc + new Vector2Int(-i, j));
+                    TryCreateChunk(playerLoc + new Vector2Int(j, i));
+                    TryCreateChunk(playerLoc + new Vector2Int(j, -i));
+                    TryCreateChunk(playerLoc + new Vector2Int(-j, -i));
+                    TryCreateChunk(playerLoc + new Vector2Int(-j, i));
+
+                }
+            }
+        }
     }
 
-    Mesh CreateTerrainMesh(float size, int step)
+    void TryCreateChunk(Vector2Int chunkInd)
     {
-        Mesh mesh = new Mesh { name = "Procedural Ground" };
-        int gridPt = step + 2;
-        int gridSqr = step + 1;
-
-        Vector3[] vertices = new Vector3[gridPt * gridPt];
-        for (int i = 0; i < gridPt; i++)
-        {
-            for (int j = 0; j < gridPt; j++)
-            {
-                float x = size * i / gridSqr - size / 2f;
-                float z = size * j / gridSqr - size / 2f;
-                float globalX = x + transform.position.x;
-                float globalZ = z + transform.position.z;
-                float y = GetGroudLevel(globalX, globalZ);
-                vertices[i * gridPt + j] = new Vector3(x, y, z);
-            }
+        if (!chunks.ContainsKey(chunkInd)) {
+            CreateChunk(chunkInd);
         }
-        mesh.vertices = vertices;
+    }
 
-        int[] triangles = new int[gridSqr * gridSqr * 6];
-        for (int i = 0; i < gridSqr; i++)
-        {
-            for (int j = 0; j < gridSqr; j++)
-            {
-                int triInd = (i * gridSqr + j) * 6;
-                triangles[triInd] = i * gridPt + j;
-                triangles[triInd + 1] = (i + 1) * gridPt + (j + 1);
-                triangles[triInd + 2] = (i + 1) * gridPt + j;
-                triangles[triInd + 3] = i * gridPt + j;
-                triangles[triInd + 4] = i * gridPt + (j + 1);
-                triangles[triInd + 5] = (i + 1) * gridPt + (j + 1);
-            }
-        }
-        mesh.triangles = triangles;
+    void CreateChunk(Vector2Int chunkInd)
+    {
+        GameObject chunk = new GameObject();
+        ChunkGeneration cg = chunk.AddComponent<ChunkGeneration>();
+        chunk.transform.position = new Vector3(chunkSize * chunkInd.x, 0f, chunkSize * chunkInd.y);
+        cg.Init(chunkSize, step, perlins, groundMaterial);
+        chunks.Add(chunkInd, chunk);
+    }
 
-        Vector3[] normals = new Vector3[gridPt * gridPt];
-        for (int i = 0; i < gridPt; i++)
-        {
-            for (int j = 0; j < gridPt; j++)
-            {
-                normals[i * gridPt + j] = Vector3.up;
-            }
-        }
-        mesh.normals = normals;
+    void CreateChunk(int x, int z)
+    {
+        CreateChunk(new Vector2Int(x, z));
+    }
 
-        Vector2[] uv = new Vector2[gridPt * gridPt];
-        for (int i = 0; i < gridPt; i++)
-        {
-            for (int j = 0; j < gridPt; j++)
-            {
-                uv[i * gridPt + j] = new Vector2((float)i / gridSqr - 0.5f, (float)j / gridSqr - 0.5f);
-            }
-        }
-        mesh.uv = uv;
+    void DeleteChunk(Vector2Int chunkInd)
+    {
+        if (!chunks.ContainsKey(chunkInd)) { return; }
+        GameObject chunk = chunks.GetValueOrDefault(chunkInd);
+        Destroy(chunk);
+        chunks.Remove(chunkInd);
+    }
+    void DeleteChunk(int x, int z)
+    {
+        DeleteChunk(new Vector2Int(x, z));
+    }
 
-        return mesh;
+    Vector2Int GetChunkIndFromCoord(float x, float z)
+    {
+        return new Vector2Int(Mathf.FloorToInt(x / chunkSize), Mathf.FloorToInt(z / chunkSize));
+    }
+
+    Vector2Int GetChunkIndFromCoord(Vector3 loc)
+    {
+        return GetChunkIndFromCoord(loc.x, loc.z);
     }
 
     public float GetGroudLevel(float x, float z, int levels = 0)
