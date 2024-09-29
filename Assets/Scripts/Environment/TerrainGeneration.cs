@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TreeEditor;
 using UnityEngine;
 
 //[ExecuteInEditMode]
@@ -7,10 +8,11 @@ public class TerrainGeneration : MonoBehaviour
     public float chunkSize = 10f;
     public int step = 25;
     public ChunkGeneration.Perlin[] perlins;
-    public Dictionary<Vector2Int, GameObject> chunks = new Dictionary<Vector2Int, GameObject>();
     public Transform player;
-    public Material[] materials;
+    public GameObject chunkPrefab;
+    Dictionary<Vector2Int, GameObject> chunks = new Dictionary<Vector2Int, GameObject>();
     int counter = 0;
+    public int seed;
 
     void Update()
     {
@@ -75,10 +77,8 @@ public class TerrainGeneration : MonoBehaviour
 
     void CreateChunk(Vector2Int chunkInd)
     {
-        GameObject chunk = new GameObject();
-        ChunkGeneration cg = chunk.AddComponent<ChunkGeneration>();
-        chunk.transform.position = new Vector3(chunkSize * chunkInd.x, 0f, chunkSize * chunkInd.y);
-        cg.Init(chunkSize, step, perlins, materials);
+        GameObject chunk = Instantiate(chunkPrefab, new Vector3(chunkSize * chunkInd.x, 0f, chunkSize * chunkInd.y), Quaternion.identity, transform);
+        chunk.GetComponent<ChunkGeneration>().Init(chunkInd, chunkSize, step, perlins, seed);
         chunks.Add(chunkInd, chunk);
     }
 
@@ -111,12 +111,6 @@ public class TerrainGeneration : MonoBehaviour
 
     public float GetGroudLevel(float x, float z, int levels = 0)
     {
-        float y = 0;
-        for (int i = 0; i < perlins.Length; i++)
-        {
-            y += perlins[i].amplitude * Mathf.PerlinNoise(x * perlins[i].frequency + 1000f, z * perlins[i].frequency + 1000f);
-            if (i == levels - 1) { break; }
-        }
-        return y;
+        return ChunkGeneration.GetGroudLevel(x, z, perlins, seed, levels);
     }
 }

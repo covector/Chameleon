@@ -561,7 +561,7 @@ GameObject:
   - component: {fileID: 1192531233}
   - component: {fileID: 1192531229}
   m_Layer: 0
-  m_Name: Ground
+  m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -589,9 +589,7 @@ MonoBehaviour:
   - frequency: 2
     amplitude: 0.2
   player: {fileID: 1026169322}
-  materials:
-  - {fileID: 2100000, guid: 9e66e075606f23f4fbf458addb3e9d14, type: 2}
-  - {fileID: 2100000, guid: 2028119a854d4254889bca8e9a959f9d, type: 2}
+  chunkPrefab: {fileID: 7039736720241200046, guid: 073fc799ff67bd249b5f70750aaf0ded, type: 3}
 --- !u!4 &1192531233
 Transform:
   m_ObjectHideFlags: 0

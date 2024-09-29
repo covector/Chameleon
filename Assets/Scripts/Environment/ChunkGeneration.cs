@@ -1,13 +1,18 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class ChunkGeneration : MonoBehaviour
 {
+    Vector2Int chunkInd;
     float size = 10f;
     int step = 25;
     Perlin[] perlins;
-    Material[] materials;
+    int terrainSeed;
+    int chunkSeed;
+    System.Random rand;
+    public GameObject[] assetPrefabs;
     List<GameObject> assets = new List<GameObject>();
 
     [System.Serializable]
@@ -17,19 +22,21 @@ public class ChunkGeneration : MonoBehaviour
         public float amplitude;
     }
 
-    public void Init(float size, int step, Perlin[] perlins, Material[] materials)
+    public void Init(Vector2Int chunkInd, float size, int step, Perlin[] perlins, int seed)
     {
+        this.chunkInd = chunkInd;
         this.size = size;
         this.step = step;
         this.perlins = perlins;
-        this.materials = materials;
+        this.terrainSeed = seed;
+        this.chunkSeed = seed + chunkInd.x * 727 - chunkInd.y * 757;  // arbitrary
+        this.rand = new System.Random(chunkSeed);
         GenerateChunk();
     }
 
     void GenerateChunk()
     {
         GetComponent<MeshFilter>().mesh = CreateGroundMesh(size, step);
-        GetComponent<MeshRenderer>().materials = new Material[] { materials[0] };
 
         PlaceTrees();
     }
@@ -49,7 +56,7 @@ public class ChunkGeneration : MonoBehaviour
                 float z = size * j / gridSqr - size / 2f;
                 float globalX = x + transform.position.x;
                 float globalZ = z + transform.position.z;
-                float y = GetGroudLevel(globalX, globalZ);
+                float y = GetGroudLevel(globalX, globalZ, perlins, terrainSeed);
                 vertices[i * gridPt + j] = new Vector3(x, y, z);
             }
         }
@@ -96,12 +103,12 @@ public class ChunkGeneration : MonoBehaviour
         return mesh;
     }
 
-    public float GetGroudLevel(float x, float z, int levels = 0)
+    public static float GetGroudLevel(float x, float z, Perlin[] perlins, int seed, int levels = 0)
     {
         float y = 0;
         for (int i = 0; i < perlins.Length; i++)
         {
-            y += perlins[i].amplitude * Mathf.PerlinNoise(x * perlins[i].frequency + 1000f, z * perlins[i].frequency + 1000f);
+            y += perlins[i].amplitude * Mathf.PerlinNoise(x * perlins[i].frequency + 1000f + seed, z * perlins[i].frequency + 1000f + seed);
             if (i == levels - 1) { break; }
         }
         return y;
@@ -109,24 +116,16 @@ public class ChunkGeneration : MonoBehaviour
 
     void PlaceTrees()
     {
-        int gridSqr = step + 1;
-        for (int i = 0; i < gridSqr; i++)
+        FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(this.size, this.size, this.size / 2f, seed: chunkSeed);
+        float offset = this.size / 2f;
+        List<Vector2> points = fpds.fill();
+        foreach (Vector2 point in points)
         {
-            for (int j = 0; j < gridSqr; j++)
-            {
-                float x = size * i / gridSqr - size / 2f;
-                float z = size * j / gridSqr - size / 2f;
-                float globalX = x + transform.position.x;
-                float globalZ = z + transform.position.z;
-                if (Mathf.PerlinNoise(globalX*10f - 1000, globalZ * 10f - 1000) > 0.9f)
-                {
-                    GameObject tree = new GameObject();
-                    TreeGeneration tg = tree.AddComponent<TreeGeneration>();
-                    tree.transform.position = new Vector3(globalX, GetGroudLevel(globalX, globalZ, 1) - 0.1f, globalZ);
-                    tree.GetComponent<MeshRenderer>().materials = new Material[] { materials[1] };
-                    assets.Add(tree);
-                }
-            }
+            float globalX = point.x + transform.position.x - offset;
+            float globalZ = point.y + transform.position.z - offset;
+            GameObject tree = Instantiate(assetPrefabs[0], new Vector3(globalX, GetGroudLevel(globalX, globalZ, perlins, terrainSeed, 1) - 0.1f, globalZ), Quaternion.identity, transform);
+            assets.Add(tree);
+            tree.GetComponent<TreeGeneration>().Generate(rand.Next(10000));
         }
     }
 
