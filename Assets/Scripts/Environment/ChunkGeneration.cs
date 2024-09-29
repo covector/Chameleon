@@ -7,7 +7,8 @@ public class ChunkGeneration : MonoBehaviour
     float size = 10f;
     int step = 25;
     Perlin[] perlins;
-    Material groundMaterial;
+    Material[] materials;
+    List<GameObject> assets = new List<GameObject>();
 
     [System.Serializable]
     public struct Perlin
@@ -16,23 +17,21 @@ public class ChunkGeneration : MonoBehaviour
         public float amplitude;
     }
 
-    private void Awake()
-    {
-    }
-
-    public void Init(float size, int step, Perlin[] perlins, Material groundMaterial)
+    public void Init(float size, int step, Perlin[] perlins, Material[] materials)
     {
         this.size = size;
         this.step = step;
         this.perlins = perlins;
-        this.groundMaterial = groundMaterial;
+        this.materials = materials;
         GenerateChunk();
     }
 
     void GenerateChunk()
     {
         GetComponent<MeshFilter>().mesh = CreateGroundMesh(size, step);
-        GetComponent<MeshRenderer>().materials = new Material[] { groundMaterial };
+        GetComponent<MeshRenderer>().materials = new Material[] { materials[0] };
+
+        PlaceTrees();
     }
 
     Mesh CreateGroundMesh(float size, int step)
@@ -92,6 +91,8 @@ public class ChunkGeneration : MonoBehaviour
         }
         mesh.uv = uv;
 
+        mesh.RecalculateBounds();
+
         return mesh;
     }
 
@@ -104,5 +105,36 @@ public class ChunkGeneration : MonoBehaviour
             if (i == levels - 1) { break; }
         }
         return y;
+    }
+
+    void PlaceTrees()
+    {
+        int gridSqr = step + 1;
+        for (int i = 0; i < gridSqr; i++)
+        {
+            for (int j = 0; j < gridSqr; j++)
+            {
+                float x = size * i / gridSqr - size / 2f;
+                float z = size * j / gridSqr - size / 2f;
+                float globalX = x + transform.position.x;
+                float globalZ = z + transform.position.z;
+                if (Mathf.PerlinNoise(globalX*10f - 1000, globalZ * 10f - 1000) > 0.9f)
+                {
+                    GameObject tree = new GameObject();
+                    TreeGeneration tg = tree.AddComponent<TreeGeneration>();
+                    tree.transform.position = new Vector3(globalX, GetGroudLevel(globalX, globalZ, 1) - 0.1f, globalZ);
+                    tree.GetComponent<MeshRenderer>().materials = new Material[] { materials[1] };
+                    assets.Add(tree);
+                }
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        foreach (GameObject go in assets)
+        {
+            Destroy(go);
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//[ExecuteInEditMode]
 public class TerrainGeneration : MonoBehaviour
 {
     public float chunkSize = 10f;
@@ -8,7 +9,7 @@ public class TerrainGeneration : MonoBehaviour
     public ChunkGeneration.Perlin[] perlins;
     public Dictionary<Vector2Int, GameObject> chunks = new Dictionary<Vector2Int, GameObject>();
     public Transform player;
-    public Material groundMaterial;
+    public Material[] materials;
     int counter = 0;
 
     void Update()
@@ -77,7 +78,7 @@ public class TerrainGeneration : MonoBehaviour
         GameObject chunk = new GameObject();
         ChunkGeneration cg = chunk.AddComponent<ChunkGeneration>();
         chunk.transform.position = new Vector3(chunkSize * chunkInd.x, 0f, chunkSize * chunkInd.y);
-        cg.Init(chunkSize, step, perlins, groundMaterial);
+        cg.Init(chunkSize, step, perlins, materials);
         chunks.Add(chunkInd, chunk);
     }
 
