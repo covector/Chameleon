@@ -1,14 +1,25 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.UI.GridLayoutGroup;
 
 public class MeshBuilder
 {
     private List<Vector3> m_Vertices = new List<Vector3>();
-    private List<Vector3> m_Normals = new List<Vector3>();
     private List<Vector2> m_UVs = new List<Vector2>();
     private List<List<int>> m_Indices;
     public System.Random Random;
+
+    public struct TempMesh
+    {
+        public List<Vector3> vertices;
+        public List<Vector2> uvs;
+        public List<int> indices;
+        public TempMesh(List<Vector3> vertices, List<Vector2> uvs, List<int> indices)
+        {
+            this.vertices = vertices;
+            this.uvs = uvs;
+            this.indices = indices;
+        }
+    }
 
     public MeshBuilder(int materialCount = 1, int seed = 0)
     {
@@ -25,69 +36,94 @@ public class MeshBuilder
         return m_Indices.Count;
     }
 
-    public void AddTriangle(int ind1, int ind2, int ind3, int materialInd)
+    public static void AddTriangle(List<int> indices, int ind1, int ind2, int ind3)
     {
-        m_Indices[materialInd].Add(ind1);
-        m_Indices[materialInd].Add(ind2);
-        m_Indices[materialInd].Add(ind3);
+        indices.Add(ind1);
+        indices.Add(ind2);
+        indices.Add(ind3);
     }
 
-    public void AddQuad(Vector3 start, Vector3 vec1, Vector3 vec2, int materialInd, Matrix4x4 transform)
+    public static TempMesh CreateQuad(Vector3 start, Vector3 vec1, Vector3 vec2)
     {
-        Vector3 corner1 = transform.MultiplyPoint3x4(start);
-        Vector3 corner2 = transform.MultiplyPoint3x4(start + vec1);
-        Vector3 corner3 = transform.MultiplyPoint3x4(start + vec1 + vec2);
-        Vector3 corner4 = transform.MultiplyPoint3x4(start + vec2);
-        int currentInd = m_Vertices.Count;
-        m_Vertices.Add(corner1);
-        m_Vertices.Add(corner2);
-        m_Vertices.Add(corner3);
-        m_Vertices.Add(corner4);
+        List<Vector3> vertices = new List<Vector3>();
+        List<int> inds = new List<int>();
+        List<Vector2> uv = new List<Vector2>();
 
-        AddTriangle(currentInd, currentInd + 2, currentInd + 1, materialInd);
-        AddTriangle(currentInd, currentInd + 3, currentInd + 2, materialInd);
+        Vector3 corner1 = start;
+        Vector3 corner2 = start + vec1;
+        Vector3 corner3 = corner2 + vec2;
+        Vector3 corner4 = start + vec2;
+        vertices.Add(corner1);
+        vertices.Add(corner2);
+        vertices.Add(corner3);
+        vertices.Add(corner4);
 
-        Vector3 normal = Vector3.Cross(corner2 - corner1, corner4 - corner1).normalized;
-        m_Normals.Add(normal);
-        m_Normals.Add(normal);
-        m_Normals.Add(normal);
-        m_Normals.Add(normal);
+        AddTriangle(inds, 0, 2, 1);
+        AddTriangle(inds, 0, 3, 2);
 
-        m_UVs.Add(new Vector2(0, 0));
-        m_UVs.Add(new Vector2(1, 0));
-        m_UVs.Add(new Vector2(1, 1));
-        m_UVs.Add(new Vector2(0, 1));
-    }
-    public void AddQuad(Vector3 start, Vector3 vec1, Vector3 vec2, int materialInd)
-    {
-        AddQuad(start, vec1, vec2, materialInd, Matrix4x4.identity);
+        uv.Add(new Vector2(0, 0));
+        uv.Add(new Vector2(1, 0));
+        uv.Add(new Vector2(1, 1));
+        uv.Add(new Vector2(0, 1));
+
+        return new TempMesh(vertices, uv, inds);
     }
 
-    public void AddCylinder(float radius, float height, int step, int materialInd, Matrix4x4 transform)
+    public static TempMesh CreateCylinder(float radius, float height, int step)
     {
-        int currentInd = m_Vertices.Count;
+        List<Vector3> vertices = new List<Vector3>();
+        List<int> inds = new List<int>();
+        List<Vector2> uv = new List<Vector2>();
+
         for (int i = 0; i <= step; i++)
         {
             float sin = Mathf.Sin(Mathf.PI * 2f * i / step);
             float cos = Mathf.Cos(Mathf.PI * 2f * i / step);
 
-            m_Vertices.Add(transform.MultiplyPoint3x4(new Vector3(radius * cos, 0, radius * sin)));
-            m_Vertices.Add(transform.MultiplyPoint3x4(new Vector3(radius * cos, height, radius * sin)));
+            vertices.Add(new Vector3(radius * cos, 0, radius * sin));
+            vertices.Add(new Vector3(radius * cos, height, radius * sin));
 
             if (i != step)
             {
-                int offset = currentInd + i * 2;
-                AddTriangle(offset, offset + 1, offset + 2, materialInd);
-                AddTriangle(offset + 2, offset + 1, offset + 3, materialInd);
+                int offset = i * 2;
+                AddTriangle(inds, offset, offset + 1, offset + 2);
+                AddTriangle(inds, offset + 2, offset + 1, offset + 3);
             }
 
-            Vector3 normal = transform.MultiplyVector(new Vector3(radius * cos, 0, radius * sin)).normalized;
-            m_Normals.Add(normal);
-            m_Normals.Add(normal);
-
-            m_UVs.Add(new Vector2(1f * i / step, 0));
-            m_UVs.Add(new Vector2(1f * i / step, 1));
+            uv.Add(new Vector2(1f * i / step, 0));
+            uv.Add(new Vector2(1f * i / step, 1));
         }
+
+        return new TempMesh(vertices, uv, inds);
+    }
+
+    public void AddMesh(TempMesh mesh, int materialInd = 0)
+    {
+        int currentInd = m_Vertices.Count;
+        for (int i = 0; i < mesh.vertices.Count; i++)
+        {
+            m_Vertices.Add(mesh.vertices[i]);
+        }
+        for (int i = 0; i < mesh.indices.Count; i++)
+        {
+            m_Indices[materialInd].Add(mesh.indices[i] + currentInd);
+        }
+        for (int i = 0; i < mesh.uvs.Count; i++)
+        {
+            m_UVs.Add(mesh.uvs[i]);
+        }
+    }
+
+    public static TempMesh TransformMesh(TempMesh mesh, Matrix4x4 transform)
+    {
+        TempMesh newMesh = mesh;
+        List<Vector3> vertices = new List<Vector3>();
+        for (int i = 0; i < mesh.vertices.Count; i++)
+        {
+            vertices.Add(transform.MultiplyPoint3x4(mesh.vertices[i]));
+        }
+        newMesh.vertices = vertices;
+        return newMesh;
     }
 
     public Mesh Build()
@@ -95,7 +131,6 @@ public class MeshBuilder
         Mesh mesh = new Mesh();
 
         mesh.vertices = m_Vertices.ToArray();
-        mesh.normals = m_Normals.ToArray();
         mesh.uv = m_UVs.ToArray();
         mesh.subMeshCount = SubmeshCount();
         for (int i = 0; i < m_Indices.Count; i++)
@@ -103,6 +138,7 @@ public class MeshBuilder
             mesh.SetTriangles(m_Indices[i].ToArray(), i);
         }
 
+        mesh.RecalculateNormals();
         mesh.RecalculateBounds();
 
         return mesh;
