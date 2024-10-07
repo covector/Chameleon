@@ -45,9 +45,10 @@ public class TreeGeneration : MonoBehaviour
         {
             Matrix4x4 newTrans = cumTrans * RandomRotation(random, split ? 30f: 10f);
             float height = state.split == 0 ? 1f + 5f * (float)random.NextDouble() : 1f;
-            TempMesh cylinder = TransformMesh(CreateCylinder(state.radius * depth / state.totalDepth, height, 8), newTrans);
+            float radius = state.radius * depth / state.totalDepth;
+            //TempMesh cylinder = TransformMesh(CreateCylinder(state.radius * depth / state.totalDepth, height, 8), newTrans);
+            TempMesh cylinder = TransformMesh(UNIT_CYLINDER, newTrans * Matrix4x4.Scale(new Vector3(radius, height, radius)));
             meshBuilder.AddMesh(cylinder, 0);
-            //meshBuilder.AddCylinder(state.radius * depth / state.totalDepth, height, 8, 0, newTrans);
             if (depth > 1)
             {
                 newTrans = newTrans * Matrix4x4.Translate(new Vector3(0f, 0.9f * height, 0f));

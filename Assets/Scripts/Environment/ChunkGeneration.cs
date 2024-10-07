@@ -39,6 +39,7 @@ public class ChunkGeneration : MonoBehaviour
         GetComponent<MeshFilter>().mesh = CreateGroundMesh(size, step);
 
         PlaceTrees();
+        PlaceRocks();
     }
 
     Mesh CreateGroundMesh(float size, int step)
@@ -116,7 +117,7 @@ public class ChunkGeneration : MonoBehaviour
 
     void PlaceTrees()
     {
-        FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(this.size, this.size, this.size / 2f, seed: chunkSeed);
+        FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(this.size, this.size, this.size / 2f, seed: rand.Next(10000));
         float offset = this.size / 2f;
         List<Vector2> points = fpds.fill();
         foreach (Vector2 point in points)
@@ -126,6 +127,21 @@ public class ChunkGeneration : MonoBehaviour
             GameObject tree = Instantiate(assetPrefabs[0], new Vector3(globalX, GetGroudLevel(globalX, globalZ, perlins, terrainSeed, 1) - 0.1f, globalZ), Quaternion.identity, transform);
             assets.Add(tree);
             tree.GetComponent<TreeGeneration>().Generate(rand.Next(10000));
+        }
+    }
+
+    void PlaceRocks()
+    {
+        FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(this.size, this.size, this.size / 2f, seed: rand.Next(10000));
+        float offset = this.size / 2f;
+        List<Vector2> points = fpds.fill();
+        foreach (Vector2 point in points)
+        {
+            float globalX = point.x + transform.position.x - offset;
+            float globalZ = point.y + transform.position.z - offset;
+            GameObject rock = Instantiate(assetPrefabs[1], new Vector3(globalX, GetGroudLevel(globalX, globalZ, perlins, terrainSeed, 1) - 0.1f, globalZ), Quaternion.identity, transform);
+            assets.Add(rock);
+            rock.GetComponent<RockGeneration>().Generate(rand.Next(10000));
         }
     }
 
