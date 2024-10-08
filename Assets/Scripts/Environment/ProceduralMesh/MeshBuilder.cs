@@ -192,15 +192,18 @@ public class MeshBuilder
 
     public static TempMesh CreateCubeSphere(float radius, int step)
     {
-        TempMesh cube = CreateCube(radius, step);
-
-
-
+        TempMesh cube = CreateCube(2f * radius, step);
+        for (int i = 0; i < cube.vertices.Count; i++)
+        {
+            cube.vertices[i] = cube.vertices[i].normalized;
+            cube.normals[i] = cube.vertices[i];
+        }
         return cube;
     }
 
     public static TempMesh UNIT_CYLINDER;
     public static TempMesh UNIT_CUBE;
+    public static TempMesh UNIT_CUBESPHERE;
     public static bool primitivesInit = false;
     private static void TryInit()
     {
@@ -208,6 +211,7 @@ public class MeshBuilder
         {
             UNIT_CYLINDER = CreateCylinder(1f, 1f, 8);
             UNIT_CUBE = CreateCube(1f, 4);
+            UNIT_CUBESPHERE = CreateCubeSphere(1f, 4);
         }
     }
 

@@ -1,16 +1,11 @@
 using UnityEngine;
 using static MeshBuilder;
 
-//[ExecuteInEditMode]
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
-public class TreeGeneration : MonoBehaviour
+public class TreeGeneration : ProceduralAsset
 {
-    public void Generate(int seed)
+    protected override void Edit(MeshBuilder meshBuilder)
     {
-        System.Random rand = new System.Random(seed);
-        MeshBuilder meshBuilder = new MeshBuilder(1, seed);
         Grow(meshBuilder, rand, Matrix4x4.identity, 10, new State(0, 0.05f + 0.35f * (float)rand.NextDouble(), 10));
-        GetComponent<MeshFilter>().mesh = meshBuilder.Build();
     }
 
     Matrix4x4 RandomRotation(System.Random random, float range)
