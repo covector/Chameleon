@@ -211,7 +211,7 @@ public class MeshBuilder
         {
             UNIT_CYLINDER = CreateCylinder(1f, 1f, 8);
             UNIT_CUBE = CreateCube(1f, 4);
-            UNIT_CUBESPHERE = CreateCubeSphere(1f, 4);
+            UNIT_CUBESPHERE = CreateCubeSphere(1f, 8);
         }
     }
 
@@ -235,9 +235,10 @@ public class MeshBuilder
         for (int i = 0; i < mesh.vertices.Count; i++)
         {
             vertices.Add(transform.MultiplyPoint3x4(mesh.vertices[i]));
-            normals.Add(transform.MultiplyPoint3x4(mesh.normals[i]).normalized);
+            normals.Add(transform.MultiplyVector(mesh.normals[i]).normalized);
         }
         newMesh.vertices = vertices;
+        newMesh.normals = normals;
         return newMesh;
     }
 

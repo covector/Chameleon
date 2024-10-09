@@ -132,8 +132,8 @@ public class ChunkGeneration : MonoBehaviour
 
     void PlaceRocks()
     {
-        FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(this.size, this.size, this.size / 2f, seed: rand.Next(10000));
         float offset = this.size / 2f;
+        JitterGridSampling fpds = new JitterGridSampling(this.size, this.size, this.size / 4f, this.size / 3f, transform.position - new Vector3(offset, 0, offset), seed: rand.Next(10000));
         List<Vector2> points = fpds.fill();
         foreach (Vector2 point in points)
         {
