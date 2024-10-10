@@ -25,13 +25,15 @@ public class JitterGridSampling
         List<Vector2> points = new List<Vector2>();
         float xOffset = Mathf.Repeat(globalPos.x, spacing);
         float yOffset = Mathf.Repeat(globalPos.y, spacing);
+        bool gridOffset = Mathf.Repeat(globalPos.x, spacing * 2) < spacing;
         for (float x = -halfWidth; x < halfWidth; x += spacing)
         {
+            gridOffset = !gridOffset;
             for (float y = -halfHeight; y < halfHeight; y += spacing)
             {
                 points.Add(new Vector2(
-                    x + xOffset + strength * (Mathf.PerlinNoise1D(random.Next(10000)) - 0.5f),
-                    y + yOffset + strength * (Mathf.PerlinNoise1D(random.Next(10000)) - 0.5f)
+                    x + xOffset + 2f * strength * ((float)random.NextDouble() - 0.5f),
+                    y + yOffset + 2f * strength * ((float)random.NextDouble() - 0.5f) + (gridOffset ? spacing / 2f : 0f)
                 ));
             }
         }

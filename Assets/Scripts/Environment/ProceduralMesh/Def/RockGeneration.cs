@@ -7,7 +7,7 @@ public class RockGeneration : ProceduralAsset
     protected override void Edit(MeshBuilder meshBuilder)
     {
         //TempMesh plane = CreatePlane(Vector3.up, Vector3.left, Vector3.up, 5, 5);
-        //TempMesh plane = TransformMesh(CreateCube(2f, 3), Matrix4x4.Translate(new Vector3(0f, 3f, 0f)));
+        //TempMesh plane = TransformMesh(CreateCube(1f, 3), Matrix4x4.Translate(new Vector3(0f, 1f, 0f)));
         // TempMesh plane = TransformMesh(UNIT_CUBE, Matrix4x4.Scale(new Vector3(2f, 2f, 2f)));
         //TempMesh plane = TransformMesh(UNIT_CUBESPHERE, RandomTransform(rand));
         TempMesh plane = TransformMesh(VoronoiDisplace(UNIT_CUBESPHERE, 0.1f, 1f), RandomTransform(rand));

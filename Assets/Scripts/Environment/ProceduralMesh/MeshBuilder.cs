@@ -106,6 +106,7 @@ public class MeshBuilder
 
         for (int i = 0; i <= step2; i++)
         {
+            uv1 = 0;
             Vector3 currentVecInner = currentVec;
             for (int j = 0; j <= step1; j++)
             {

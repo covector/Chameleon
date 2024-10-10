@@ -18,7 +18,10 @@ public class PlayerControl : MonoBehaviour
         float sensitivity = 1000.0f;
         float rotateHorizontal = Input.GetAxis("Mouse X");
         float rotateVertical = Input.GetAxis("Mouse Y");
-        cam.transform.eulerAngles = new Vector3(Mathf.Clamp(cam.transform.eulerAngles.x - rotateVertical * sensitivity * Time.deltaTime, cam.transform.eulerAngles.x < 180f ? -90f : 270f, cam.transform.eulerAngles.x < 180f ? 90f : 400f), cam.transform.eulerAngles.y + rotateHorizontal * sensitivity * Time.deltaTime, 0);
+        cam.transform.eulerAngles = new Vector3(
+            Mathf.Clamp(cam.transform.eulerAngles.x - rotateVertical * sensitivity * Mathf.Min(1f/60f, Time.deltaTime), cam.transform.eulerAngles.x < 180f ? -90f : 270f,
+            cam.transform.eulerAngles.x < 180f ? 90f : 400f), cam.transform.eulerAngles.y + rotateHorizontal * sensitivity * Mathf.Min(1f / 60f, Time.deltaTime),
+            0);
 
         //rb.AddForce(new Vector3(Input.GetAxis("Vertical") * Mathf.Sin(cam.transform.eulerAngles.y * Mathf.PI / 180f), 0f, Input.GetAxis("Vertical") * Mathf.Cos(cam.transform.eulerAngles.y * Mathf.PI / 180f)));
         float vertical = Input.GetAxis("Vertical");
