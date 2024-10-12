@@ -1,8 +1,12 @@
 using UnityEngine;
 using static MeshBuilder;
 
-public class TreeGeneration : ProceduralAsset
+public class TreeGeneration : PreGenerate<TreeGeneration>
 {
+    public override int PreGenCount()
+    {
+        return 100;
+    }
     protected override void Edit(MeshBuilder meshBuilder)
     {
         Grow(meshBuilder, rand, Matrix4x4.identity, 10, new State(0, 0.05f + 0.35f * (float)rand.NextDouble(), 10));

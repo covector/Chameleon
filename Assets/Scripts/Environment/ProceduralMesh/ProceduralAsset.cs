@@ -6,9 +6,9 @@ public abstract class ProceduralAsset : MonoBehaviour
     protected System.Random rand;
     protected int seed;
 
-    public int MaterialCount() { return 1; }
+    public virtual int MaterialCount() { return 1; }
 
-    public void Generate(int seed)
+    public virtual void Generate(int seed)
     {
         this.seed = seed;
         this.rand = new System.Random(seed);

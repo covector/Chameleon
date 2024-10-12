@@ -24,8 +24,8 @@ public class AIController : MonoBehaviour
         {
             Vector2 velocity = (
                     goal +
-                    (relativeGoal ? new Vector2(player.position.x, player.position.z) : Vector2.zero) -
-                    new Vector2(transform.position.x, transform.position.z)
+                    (relativeGoal ? Utils.ToVector2(player.position) : Vector2.zero) -
+                    Utils.ToVector2(transform.position)
                 ).normalized * speed * Time.deltaTime;
             float x = transform.position.x + velocity.x;
             float z = transform.position.z + velocity.y;
@@ -89,13 +89,15 @@ public class AIController : MonoBehaviour
     {
         isMoving = true;
         relativeGoal = false;
-        goal = new Vector2(transform.position.x - player.position.x, transform.position.z - player.position.z).normalized * 30f;
+        Unhide();
+        Debug.Log("RUNNING AWAY");
+        goal = Utils.ToVector2(player.position) + Utils.ToVector2(transform.position - player.position).normalized * 30f;
     }
 
     public void LoseCheck()
     {
-        Vector2 diff = new Vector2(transform.position.x - player.position.x, transform.position.z - player.position.z);
-        if (diff.SqrMagnitude() < 1f)
+        Vector2 diff = Utils.ToVector2(transform.position - player.position);
+        if (diff.sqrMagnitude < 1f)
         {
             Debug.Log("YOU FUCKING LOST LOL");
         }
