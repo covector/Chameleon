@@ -32,8 +32,8 @@ public class JitterGridSampling
             for (float y = -halfHeight; y < halfHeight; y += spacing)
             {
                 points.Add(new Vector2(
-                    x + xOffset + 2f * strength * ((float)random.NextDouble() - 0.5f),
-                    y + yOffset + 2f * strength * ((float)random.NextDouble() - 0.5f) + (gridOffset ? spacing / 2f : 0f)
+                    x + xOffset + strength * (float)random.NextDouble(), 
+                    y + yOffset + strength * (float)random.NextDouble() + (gridOffset ? spacing / 2f : 0f)
                 ));
             }
         }

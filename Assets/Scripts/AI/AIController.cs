@@ -10,7 +10,8 @@ public class AIController : MonoBehaviour
     public Vector2 goal { get; set; }
     public bool relativeGoal { get; set; }
     public bool isMoving { get; set; }
-    public float baseSpeed = 5f;
+    public float baseSpeed = 4f;
+    private float runningSpeed = 6f;
     public float speed { get; set; }
 
     void Start()
@@ -82,6 +83,7 @@ public class AIController : MonoBehaviour
     {
         isMoving = true;
         relativeGoal = true;
+        speed = baseSpeed;
         goal = Vector2.zero;
     }
 
@@ -89,9 +91,10 @@ public class AIController : MonoBehaviour
     {
         isMoving = true;
         relativeGoal = false;
+        speed = runningSpeed;
         Unhide();
         Debug.Log("RUNNING AWAY");
-        goal = Utils.ToVector2(player.position) + Utils.ToVector2(transform.position - player.position).normalized * 30f;
+        goal = Utils.ToVector2(player.position) + Utils.ToVector2(transform.position - player.position).normalized * 100f;
     }
 
     public void LoseCheck()

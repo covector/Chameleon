@@ -32,6 +32,7 @@ public class AIStrategy : MonoBehaviour
     {
         float randomAngle = Random.Range(0f, 2 * Mathf.PI);
         transform.position = new Vector3(cam.position.x + 30f * Mathf.Cos(randomAngle), 0f, cam.position.z + 30f * Mathf.Sin(randomAngle));
+        controller.TryInitMorph();
         controller.ApproachPlayer();
         approaching = true;
         lastDist = float.PositiveInfinity;
@@ -41,7 +42,7 @@ public class AIStrategy : MonoBehaviour
     {
         Vector2 diff = Utils.ToVector2(transform.position - cam.position);
         float dist = diff.magnitude;
-        if (dist > lastDist + 10f)
+        if (dist > lastDist + 8f)
         {
             EndApproaching();
             return;

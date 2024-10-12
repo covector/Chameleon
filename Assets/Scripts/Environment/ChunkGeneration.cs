@@ -104,13 +104,13 @@ public class ChunkGeneration : MonoBehaviour
         return mesh;
     }
 
-    public static float GetGroudLevel(float x, float z, Perlin[] perlins, int seed, int levels = 0)
+    public static float GetGroudLevel(float x, float z, Perlin[] perlins, int seed, int levels = 1)
     {
         float y = 0;
         for (int i = 0; i < perlins.Length; i++)
         {
             y += perlins[i].amplitude * Mathf.PerlinNoise(x * perlins[i].frequency + 1000f + seed, z * perlins[i].frequency + 1000f + seed);
-            if (i == levels - 1) { break; }
+            if (i >= levels - 1) { break; }
         }
         return y;
     }
@@ -133,7 +133,9 @@ public class ChunkGeneration : MonoBehaviour
     void PlaceRocks()
     {
         float offset = this.size / 2f;
-        JitterGridSampling fpds = new JitterGridSampling(this.size, this.size, this.size / 4f, 10f, transform.position - new Vector3(offset, 0, offset), seed: rand.Next(10000));
+        JitterGridSampling fpds = new JitterGridSampling(this.size, this.size, this.size / 4f, this.size / 1.2f, transform.position - new Vector3(offset, 0, offset), seed: rand.Next(10000));
+        //FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(this.size, this.size, this.size / 4f, seed: rand.Next(10000));
+
         List<Vector2> points = fpds.fill();
         foreach (Vector2 point in points)
         {

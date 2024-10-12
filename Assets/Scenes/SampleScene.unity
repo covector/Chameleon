@@ -505,7 +505,7 @@ MonoBehaviour:
   player: {fileID: 1026169322}
   morphPrefabs:
   - {fileID: 3621534232945799312, guid: 07d48794ec62e304db4e7827585ace1a, type: 3}
-  baseSpeed: 5
+  baseSpeed: 4
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,7 +685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de8f70786eea1374ba0b80e13f947457, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chunkSize: 10
+  player: {fileID: 1026169322}
   step: 50
   perlins:
   - frequency: 0.1
@@ -694,7 +694,6 @@ MonoBehaviour:
     amplitude: 0.6
   - frequency: 2
     amplitude: 0.2
-  player: {fileID: 1026169322}
   chunkPrefab: {fileID: 7039736720241200046, guid: 073fc799ff67bd249b5f70750aaf0ded, type: 3}
   seed: 0
 --- !u!4 &1192531233
@@ -712,6 +711,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1634591295
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1634591296}
+  - component: {fileID: 1634591297}
+  m_Layer: 0
+  m_Name: Items
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1634591296
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634591295}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1634591297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634591295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a2e380d5af0cce4e98060b7c8fa2270, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1026169322}
+  tgen: {fileID: 1192531229}
+  itemPrefab: {fileID: 1461979436725031005, guid: 02fae6f938e4ee344895d2612a2ff676, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -722,3 +768,4 @@ SceneRoots:
   - {fileID: 1192531233}
   - {fileID: 1026169322}
   - {fileID: 747644062}
+  - {fileID: 1634591296}

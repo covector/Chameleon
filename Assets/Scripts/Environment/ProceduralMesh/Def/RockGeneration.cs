@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static MeshBuilder;
 
 public class RockGeneration : PreGenerate<RockGeneration>
@@ -19,10 +20,11 @@ public class RockGeneration : PreGenerate<RockGeneration>
 
     Matrix4x4 RandomTransform(System.Random random)
     {
+        float scale = 0.8f * (float)random.NextDouble() + 0.4f;
         return Matrix4x4.Scale(new Vector3(
-            1,
-            0.6f * (float)random.NextDouble() + 0.4f,
-            0.6f * (float)random.NextDouble() + 0.4f
+            scale,
+            scale * (0.6f * (float)random.NextDouble() + 0.4f),
+            scale * (0.6f * (float)random.NextDouble() + 0.4f)
         )) *
         Matrix4x4.Rotate(Quaternion.Euler(
             0f,
