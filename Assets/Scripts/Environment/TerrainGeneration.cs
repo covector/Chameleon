@@ -29,7 +29,7 @@ public class TerrainGeneration : MonoBehaviour
 
     void LoadChunks()
     {
-        int sqrRadius = 12;
+        int sqrRadius = 20;
         Vector2Int playerLoc = GetChunkIndFromCoord(player.position);
 
         // remove chunks
