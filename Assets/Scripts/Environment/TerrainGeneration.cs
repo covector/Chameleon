@@ -9,11 +9,16 @@ public class TerrainGeneration : ChunkSystem
     public GameObject chunkPrefab;
     public int seed;
 
-    public TerrainGeneration() : base(10f, 3) { }
+    public TerrainGeneration() : base(10f, 3, 5) { }
+
+    protected override bool CanLoadChunk(Vector2Int chunkInd, bool playerInChunk)
+    {
+        return !chunks.ContainsKey(chunkInd);
+    }
 
     protected override void LoadChunk(Vector2Int chunkInd, bool playerInChunk)
     {
-        if (!chunks.ContainsKey(chunkInd)) {
+        if (CanLoadChunk(chunkInd, playerInChunk)) {
             CreateChunk(chunkInd);
         }
     }

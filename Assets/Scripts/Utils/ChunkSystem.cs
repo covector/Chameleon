@@ -8,54 +8,95 @@ public abstract class ChunkSystem : MonoBehaviour
     public int unloadRadius { get; }
     protected int sqrLoadRadius { get; }
     protected int sqrUnloadRadius { get; }
+    public float loadInterval { get; }
+    public float unloadInterval { get; }
+    protected Queue<Vector2Int> unloadKeys = new Queue<Vector2Int>();
+    protected Queue<Pair<Vector2Int, bool>> loadKeys = new Queue<Pair<Vector2Int, bool>>();
+    protected float unloadChunkInterval = 0f;
+    protected float loadChunkInterval = 0f;
+    protected float elapsedUnloadTime = float.PositiveInfinity;
+    protected float elapsedLoadTime = float.PositiveInfinity;
     public Transform player;
     protected Dictionary<Vector2Int, GameObject> chunks = new Dictionary<Vector2Int, GameObject>();
-    float elapsedTime = float.PositiveInfinity;
 
-    public ChunkSystem(float chunkSize = 10f, int loadRadius = 3, int unloadRadius = 5)
+    public ChunkSystem(float chunkSize = 10f, int loadRadius = 3, int unloadRadius = 5, float loadInterval = 0f, float unloadInterval = 0f)
     {
         this.chunkSize = chunkSize;
         this.loadRadius = loadRadius;
         this.sqrLoadRadius = loadRadius * loadRadius;
         this.unloadRadius = unloadRadius;
         this.sqrUnloadRadius = unloadRadius * unloadRadius;
+        this.loadInterval = loadInterval;
+        this.unloadInterval = unloadInterval;
     }
 
     void Update()
     {
-        elapsedTime += Time.deltaTime;
-        if (elapsedTime > 1f)
-        {
-            LoadChunks();
-            elapsedTime = 0f;
-        }
+        Vector2Int playerLoc = Utils.GetChunkIndFromCoord(player.position, chunkSize);
+        LoadChunks(playerLoc);
+        PruneChunks(playerLoc);
     }
 
-    void LoadChunks()
+    void LoadChunks(Vector2Int playerLoc)
     {
-        Vector2Int playerLoc = Utils.GetChunkIndFromCoord(player.position, chunkSize);
-
-        // remove chunks
-        List<Vector2Int> removeKeys = new List<Vector2Int>();
-        foreach (KeyValuePair<Vector2Int, GameObject> entry in chunks)
+        if (loadKeys.Count == 0)
         {
-            if ((entry.Key - playerLoc).sqrMagnitude > sqrUnloadRadius)
+            Utils.MidPointCircle(loadRadius, (int x, int y) =>
             {
-                removeKeys.Add(entry.Key);
+                Pair<Vector2Int, bool> pair = new Pair<Vector2Int, bool>(playerLoc + new Vector2Int(x, y), x >= -1 && x <= 1 && y >= -1 && y <= 1);
+                if (CanLoadChunk(pair.left, pair.right))
+                {
+                    loadKeys.Enqueue(pair);
+                }
+            });
+            if (loadKeys.Count > 0)
+            {
+                loadChunkInterval = loadInterval / loadKeys.Count;
+            }
+            elapsedLoadTime = 0f;
+        }
+        if (loadKeys.Count > 0)
+        {
+            elapsedLoadTime += Time.deltaTime;
+            if (elapsedLoadTime > loadChunkInterval)
+            {
+                Pair<Vector2Int, bool> pair = loadKeys.Dequeue();
+                LoadChunk(pair.left, pair.right);
+                elapsedLoadTime -= loadChunkInterval;
             }
         }
-        foreach (Vector2Int removeKey in removeKeys)
-        {
-            UnloadChunk(removeKey);
-        }
-
-        // create chunks
-        Utils.MidPointCircle(loadRadius, (int x, int y) =>
-        {
-            LoadChunk(playerLoc + new Vector2Int(x, y), x >= -1 && x <= 1 && y >= -1 && y <= 1);
-        });
     }
 
+    void PruneChunks(Vector2Int playerLoc)
+    {
+        if (unloadKeys.Count == 0)
+        {
+            foreach (KeyValuePair<Vector2Int, GameObject> entry in chunks)
+            {
+                if ((entry.Key - playerLoc).sqrMagnitude > sqrUnloadRadius)
+                {
+                    unloadKeys.Enqueue(entry.Key);
+                }
+            }
+            if (unloadKeys.Count > 0)
+            {
+                unloadChunkInterval = unloadInterval / unloadKeys.Count;
+            }
+            elapsedUnloadTime = 0f;
+        }
+        if (unloadKeys.Count > 0)
+        {
+            elapsedUnloadTime += Time.deltaTime;
+            if (elapsedUnloadTime > unloadChunkInterval)
+            {
+                Vector2Int key = unloadKeys.Dequeue();
+                UnloadChunk(key);
+                elapsedUnloadTime -= unloadChunkInterval;
+            }
+        }
+    }
+
+    protected abstract bool CanLoadChunk(Vector2Int chunkInd, bool playerInChunk);
     protected abstract void LoadChunk(Vector2Int chunkInd, bool playerInChunk);
     protected abstract void UnloadChunk(Vector2Int chunkInd);
 }

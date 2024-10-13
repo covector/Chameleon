@@ -10,7 +10,12 @@ public class ItemSpawning : ChunkSystem
         new Vector2Int(0, -1), new Vector2Int(0, 1),new Vector2Int(1, 0), new Vector2Int(-1, 0)
     };
 
-    public ItemSpawning() : base(22f, 2) { }
+    public ItemSpawning() : base(22f, 2, 3) { }
+
+    protected override bool CanLoadChunk(Vector2Int chunkInd, bool playerInChunk)
+    {
+        return true;
+    }
 
     protected override void LoadChunk(Vector2Int chunkInd, bool playerInChunk)
     {
