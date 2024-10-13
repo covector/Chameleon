@@ -505,7 +505,7 @@ MonoBehaviour:
   player: {fileID: 1026169322}
   morphPrefabs:
   - {fileID: 3621534232945799312, guid: 07d48794ec62e304db4e7827585ace1a, type: 3}
-  baseSpeed: 3.5
+  baseSpeed: 3
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,7 +595,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1026169317}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

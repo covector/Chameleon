@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 //[RequireComponent(typeof(Rigidbody))]
@@ -5,25 +6,29 @@ public class PlayerControl : MonoBehaviour
 {
     public Camera cam;
     public TerrainGeneration tgen;
-    Rigidbody rb;
-    float lastY = 0f;
+    GradientController gradient;
 
     void Start()
     {
-        //rb = GetComponent<Rigidbody>();
+        gradient = new GradientController(tgen);
     }
 
     void Update()
     {
+        // Rotation Control
         float sensitivity = 1000.0f;
         float rotateHorizontal = Input.GetAxis("Mouse X");
         float rotateVertical = Input.GetAxis("Mouse Y");
+        float dt = Mathf.Min(1f / 60f, Time.deltaTime);
         cam.transform.eulerAngles = new Vector3(
-            Mathf.Clamp(cam.transform.eulerAngles.x - rotateVertical * sensitivity * Mathf.Min(1f/60f, Time.deltaTime), cam.transform.eulerAngles.x < 180f ? -90f : 270f,
-            cam.transform.eulerAngles.x < 180f ? 90f : 400f), cam.transform.eulerAngles.y + rotateHorizontal * sensitivity * Mathf.Min(1f / 60f, Time.deltaTime),
-            0);
+            Mathf.Clamp(cam.transform.eulerAngles.x - rotateVertical * sensitivity * dt,
+                    cam.transform.eulerAngles.x < 180f ? -90f : 270f,
+                    cam.transform.eulerAngles.x < 180f ? 90f : 400f),
+            cam.transform.eulerAngles.y + rotateHorizontal * sensitivity * dt,
+            0
+        );
 
-        //rb.AddForce(new Vector3(Input.GetAxis("Vertical") * Mathf.Sin(cam.transform.eulerAngles.y * Mathf.PI / 180f), 0f, Input.GetAxis("Vertical") * Mathf.Cos(cam.transform.eulerAngles.y * Mathf.PI / 180f)));
+        // Movement Control
         float vertical = Input.GetAxis("Vertical");
         vertical = vertical > 0 ? vertical : vertical * 0.4f;
         float horizontal = Input.GetAxis("Horizontal") * 0.4f;
@@ -34,24 +39,11 @@ public class PlayerControl : MonoBehaviour
             vertical *= verticalFac;
             horizontal *= verticalFac;
         }
-        float xDel = 3f * vertical * Mathf.Sin(cam.transform.eulerAngles.y * Mathf.PI / 180f) * Time.deltaTime;
-        float zDel = 3f * vertical * Mathf.Cos(cam.transform.eulerAngles.y * Mathf.PI / 180f) * Time.deltaTime;
-        xDel += 3f * horizontal * Mathf.Cos(cam.transform.eulerAngles.y * Mathf.PI / 180f) * Time.deltaTime;
-        zDel -= 3f * horizontal * Mathf.Sin(cam.transform.eulerAngles.y * Mathf.PI / 180f) * Time.deltaTime;
-            //transform.position = new Vector3(
-            //    transform.position.x + xDel,
-            //    tgen.GetGroudLevel(transform.position.x + xDel, transform.position.z + zDel, 2) + 1f,
-            //    transform.position.z + zDel
-            //);
-        float y = tgen.GetGroudLevel(transform.position.x + xDel, transform.position.z + zDel, 1) + 1f;
-        float gradient = Mathf.Max((y - lastY) / Time.deltaTime + 3f, 2.5f) / 3f;
-        transform.position = new Vector3(
-            transform.position.x + xDel / gradient,
-            tgen.GetGroudLevel(transform.position.x + xDel / gradient, transform.position.z + zDel / gradient, 2) + 1f,
-            transform.position.z + zDel / gradient
-        );
-        lastY = y;
-
-        cam.transform.position = transform.position + new Vector3(0f, 1f, 0f);
+        float sin = 3f * Mathf.Sin(cam.transform.eulerAngles.y * Mathf.PI / 180f) * Time.deltaTime;
+        float cos = 3f * Mathf.Cos(cam.transform.eulerAngles.y * Mathf.PI / 180f) * Time.deltaTime;
+        float xDel = vertical * sin + horizontal * cos;
+        float zDel = vertical * cos - horizontal * sin;
+        transform.position = gradient.GetAdjustedPosition(transform, xDel, zDel, levels:2);
+        cam.transform.position = transform.position + new Vector3(0f, 2f, 0f);
     }
 }

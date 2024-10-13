@@ -13,10 +13,12 @@ public class AIController : MonoBehaviour
     public float baseSpeed = 4f;
     private float runningSpeed = 6f;
     public float speed { get; set; }
+    GradientController gradient;
 
     void Start()
     {
         speed = baseSpeed;
+        gradient = new GradientController(tgen);
     }
 
     void Update()
@@ -28,13 +30,7 @@ public class AIController : MonoBehaviour
                     (relativeGoal ? Utils.ToVector2(player.position) : Vector2.zero) -
                     Utils.ToVector2(transform.position)
                 ).normalized * speed * Time.deltaTime;
-            float x = transform.position.x + velocity.x;
-            float z = transform.position.z + velocity.y;
-            transform.position = new Vector3(
-                x,
-                tgen.GetGroudLevel(x, z, 1) + 1f,
-                z
-            );
+            transform.position = gradient.GetAdjustedPosition(transform, velocity.x, velocity.y, yOffset: 1f);
 
             LoseCheck();
         }
