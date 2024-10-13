@@ -18,6 +18,7 @@ public abstract class ChunkSystem : MonoBehaviour
     protected float elapsedLoadTime = float.PositiveInfinity;
     public Transform player;
     protected Dictionary<Vector2Int, GameObject> chunks = new Dictionary<Vector2Int, GameObject>();
+    protected bool loadOrPrune = true;
 
     public ChunkSystem(float chunkSize = 10f, int loadRadius = 3, int unloadRadius = 5, float loadInterval = 0f, float unloadInterval = 0f)
     {
@@ -33,8 +34,12 @@ public abstract class ChunkSystem : MonoBehaviour
     void Update()
     {
         Vector2Int playerLoc = Utils.GetChunkIndFromCoord(player.position, chunkSize);
-        LoadChunks(playerLoc);
-        PruneChunks(playerLoc);
+        if (loadOrPrune) {
+            LoadChunks(playerLoc);
+        } else
+        {
+            PruneChunks(playerLoc);
+        }
     }
 
     void LoadChunks(Vector2Int playerLoc)
@@ -57,7 +62,7 @@ public abstract class ChunkSystem : MonoBehaviour
         }
         if (loadKeys.Count > 0)
         {
-            elapsedLoadTime += Time.deltaTime;
+            elapsedLoadTime += Time.deltaTime / 2f;
             if (elapsedLoadTime > loadChunkInterval)
             {
                 Pair<Vector2Int, bool> pair = loadKeys.Dequeue();
@@ -86,7 +91,7 @@ public abstract class ChunkSystem : MonoBehaviour
         }
         if (unloadKeys.Count > 0)
         {
-            elapsedUnloadTime += Time.deltaTime;
+            elapsedUnloadTime += Time.deltaTime / 2f;
             if (elapsedUnloadTime > unloadChunkInterval)
             {
                 Vector2Int key = unloadKeys.Dequeue();
