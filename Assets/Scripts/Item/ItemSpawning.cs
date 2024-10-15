@@ -6,11 +6,12 @@ public class ItemSpawning : ChunkSystem
 {
     public TerrainGeneration tgen;
     public GameObject itemPrefab;
+    public const float spacing = 22f;
     static Vector2Int[] neighbourhood = new Vector2Int[] {
         new Vector2Int(0, -1), new Vector2Int(0, 1),new Vector2Int(1, 0), new Vector2Int(-1, 0)
     };
 
-    public ItemSpawning() : base(22f, 2, 3) { }
+    public ItemSpawning() : base(spacing, 2, 3) { }
 
     protected override bool CanLoadChunk(Vector2Int chunkInd, bool playerInChunk)
     {
