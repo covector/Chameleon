@@ -5,7 +5,7 @@ public class TreeGeneration : PreGenerate<TreeGeneration>
 {
     public override int PreGenCount()
     {
-        return 100;
+        return 50;
     }
     protected override void Edit(MeshBuilder meshBuilder)
     {

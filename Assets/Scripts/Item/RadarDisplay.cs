@@ -10,17 +10,24 @@ public class RadarDisplay : MonoBehaviour
     };
     public Transform items;
     public Transform cam;
+    public RadarScanner rs;
     private const float aspectRatio = 0.675f;
     private float timePassedSinceRender = float.PositiveInfinity;
+    float halfWidth;
+    float halfHeight;
+    float maxDiag;
 
     void Start()
     {
         screenMaterial = GetComponent<MeshRenderer>().materials[1];
+        halfWidth = ItemSpawning.spacing;
+        halfHeight = halfWidth * aspectRatio;
+        maxDiag = Mathf.Sqrt(halfWidth * halfWidth + halfHeight * halfHeight);
     }
 
     void Update()
     {
-        if ((timePassedSinceRender += Time.deltaTime) > 0.1f)
+        if (rs.isActiveAndEnabled && (timePassedSinceRender += Time.deltaTime) > 0.1f)
         {
             RenderDisplay(GetDots());
             timePassedSinceRender = 0f;
@@ -29,15 +36,13 @@ public class RadarDisplay : MonoBehaviour
 
     List<Vector2> GetDots()
     {
-        float halfWidth = ItemSpawning.spacing;
-        float halfHeight = halfWidth * aspectRatio;
         List<Vector2> dots = new List<Vector2>();
         foreach (Transform item in items)
         {
             if (!item.GetComponent<MeshRenderer>().enabled) { continue; }
             float diffX = item.position.x - cam.position.x;
             float diffZ = item.position.z - cam.position.z;
-            if (Mathf.Abs(diffX) > halfWidth || Mathf.Abs(diffZ) > halfHeight) { continue; }
+            if (Mathf.Abs(diffX) > maxDiag || Mathf.Abs(diffZ) > maxDiag) { continue; }
             Vector3 diff = Matrix4x4.Rotate(Quaternion.Euler(new Vector3(0f, -cam.eulerAngles.y, 0f))).MultiplyVector(new Vector3(diffX, 0f, diffZ));
             if (Mathf.Abs(diff.x) < halfWidth && Mathf.Abs(diff.z) < halfHeight)
             {
@@ -55,6 +60,16 @@ public class RadarDisplay : MonoBehaviour
             Vector2 pos = dots.Count > i ? dots[i] : new Vector2(-1, -1);
             screenMaterial.SetVector(varNames[i], pos);
         }
+    }
+
+    public void MaterialScreenOn()
+    {
+        screenMaterial.SetInt("_ScreenOn", 1);
+    }
+
+    public void MaterialScreenOff()
+    {
+        screenMaterial.SetInt("_ScreenOn", 0);
     }
 }
 
