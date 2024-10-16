@@ -531,7 +531,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &747644060
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -898,6 +898,7 @@ MonoBehaviour:
     amplitude: 0.2
   chunkPrefab: {fileID: 7039736720241200046, guid: 073fc799ff67bd249b5f70750aaf0ded, type: 3}
   seed: 0
+  itemSpawning: {fileID: 1634591297}
 --- !u!4 &1192531233
 Transform:
   m_ObjectHideFlags: 0
@@ -1043,7 +1044,7 @@ Transform:
   - {fileID: 2805500362650976708}
   - {fileID: 2384270383488220637}
   m_Father: {fileID: 330585546}
-  m_LocalEulerAnglesHint: {x: 132.57495, y: -137.30107, z: -370.85568}
+  m_LocalEulerAnglesHint: {x: 135.66805, y: -138.6974, z: -369.4331}
 --- !u!33 &872127147401795492
 MeshFilter:
   m_ObjectHideFlags: 0

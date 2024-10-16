@@ -5,6 +5,8 @@ public class ItemPickUp : MonoBehaviour
     Transform cam;
     const float pickUpDistSqr = 9f;
     const float pickUpAngle = 0.98f;
+    public GameObject scanner;
+    public bool pickedUp = false;
 
     void Start()
     {
@@ -17,7 +19,8 @@ public class ItemPickUp : MonoBehaviour
         {
             if (canBePickenUp())
             {
-                GetComponent<MeshRenderer>().enabled = false;
+                scanner.SetActive(false);
+                pickedUp = true;
             }
         }
     }

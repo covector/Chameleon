@@ -39,7 +39,7 @@ public class RadarDisplay : MonoBehaviour
         List<Vector2> dots = new List<Vector2>();
         foreach (Transform item in items)
         {
-            if (!item.GetComponent<MeshRenderer>().enabled) { continue; }
+            if (item.GetComponent<ItemPickUp>().pickedUp) { continue; }
             float diffX = item.position.x - cam.position.x;
             float diffZ = item.position.z - cam.position.z;
             if (Mathf.Abs(diffX) > maxDiag || Mathf.Abs(diffZ) > maxDiag) { continue; }

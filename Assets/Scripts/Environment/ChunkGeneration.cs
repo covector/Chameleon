@@ -14,6 +14,7 @@ public class ChunkGeneration : MonoBehaviour
     System.Random rand;
     public GameObject[] assetPrefabs;
     List<GameObject> assets = new List<GameObject>();
+    public ItemSpawning itemSpawning;
 
     [System.Serializable]
     public struct Perlin
@@ -115,6 +116,17 @@ public class ChunkGeneration : MonoBehaviour
         return y;
     }
 
+    public bool CheckSpawnVicinity(Vector2 pos, float squareRadius)
+    {
+        foreach (GameObject g in assets)
+        {
+            if ((Utils.ToVector2(g.transform.position) - pos).sqrMagnitude < squareRadius) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     void PlaceTrees()
     {
         FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(this.size, this.size, this.size / 2f, seed: rand.Next(10000));
@@ -124,6 +136,7 @@ public class ChunkGeneration : MonoBehaviour
         {
             float globalX = point.x + transform.position.x - offset;
             float globalZ = point.y + transform.position.z - offset;
+            if (itemSpawning.CheckSpawnVicinity(new Vector2(globalX, globalZ), 2f)) { continue; }
             GameObject tree = Instantiate(assetPrefabs[0], new Vector3(globalX, GetGroudLevel(globalX, globalZ, perlins, terrainSeed, 1) - 0.1f, globalZ), Quaternion.identity, transform);
             assets.Add(tree);
             tree.GetComponent<TreeGeneration>().Generate(rand.Next(10000));
@@ -141,6 +154,7 @@ public class ChunkGeneration : MonoBehaviour
         {
             float globalX = point.x + transform.position.x - offset;
             float globalZ = point.y + transform.position.z - offset;
+            if (itemSpawning.CheckSpawnVicinity(new Vector2(globalX, globalZ), 2f)) { continue; }
             GameObject rock = Instantiate(assetPrefabs[1], new Vector3(globalX, GetGroudLevel(globalX, globalZ, perlins, terrainSeed, 1) - 0.1f, globalZ), Quaternion.identity, transform);
             assets.Add(rock);
             rock.GetComponent<RockGeneration>().Generate(rand.Next(10000));

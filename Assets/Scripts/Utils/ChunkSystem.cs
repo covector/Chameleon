@@ -104,4 +104,7 @@ public abstract class ChunkSystem : MonoBehaviour
     protected abstract bool CanLoadChunk(Vector2Int chunkInd, bool playerInChunk);
     protected abstract void LoadChunk(Vector2Int chunkInd, bool playerInChunk);
     protected abstract void UnloadChunk(Vector2Int chunkInd);
+
+    // returns true if have things within radius
+    public abstract bool CheckSpawnVicinity(Vector2 position, float squareRadius);
 }
