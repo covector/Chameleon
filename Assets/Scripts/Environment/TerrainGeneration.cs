@@ -45,10 +45,14 @@ public class TerrainGeneration : ChunkSystem
         chunks.Remove(chunkInd);
     }
 
-    public override bool CheckSpawnVicinity(Vector2 pos, float squareRadius)
+    public override bool CheckSpawnVicinity(Vector2 pos, float offset)
     {
-        Vector2Int chunkInd = Utils.GetChunkIndFromCoord(pos, chunkSize);
-        if (!chunks.ContainsKey(chunkInd)) { return false; }
-        return chunks[chunkInd].GetComponent<ChunkGeneration>().CheckSpawnVicinity(pos, squareRadius);
+        foreach (Vector2Int neighbour in neighbourhood)
+        {
+            Vector2Int chunkInd = Utils.GetChunkIndFromCoord(pos, chunkSize) + neighbour;
+            if (!chunks.ContainsKey(chunkInd)) { continue; }
+            if (chunks[chunkInd].GetComponent<ChunkGeneration>().CheckSpawnVicinity(pos, offset)) { return true; }
+        }
+        return false;
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class ChunkGeneration : MonoBehaviour
@@ -37,6 +38,7 @@ public class ChunkGeneration : MonoBehaviour
         this.chunkInd = chunkInd;
         this.chunkSeed = terrainSeed + chunkInd.x * 727 - chunkInd.y * 757;  // arbitrary
         this.rand = new System.Random(chunkSeed);
+        name = "Chunk_" + chunkInd.ToString();  // For debug
         GenerateChunk();
     }
 
@@ -44,8 +46,7 @@ public class ChunkGeneration : MonoBehaviour
     {
         GetComponent<MeshFilter>().mesh = CreateGroundMesh(size, step);
 
-        PlaceTrees();
-        PlaceRocks();
+        PlaceAssets();
     }
 
     Mesh CreateGroundMesh(float size, int step)
@@ -137,55 +138,36 @@ public class ChunkGeneration : MonoBehaviour
         foreach (GameObject g in assets)
         {
             float radius = g.GetComponent<ProceduralAsset>().MaxDim() + offset;
-            if ((Utils.ToVector2(g.transform.position) - pos).sqrMagnitude < offset) {
+            if ((Utils.ToVector2(g.transform.position) - pos).sqrMagnitude < radius * radius) {
                 return true;
             }
         }
         return false;
     }
 
-    void PlaceTrees()
-    {
-        FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(size, size, size / 2f, seed: rand.Next(10000));
-        float offset = size / 2f;
-        List<Vector2> points = fpds.fill();
-        foreach (Vector2 point in points)
-        {
-            float globalX = point.x + transform.position.x - offset;
-            float globalZ = point.y + transform.position.z - offset;
-            GameObject tree = Instantiate(assetPrefabs[0], new Vector3(globalX, GetGroudLevel(globalX, globalZ, 1) - 0.1f, globalZ), Quaternion.identity, transform);
-            tree.GetComponent<TreeGeneration>().Generate(rand.Next(10000));
-            if (itemSpawning.CheckSpawnVicinity(new Vector2(globalX, globalZ), tree.GetComponent<TreeGeneration>().MaxDim() + ItemSpawning.vicinityRadiusSquared)) {
-                Destroy(tree);
-            } else
-            {
-                assets.Add(tree);
-            }
-
-        }
-    }
-
-    void PlaceRocks()
+    void PlaceAssets()
     {
         float offset = size / 2f;
-        JitterGridSampling fpds = new JitterGridSampling(size, size, size / 4f, size / 1.2f, transform.position - new Vector3(offset, 0, offset), seed: rand.Next(10000));
-        //FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(size, size, size / 4f, seed: rand.Next(10000));
-
-        List<Vector2> points = fpds.fill();
-        foreach (Vector2 point in points)
-        {
-            float globalX = point.x + transform.position.x - offset;
-            float globalZ = point.y + transform.position.z - offset;
-            GameObject rock = Instantiate(assetPrefabs[1], new Vector3(globalX, GetGroudLevel(globalX, globalZ, 1) - 0.1f, globalZ), Quaternion.identity, transform);
-            rock.GetComponent<RockGeneration>().Generate(rand.Next(10000));
-            if (itemSpawning.CheckSpawnVicinity(new Vector2(globalX, globalZ), rock.GetComponent<RockGeneration>().MaxDim() + ItemSpawning.vicinityRadiusSquared))
+        foreach (GameObject prefab in assetPrefabs) {
+            ProceduralAsset procedural = prefab.GetComponent<ProceduralAsset>();
+            List<Vector2> points = procedural.SamplePoints(size, transform.position, rand.Next(10000));
+            foreach (Vector2 point in points)
             {
-                Destroy(rock);
-            } else
-            {
-                assets.Add(rock);
+                float globalX = point.x + transform.position.x - offset;
+                float globalZ = point.y + transform.position.z - offset;
+                GameObject asset = Instantiate(prefab, new Vector3(globalX, GetGroudLevel(globalX, globalZ, 1) - 0.1f, globalZ), Quaternion.identity, transform);
+                asset.name = "Asset_" + assets.Count;  // For debug
+                procedural.Generate(rand.Next(10000));
+                float radius = procedural.MaxDim() + ItemSpawning.vicinityRadiusOffset;
+                if (itemSpawning.CheckSpawnVicinity(new Vector2(globalX, globalZ), radius * radius))
+                {
+                    Destroy(asset);
+                }
+                else
+                {
+                    assets.Add(asset);
+                }
             }
-
         }
     }
 

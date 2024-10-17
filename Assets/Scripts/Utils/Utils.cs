@@ -18,6 +18,11 @@ public class Utils
         return GetChunkIndFromCoord(loc.x, loc.z, chunkSize);
     }
 
+    public static Vector2Int GetChunkIndFromCoord(Vector2 loc, float chunkSize)
+    {
+        return GetChunkIndFromCoord(loc.x, loc.y, chunkSize);
+    }
+
     // r > 1
     public static void MidPointCircle(int r, Action<int, int> callback)
     {

@@ -7,10 +7,7 @@ public class ItemSpawning : ChunkSystem
     public TerrainGeneration tgen;
     public GameObject itemPrefab;
     public const float spacing = 22f;
-    public const float vicinityRadiusSquared = 0f;
-    static Vector2Int[] neighbourhood = new Vector2Int[] {
-        new Vector2Int(0, -1), new Vector2Int(0, 1),new Vector2Int(1, 0), new Vector2Int(-1, 0)
-    };
+    public const float vicinityRadiusOffset = 1f;
 
     public ItemSpawning() : base(spacing, 2, 3) { }
 
@@ -45,6 +42,7 @@ public class ItemSpawning : ChunkSystem
         Vector3 spawnLocation = GetSpawnLocation(chunkInd);
         Quaternion spawnRotation = ChunkGeneration.GetTangentRotation(spawnLocation.x, spawnLocation.z, yaw: Random.Range(0f, 360f));
         GameObject item = Instantiate(itemPrefab, spawnLocation, spawnRotation, transform);
+        item.name = "Item_" + chunkInd.ToString();
         chunks.Add(chunkInd, item);
     }
 
@@ -55,7 +53,7 @@ public class ItemSpawning : ChunkSystem
         for (int i = 0; i < 10; i++)
         {
             candidateLoc = new Vector2(chunkSize * (chunkInd.x + Random.Range(0f, 1f)), chunkSize * (chunkInd.y + Random.Range(0f, 1f)));
-            if (tgen.CheckSpawnVicinity(candidateLoc, vicinityRadiusSquared)) { continue; }
+            if (tgen.CheckSpawnVicinity(candidateLoc, vicinityRadiusOffset)) { continue; }
             bool retry = false;
             foreach (Vector2Int key in neighbourhood)
             {
@@ -84,8 +82,12 @@ public class ItemSpawning : ChunkSystem
 
     public override bool CheckSpawnVicinity(Vector2 pos, float squareRadius)
     {
-        Vector2Int chunkInd = Utils.GetChunkIndFromCoord(pos, chunkSize);
-        if (!chunks.ContainsKey(chunkInd)) { return false; }
-        return (Utils.ToVector2(chunks[chunkInd].transform.position) - pos).sqrMagnitude < squareRadius;
+        foreach (Vector2Int neighbour in neighbourhood)
+        {
+            Vector2Int chunkInd = Utils.GetChunkIndFromCoord(pos, chunkSize) + neighbour;
+            if (!chunks.ContainsKey(chunkInd)) { continue; }
+            if ((Utils.ToVector2(chunks[chunkInd].transform.position) - pos).sqrMagnitude < squareRadius) { return true; }
+        }
+        return false;
     }
 }

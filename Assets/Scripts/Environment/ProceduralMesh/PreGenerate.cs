@@ -1,11 +1,12 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class PreGenerate<T> : ProceduralAsset where T : class
 {
     protected static List<Mesh> s_preGenerated = new List<Mesh>();
-    public List<Mesh> preGenerated { get => s_preGenerated; set => s_preGenerated = value; }
+    protected static List<float> s_maxDims = new List<float>();
+    public List<Mesh> preGenerated { get => s_preGenerated; }
+    public List<float> maxDims { get => s_maxDims; }
 
     protected void Init(int count)
     {
@@ -17,6 +18,10 @@ public abstract class PreGenerate<T> : ProceduralAsset where T : class
                 Edit(meshBuilder);
                 s_preGenerated.Add(meshBuilder.Build());
             }
+            if (s_maxDims.Count != s_preGenerated.Count)
+            {
+                Debug.LogWarning("MaxDim is not equal to preGenCount!");
+            }
         }
     }
 
@@ -25,7 +30,9 @@ public abstract class PreGenerate<T> : ProceduralAsset where T : class
         this.seed = seed;
         this.rand = new System.Random(seed);
         Init(PreGenCount());
-        GetComponent<MeshFilter>().mesh = s_preGenerated[this.rand.Next(s_preGenerated.Count)];
+        int index = this.rand.Next(preGenerated.Count);
+        GetComponent<MeshFilter>().mesh = preGenerated[index];
+        maxDim = maxDims[index];
     }
 
     public virtual int PreGenCount() { return 10; }

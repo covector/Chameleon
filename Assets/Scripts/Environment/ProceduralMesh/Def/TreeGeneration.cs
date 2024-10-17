@@ -1,23 +1,23 @@
+using System.Collections.Generic;
 using UnityEngine;
 using static MeshBuilder;
 
 public class TreeGeneration : PreGenerate<TreeGeneration>
 {
-    private float baseRadius;
-
     public override int PreGenCount()
     {
         return 50;
     }
 
-    public override float MaxDim()
-    {
-        return baseRadius;
-    }
-
     protected override void Edit(MeshBuilder meshBuilder)
     {
         Grow(meshBuilder, rand, Matrix4x4.identity, 10, new State(0, 0.05f + 0.35f * (float)rand.NextDouble(), 10));
+    }
+
+    public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
+    {
+        FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(chunkSize, chunkSize, chunkSize / 2f, seed);
+        return fpds.fill();
     }
 
     Matrix4x4 RandomRotation(System.Random random, float range)
@@ -53,7 +53,7 @@ public class TreeGeneration : PreGenerate<TreeGeneration>
             Matrix4x4 newTrans = cumTrans * RandomRotation(random, split ? 30f: 10f);
             float height = state.split == 0 ? 1f + 5f * (float)random.NextDouble() : 1f;
             float radius = state.radius * depth / state.totalDepth;
-            if (depth == state.totalDepth) { this.baseRadius = radius; }
+            if (depth == state.totalDepth && i == 0) { maxDims.Add(radius); }
             //TempMesh cylinder = TransformMesh(CreateCylinder(state.radius * depth / state.totalDepth, height, 8), newTrans);
             TempMesh cylinder = TransformMesh(UNIT_CYLINDER, newTrans * Matrix4x4.Scale(new Vector3(radius, height, radius)));
             meshBuilder.AddMesh(cylinder, 0);

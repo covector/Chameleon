@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
@@ -5,6 +6,7 @@ public abstract class ProceduralAsset : MonoBehaviour
 {
     protected System.Random rand;
     protected int seed;
+    protected float maxDim = 0f;
 
     public virtual int MaterialCount() { return 1; }
 
@@ -18,5 +20,7 @@ public abstract class ProceduralAsset : MonoBehaviour
     }
 
     protected abstract void Edit(MeshBuilder meshBuilder);
-    public virtual float MaxDim() { return 0f; }
+    public float MaxDim() { return maxDim; }
+
+    public abstract List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed);
 }

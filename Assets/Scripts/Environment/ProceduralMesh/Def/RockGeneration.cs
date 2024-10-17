@@ -5,13 +5,6 @@ using static MeshBuilder;
 
 public class RockGeneration : PreGenerate<RockGeneration>
 {
-    private float maxDim;
-
-    public override float MaxDim()
-    {
-        return maxDim;
-    }
-
     protected override void Edit(MeshBuilder meshBuilder)
     {
         //TempMesh plane = CreatePlane(Vector3.up, Vector3.left, Vector3.up, 5, 5);
@@ -20,18 +13,25 @@ public class RockGeneration : PreGenerate<RockGeneration>
         //TempMesh plane = TransformMesh(UNIT_CUBESPHERE, RandomTransform(rand));
         TempMesh plane = TransformMesh(VoronoiDisplace(UNIT_CUBESPHERE, 0.1f, 1f), RandomTransform(rand));
         //TempMesh plane = TransformMesh(PerlinDisplace(UNIT_CUBESPHERE, 1f, 1f), RandomTransform(rand));
-        
 
         meshBuilder.AddMesh(plane, 0);
+    }
+
+    public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
+    {
+        float offset = chunkSize / 2f;
+        JitterGridSampling jgs = new JitterGridSampling(chunkSize, chunkSize, chunkSize / 4f, chunkSize / 1.2f, globalPosition - new Vector3(offset, 0, offset), seed);
+        //FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(chunkSize, chunkSize, chunkSize / 4f, seed: rand.Next(10000));
+        return jgs.fill();
     }
 
     Matrix4x4 RandomTransform(System.Random random)
     {
         float scale = 0.8f * (float)random.NextDouble() + 0.4f;
-        maxDim = scale;
+        maxDims.Add(scale);
         return Matrix4x4.Scale(new Vector3(
-            scale,
-            scale * (0.6f * (float)random.NextDouble() + 0.4f),
+        scale,
+        scale * (0.6f * (float)random.NextDouble() + 0.4f),
             scale * (0.6f * (float)random.NextDouble() + 0.4f)
         )) *
         Matrix4x4.Rotate(Quaternion.Euler(

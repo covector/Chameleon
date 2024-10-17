@@ -19,6 +19,11 @@ public abstract class ChunkSystem : MonoBehaviour
     public Transform player;
     protected Dictionary<Vector2Int, GameObject> chunks = new Dictionary<Vector2Int, GameObject>();
     protected bool loadOrPrune = true;
+    protected static Vector2Int[] neighbourhood = new Vector2Int[] {
+        new Vector2Int(0, 0),
+        new Vector2Int(0, -1), new Vector2Int(0, 1),new Vector2Int(1, 0), new Vector2Int(-1, 0),
+        new Vector2Int(-1, 1), new Vector2Int(-1, -1), new Vector2Int(1, -1), new Vector2Int(1, 1)
+    };
 
     public ChunkSystem(float chunkSize = 10f, int loadRadius = 3, int unloadRadius = 5, float loadInterval = 0f, float unloadInterval = 0f)
     {
