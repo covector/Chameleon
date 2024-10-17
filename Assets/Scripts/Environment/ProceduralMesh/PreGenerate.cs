@@ -18,7 +18,7 @@ public abstract class PreGenerate<T> : ProceduralAsset where T : class
                 Edit(meshBuilder);
                 s_preGenerated.Add(meshBuilder.Build());
             }
-            if (s_maxDims.Count != s_preGenerated.Count)
+            if (ItemSpawnCheck() && s_maxDims.Count != s_preGenerated.Count)
             {
                 Debug.LogWarning("MaxDim is not equal to preGenCount!");
             }

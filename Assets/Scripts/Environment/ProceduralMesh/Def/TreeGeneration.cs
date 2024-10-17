@@ -4,6 +4,8 @@ using static MeshBuilder;
 
 public class TreeGeneration : PreGenerate<TreeGeneration>
 {
+    public override bool ItemSpawnCheck() { return true; }
+
     public override int PreGenCount()
     {
         return 50;

@@ -23,4 +23,7 @@ public abstract class ProceduralAsset : MonoBehaviour
     public float MaxDim() { return maxDim; }
 
     public abstract List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed);
+
+    public virtual bool ItemSpawnCheck() { return false; }
+    public virtual bool CollisionCheck() { return false; }
 }

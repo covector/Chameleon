@@ -137,6 +137,7 @@ public class ChunkGeneration : MonoBehaviour
     {
         foreach (GameObject g in assets)
         {
+            if (!g.GetComponent<ProceduralAsset>().ItemSpawnCheck()) { continue; }
             float radius = g.GetComponent<ProceduralAsset>().MaxDim() + offset;
             if ((Utils.ToVector2(g.transform.position) - pos).sqrMagnitude < radius * radius) {
                 return true;
@@ -149,17 +150,18 @@ public class ChunkGeneration : MonoBehaviour
     {
         float offset = size / 2f;
         foreach (GameObject prefab in assetPrefabs) {
-            ProceduralAsset procedural = prefab.GetComponent<ProceduralAsset>();
-            List<Vector2> points = procedural.SamplePoints(size, transform.position, rand.Next(10000));
+            ProceduralAsset proceduralPrefab = prefab.GetComponent<ProceduralAsset>();
+            List<Vector2> points = proceduralPrefab.SamplePoints(size, transform.position, rand.Next(10000));
             foreach (Vector2 point in points)
             {
                 float globalX = point.x + transform.position.x - offset;
                 float globalZ = point.y + transform.position.z - offset;
                 GameObject asset = Instantiate(prefab, new Vector3(globalX, GetGroudLevel(globalX, globalZ, 1) - 0.1f, globalZ), Quaternion.identity, transform);
+                ProceduralAsset procedural = asset.GetComponent<ProceduralAsset>();
                 asset.name = "Asset_" + assets.Count;  // For debug
                 procedural.Generate(rand.Next(10000));
                 float radius = procedural.MaxDim() + ItemSpawning.vicinityRadiusOffset;
-                if (itemSpawning.CheckSpawnVicinity(new Vector2(globalX, globalZ), radius * radius))
+                if (procedural.ItemSpawnCheck() && itemSpawning.CheckSpawnVicinity(new Vector2(globalX, globalZ), radius * radius))
                 {
                     Destroy(asset);
                 }

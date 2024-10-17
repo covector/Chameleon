@@ -5,6 +5,8 @@ using static MeshBuilder;
 
 public class RockGeneration : PreGenerate<RockGeneration>
 {
+    public override bool ItemSpawnCheck() { return true; }
+
     protected override void Edit(MeshBuilder meshBuilder)
     {
         //TempMesh plane = CreatePlane(Vector3.up, Vector3.left, Vector3.up, 5, 5);
