@@ -624,7 +624,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc6c98f92ed4416488ed7b1a6b3d8b4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tgen: {fileID: 1192531229}
   player: {fileID: 1026169322}
   morphPrefabs:
   - {fileID: 3621534232945799312, guid: 07d48794ec62e304db4e7827585ace1a, type: 3}
@@ -789,7 +788,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 330585545}
-  tgen: {fileID: 1192531229}
 --- !u!23 &1026169320
 MeshRenderer:
   m_ObjectHideFlags: 0
