@@ -5,6 +5,13 @@ using static MeshBuilder;
 
 public class RockGeneration : PreGenerate<RockGeneration>
 {
+    private float maxDim;
+
+    public override float MaxDim()
+    {
+        return maxDim;
+    }
+
     protected override void Edit(MeshBuilder meshBuilder)
     {
         //TempMesh plane = CreatePlane(Vector3.up, Vector3.left, Vector3.up, 5, 5);
@@ -21,6 +28,7 @@ public class RockGeneration : PreGenerate<RockGeneration>
     Matrix4x4 RandomTransform(System.Random random)
     {
         float scale = 0.8f * (float)random.NextDouble() + 0.4f;
+        maxDim = scale;
         return Matrix4x4.Scale(new Vector3(
             scale,
             scale * (0.6f * (float)random.NextDouble() + 0.4f),

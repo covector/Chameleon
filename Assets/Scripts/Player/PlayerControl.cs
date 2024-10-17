@@ -5,12 +5,11 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
     public Camera cam;
-    public TerrainGeneration tgen;
     GradientController gradient;
 
     void Start()
     {
-        gradient = new GradientController(tgen);
+        gradient = new GradientController();
     }
 
     void Update()

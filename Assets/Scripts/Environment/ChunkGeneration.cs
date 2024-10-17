@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class ChunkGeneration : MonoBehaviour
 {
     Vector2Int chunkInd;
-    float size = 10f;
-    int step = 25;
-    Perlin[] perlins;
-    int terrainSeed;
+    static float size = 10f;
+    static int step = 25;
+    static Perlin[] perlins;
+    static int terrainSeed;
     int chunkSeed;
     System.Random rand;
     public GameObject[] assetPrefabs;
@@ -23,14 +24,18 @@ public class ChunkGeneration : MonoBehaviour
         public float amplitude;
     }
 
-    public void Init(Vector2Int chunkInd, float size, int step, Perlin[] perlins, int seed)
+    public static void Init(float size, int step, Perlin[] perlins, int seed)
+    {
+        ChunkGeneration.step = step;
+        ChunkGeneration.perlins = perlins;
+        ChunkGeneration.terrainSeed = seed;
+        ChunkGeneration.size = size;
+    }
+
+    public void Create(Vector2Int chunkInd)
     {
         this.chunkInd = chunkInd;
-        this.size = size;
-        this.step = step;
-        this.perlins = perlins;
-        this.terrainSeed = seed;
-        this.chunkSeed = seed + chunkInd.x * 727 - chunkInd.y * 757;  // arbitrary
+        this.chunkSeed = terrainSeed + chunkInd.x * 727 - chunkInd.y * 757;  // arbitrary
         this.rand = new System.Random(chunkSeed);
         GenerateChunk();
     }
@@ -58,7 +63,7 @@ public class ChunkGeneration : MonoBehaviour
                 float z = size * j / gridSqr - size / 2f;
                 float globalX = x + transform.position.x;
                 float globalZ = z + transform.position.z;
-                float y = GetGroudLevel(globalX, globalZ, perlins, terrainSeed);
+                float y = GetGroudLevel(globalX, globalZ);
                 vertices[i * gridPt + j] = new Vector3(x, y, z);
             }
         }
@@ -105,22 +110,34 @@ public class ChunkGeneration : MonoBehaviour
         return mesh;
     }
 
-    public static float GetGroudLevel(float x, float z, Perlin[] perlins, int seed, int levels = 1)
+    public static float GetGroudLevel(float x, float z, int levels = 1)
     {
         float y = 0;
         for (int i = 0; i < perlins.Length; i++)
         {
-            y += perlins[i].amplitude * Mathf.PerlinNoise(x * perlins[i].frequency + 1000f + seed, z * perlins[i].frequency + 1000f + seed);
+            y += perlins[i].amplitude * Mathf.PerlinNoise(x * perlins[i].frequency + 1000f + terrainSeed, z * perlins[i].frequency + 1000f + terrainSeed);
             if (i >= levels - 1) { break; }
         }
         return y;
     }
 
-    public bool CheckSpawnVicinity(Vector2 pos, float squareRadius)
+    public static Quaternion GetTangentRotation(float x, float z, float yaw = 0f, int levels = 1, float delta = 0.5f)
+    {
+        Vector3 xDelta = Matrix4x4.Rotate(Quaternion.Euler(0f, yaw, 0f)) * Vector3.right * delta;
+        Vector3 zDelta = Matrix4x4.Rotate(Quaternion.Euler(0f, yaw, 0f)) * Vector3.forward * delta;
+        return Quaternion.Euler(
+            Mathf.Atan((GetGroudLevel(x + zDelta.x, z + zDelta.z, levels) - GetGroudLevel(x - zDelta.x, z - zDelta.z, levels)) / (-2f * delta)) * Mathf.Rad2Deg,
+            yaw,
+            Mathf.Atan((GetGroudLevel(x + xDelta.x, z + xDelta.z, levels) - GetGroudLevel(x - xDelta.x, z - xDelta.z, levels)) / (2f * delta)) * Mathf.Rad2Deg
+        );
+    }
+
+    public bool CheckSpawnVicinity(Vector2 pos, float offset)
     {
         foreach (GameObject g in assets)
         {
-            if ((Utils.ToVector2(g.transform.position) - pos).sqrMagnitude < squareRadius) {
+            float radius = g.GetComponent<ProceduralAsset>().MaxDim() + offset;
+            if ((Utils.ToVector2(g.transform.position) - pos).sqrMagnitude < offset) {
                 return true;
             }
         }
@@ -129,35 +146,46 @@ public class ChunkGeneration : MonoBehaviour
 
     void PlaceTrees()
     {
-        FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(this.size, this.size, this.size / 2f, seed: rand.Next(10000));
-        float offset = this.size / 2f;
+        FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(size, size, size / 2f, seed: rand.Next(10000));
+        float offset = size / 2f;
         List<Vector2> points = fpds.fill();
         foreach (Vector2 point in points)
         {
             float globalX = point.x + transform.position.x - offset;
             float globalZ = point.y + transform.position.z - offset;
-            if (itemSpawning.CheckSpawnVicinity(new Vector2(globalX, globalZ), 2f)) { continue; }
-            GameObject tree = Instantiate(assetPrefabs[0], new Vector3(globalX, GetGroudLevel(globalX, globalZ, perlins, terrainSeed, 1) - 0.1f, globalZ), Quaternion.identity, transform);
-            assets.Add(tree);
+            GameObject tree = Instantiate(assetPrefabs[0], new Vector3(globalX, GetGroudLevel(globalX, globalZ, 1) - 0.1f, globalZ), Quaternion.identity, transform);
             tree.GetComponent<TreeGeneration>().Generate(rand.Next(10000));
+            if (itemSpawning.CheckSpawnVicinity(new Vector2(globalX, globalZ), tree.GetComponent<TreeGeneration>().MaxDim() + ItemSpawning.vicinityRadiusSquared)) {
+                Destroy(tree);
+            } else
+            {
+                assets.Add(tree);
+            }
+
         }
     }
 
     void PlaceRocks()
     {
-        float offset = this.size / 2f;
-        JitterGridSampling fpds = new JitterGridSampling(this.size, this.size, this.size / 4f, this.size / 1.2f, transform.position - new Vector3(offset, 0, offset), seed: rand.Next(10000));
-        //FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(this.size, this.size, this.size / 4f, seed: rand.Next(10000));
+        float offset = size / 2f;
+        JitterGridSampling fpds = new JitterGridSampling(size, size, size / 4f, size / 1.2f, transform.position - new Vector3(offset, 0, offset), seed: rand.Next(10000));
+        //FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(size, size, size / 4f, seed: rand.Next(10000));
 
         List<Vector2> points = fpds.fill();
         foreach (Vector2 point in points)
         {
             float globalX = point.x + transform.position.x - offset;
             float globalZ = point.y + transform.position.z - offset;
-            if (itemSpawning.CheckSpawnVicinity(new Vector2(globalX, globalZ), 2f)) { continue; }
-            GameObject rock = Instantiate(assetPrefabs[1], new Vector3(globalX, GetGroudLevel(globalX, globalZ, perlins, terrainSeed, 1) - 0.1f, globalZ), Quaternion.identity, transform);
-            assets.Add(rock);
+            GameObject rock = Instantiate(assetPrefabs[1], new Vector3(globalX, GetGroudLevel(globalX, globalZ, 1) - 0.1f, globalZ), Quaternion.identity, transform);
             rock.GetComponent<RockGeneration>().Generate(rand.Next(10000));
+            if (itemSpawning.CheckSpawnVicinity(new Vector2(globalX, globalZ), rock.GetComponent<RockGeneration>().MaxDim() + ItemSpawning.vicinityRadiusSquared))
+            {
+                Destroy(rock);
+            } else
+            {
+                assets.Add(rock);
+            }
+
         }
     }
 

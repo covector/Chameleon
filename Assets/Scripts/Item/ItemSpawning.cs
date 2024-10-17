@@ -7,6 +7,7 @@ public class ItemSpawning : ChunkSystem
     public TerrainGeneration tgen;
     public GameObject itemPrefab;
     public const float spacing = 22f;
+    public const float vicinityRadiusSquared = 0f;
     static Vector2Int[] neighbourhood = new Vector2Int[] {
         new Vector2Int(0, -1), new Vector2Int(0, 1),new Vector2Int(1, 0), new Vector2Int(-1, 0)
     };
@@ -41,7 +42,9 @@ public class ItemSpawning : ChunkSystem
 
     protected void CreateItem(Vector2Int chunkInd)
     {
-        GameObject item = Instantiate(itemPrefab, GetSpawnLocation(chunkInd), Quaternion.identity, transform);
+        Vector3 spawnLocation = GetSpawnLocation(chunkInd);
+        Quaternion spawnRotation = ChunkGeneration.GetTangentRotation(spawnLocation.x, spawnLocation.z, yaw: Random.Range(0f, 360f));
+        GameObject item = Instantiate(itemPrefab, spawnLocation, spawnRotation, transform);
         chunks.Add(chunkInd, item);
     }
 
@@ -52,7 +55,7 @@ public class ItemSpawning : ChunkSystem
         for (int i = 0; i < 10; i++)
         {
             candidateLoc = new Vector2(chunkSize * (chunkInd.x + Random.Range(0f, 1f)), chunkSize * (chunkInd.y + Random.Range(0f, 1f)));
-            if (tgen.CheckSpawnVicinity(candidateLoc, 2f)) { continue; }
+            if (tgen.CheckSpawnVicinity(candidateLoc, vicinityRadiusSquared)) { continue; }
             bool retry = false;
             foreach (Vector2Int key in neighbourhood)
             {
@@ -66,7 +69,7 @@ public class ItemSpawning : ChunkSystem
 
         return new Vector3(
             candidateLoc.x,
-            tgen.GetGroudLevel(candidateLoc.x, candidateLoc.y, 1),
+            ChunkGeneration.GetGroudLevel(candidateLoc.x, candidateLoc.y, 1),
             candidateLoc.y
         );
     }

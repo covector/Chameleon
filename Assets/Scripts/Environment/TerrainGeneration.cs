@@ -10,7 +10,12 @@ public class TerrainGeneration : ChunkSystem
     public int seed;
     public ItemSpawning itemSpawning;
 
-    public TerrainGeneration() : base(10f, 3, 5) { }
+    public TerrainGeneration() : base(10f, 3, 5) {}
+    
+    void Start()
+    {
+        ChunkGeneration.Init(chunkSize, step, perlins, seed);
+    }
 
     protected override bool CanLoadChunk(Vector2Int chunkInd, bool playerInChunk)
     {
@@ -28,7 +33,7 @@ public class TerrainGeneration : ChunkSystem
     {
         GameObject chunk = Instantiate(chunkPrefab, new Vector3(chunkSize * chunkInd.x, 0f, chunkSize * chunkInd.y), Quaternion.identity, transform);
         chunk.GetComponent<ChunkGeneration>().itemSpawning = itemSpawning;
-        chunk.GetComponent<ChunkGeneration>().Init(chunkInd, chunkSize, step, perlins, seed);
+        chunk.GetComponent<ChunkGeneration>().Create(chunkInd);
         chunks.Add(chunkInd, chunk);
     }
 
@@ -38,11 +43,6 @@ public class TerrainGeneration : ChunkSystem
         GameObject chunk = chunks[chunkInd];
         Destroy(chunk);
         chunks.Remove(chunkInd);
-    }
-
-    public float GetGroudLevel(float x, float z, int levels = 0)
-    {
-        return ChunkGeneration.GetGroudLevel(x, z, perlins, seed, levels);
     }
 
     public override bool CheckSpawnVicinity(Vector2 pos, float squareRadius)

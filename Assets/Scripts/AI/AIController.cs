@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class AIController : MonoBehaviour
 {
-    public TerrainGeneration tgen;
     public Transform player;
     public bool isHiding { get; private set; }
     public GameObject[] morphPrefabs;
@@ -18,7 +17,7 @@ public class AIController : MonoBehaviour
     void Start()
     {
         speed = baseSpeed;
-        gradient = new GradientController(tgen);
+        gradient = new GradientController();
     }
 
     void Update()

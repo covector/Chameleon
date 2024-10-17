@@ -18,4 +18,5 @@ public abstract class ProceduralAsset : MonoBehaviour
     }
 
     protected abstract void Edit(MeshBuilder meshBuilder);
+    public virtual float MaxDim() { return 0f; }
 }
