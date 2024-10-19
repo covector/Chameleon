@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class ChunkGeneration : MonoBehaviour
@@ -39,13 +37,13 @@ public class ChunkGeneration : MonoBehaviour
         this.chunkSeed = terrainSeed + chunkInd.x * 727 - chunkInd.y * 757;  // arbitrary
         this.rand = new System.Random(chunkSeed);
         name = "Chunk_" + chunkInd.ToString();  // For debug
+        GetComponent<MeshRenderer>().material.SetVector("_Seed", new Vector4(chunkInd.x, chunkInd.y));
         GenerateChunk();
     }
 
     void GenerateChunk()
     {
         GetComponent<MeshFilter>().mesh = CreateGroundMesh(size, step);
-
         PlaceAssets();
     }
 
@@ -56,6 +54,7 @@ public class ChunkGeneration : MonoBehaviour
         int gridSqr = step + 1;
 
         Vector3[] vertices = new Vector3[gridPt * gridPt];
+        Vector3[] normals = new Vector3[gridPt * gridPt];
         for (int i = 0; i < gridPt; i++)
         {
             for (int j = 0; j < gridPt; j++)
@@ -66,9 +65,11 @@ public class ChunkGeneration : MonoBehaviour
                 float globalZ = z + transform.position.z;
                 float y = GetGroudLevel(globalX, globalZ);
                 vertices[i * gridPt + j] = new Vector3(x, y, z);
+                normals[i * gridPt + j] = GetNormal(transform.position.x + x, transform.position.z + z);
             }
         }
         mesh.vertices = vertices;
+        mesh.normals = normals;
 
         int[] triangles = new int[gridSqr * gridSqr * 6];
         for (int i = 0; i < gridSqr; i++)
@@ -85,16 +86,6 @@ public class ChunkGeneration : MonoBehaviour
             }
         }
         mesh.triangles = triangles;
-
-        Vector3[] normals = new Vector3[gridPt * gridPt];
-        for (int i = 0; i < gridPt; i++)
-        {
-            for (int j = 0; j < gridPt; j++)
-            {
-                normals[i * gridPt + j] = Vector3.up;
-            }
-        }
-        mesh.normals = normals;
 
         Vector2[] uv = new Vector2[gridPt * gridPt];
         for (int i = 0; i < gridPt; i++)
@@ -133,6 +124,15 @@ public class ChunkGeneration : MonoBehaviour
         );
     }
 
+    private Vector3 GetNormal(float x, float z, int levels = 1)
+    {
+        return new Vector3(
+            GetGroudLevel(x - 0.5f, z, levels) - GetGroudLevel(x + 0.5f, z, levels),
+            1f,
+            GetGroudLevel(x, z - 0.5f, levels) - GetGroudLevel(x, z + 0.5f, levels)
+        );
+    }
+
     public bool CheckSpawnVicinity(Vector2 pos, float offset)
     {
         foreach (GameObject g in assets)
@@ -149,6 +149,7 @@ public class ChunkGeneration : MonoBehaviour
     void PlaceAssets()
     {
         float offset = size / 2f;
+        int i = 0;
         foreach (GameObject prefab in assetPrefabs) {
             ProceduralAsset proceduralPrefab = prefab.GetComponent<ProceduralAsset>();
             List<Vector2> points = proceduralPrefab.SamplePoints(size, transform.position, rand.Next(10000));
@@ -156,6 +157,7 @@ public class ChunkGeneration : MonoBehaviour
             {
                 float globalX = point.x + transform.position.x - offset;
                 float globalZ = point.y + transform.position.z - offset;
+                if (!proceduralPrefab.FilterPoint(globalX, globalZ, terrainSeed + 696 * i)) { continue; }
                 GameObject asset = Instantiate(prefab, new Vector3(globalX, GetGroudLevel(globalX, globalZ, 1) - 0.1f, globalZ), Quaternion.identity, transform);
                 ProceduralAsset procedural = asset.GetComponent<ProceduralAsset>();
                 asset.name = "Asset_" + assets.Count;  // For debug
@@ -170,6 +172,7 @@ public class ChunkGeneration : MonoBehaviour
                     assets.Add(asset);
                 }
             }
+            i++;
         }
     }
 

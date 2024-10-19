@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 using static MeshBuilder;
 
 public class RockGeneration : PreGenerate<RockGeneration>
@@ -9,12 +8,7 @@ public class RockGeneration : PreGenerate<RockGeneration>
 
     protected override void Edit(MeshBuilder meshBuilder)
     {
-        //TempMesh plane = CreatePlane(Vector3.up, Vector3.left, Vector3.up, 5, 5);
-        //TempMesh plane = TransformMesh(CreateCube(1f, 3), Matrix4x4.Translate(new Vector3(0f, 1f, 0f)));
-         //TempMesh plane = TransformMesh(UNIT_CUBE, Matrix4x4.Scale(new Vector3(2f, 2f, 2f)));
-        //TempMesh plane = TransformMesh(UNIT_CUBESPHERE, RandomTransform(rand));
         TempMesh plane = TransformMesh(VoronoiDisplace(UNIT_CUBESPHERE, 0.1f, 1f), RandomTransform(rand));
-        //TempMesh plane = TransformMesh(PerlinDisplace(UNIT_CUBESPHERE, 1f, 1f), RandomTransform(rand));
 
         meshBuilder.AddMesh(plane, 0);
     }
@@ -23,8 +17,14 @@ public class RockGeneration : PreGenerate<RockGeneration>
     {
         float offset = chunkSize / 2f;
         JitterGridSampling jgs = new JitterGridSampling(chunkSize, chunkSize, chunkSize / 4f, chunkSize / 1.2f, globalPosition - new Vector3(offset, 0, offset), seed);
-        //FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(chunkSize, chunkSize, chunkSize / 4f, seed: rand.Next(10000));
         return jgs.fill();
+    }
+
+    public override bool FilterPoint(float globalX, float globalZ, int maskSeed)
+    {
+        const float size = 1f;
+        const float threshold = 0.4f;
+        return Mathf.PerlinNoise(globalX * size, globalZ * size + maskSeed/1000) > threshold;
     }
 
     Matrix4x4 RandomTransform(System.Random random)

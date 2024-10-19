@@ -72,6 +72,16 @@ public class Utils
         return (float)random.NextDouble() * max;
     }
 
+    public static int RandomRange(System.Random random, Vector2Int range)
+    {
+        return range.x == range.y ? range.x : random.Next(range.x, range.y);
+    }
+
+    public static float RandomRange(System.Random random, Vector2 range)
+    {
+        return range.x == range.y ? range.x : RandomRange(random, range.x, range.y);
+    }
+
     public static Matrix4x4 RandomRotation(System.Random random, Vector3 range)
     {
         return Matrix4x4.Rotate(Quaternion.Euler(
