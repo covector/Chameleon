@@ -29,18 +29,14 @@ public class RockGeneration : PreGenerate<RockGeneration>
 
     Matrix4x4 RandomTransform(System.Random random)
     {
-        float scale = 0.8f * (float)random.NextDouble() + 0.4f;
+        float scale = Utils.RandomRange(random, 0.4f, 1.2f);
         maxDims.Add(scale);
         return Matrix4x4.Scale(new Vector3(
-        scale,
-        scale * (0.6f * (float)random.NextDouble() + 0.4f),
-            scale * (0.6f * (float)random.NextDouble() + 0.4f)
+            scale,
+            scale * Utils.RandomRange(random, 0.4f, 1f),
+            scale * Utils.RandomRange(random, 0.4f, 1f)
         )) *
-        Matrix4x4.Rotate(Quaternion.Euler(
-            0f,
-            360f * (float)random.NextDouble(),
-            0f
-        ));
+        Utils.RandomRotation(random, Vector3.up * 360f);
     }
 
     private TempMesh VoronoiDisplace(TempMesh mesh, float density, float intensity)

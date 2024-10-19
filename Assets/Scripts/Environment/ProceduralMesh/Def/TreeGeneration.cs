@@ -22,15 +22,6 @@ public class TreeGeneration : PreGenerate<TreeGeneration>
         return fpds.fill();
     }
 
-    Matrix4x4 RandomRotation(System.Random random, float range)
-    {
-        return Matrix4x4.Rotate(Quaternion.Euler(
-            2f * range * ((float)random.NextDouble() - 0.5f),
-            2f * range * ((float)random.NextDouble() - 0.5f),
-            2f * range * ((float)random.NextDouble() - 0.5f)
-        ));
-    }
-
     struct State
     {
         public int split;
@@ -54,7 +45,7 @@ public class TreeGeneration : PreGenerate<TreeGeneration>
         bool split = depth < state.totalDepth && random.NextDouble() < splitChance;
         for (int i = 0; i < (split ? 2 : 1); i++)
         {
-            Matrix4x4 newTrans = cumTrans * RandomRotation(random, split ? 30f: 10f);
+            Matrix4x4 newTrans = cumTrans * Utils.RandomRotation(random, split ? 30f: 10f);
             float height = state.split == 0 ? 1f + 5f * (float)random.NextDouble() : 1f;
             float radius = state.radius * depth / state.totalDepth;
             if (depth == state.totalDepth && i == 0) { maxDims.Add(radius); }

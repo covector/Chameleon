@@ -61,4 +61,28 @@ public class Utils
             }
         }
     }
+
+    public static float RandomRange(System.Random random, float min, float max)
+    {
+        return (float)random.NextDouble() * (max - min) + min;
+    }
+
+    public static float RandomRange(System.Random random, float max)
+    {
+        return (float)random.NextDouble() * max;
+    }
+
+    public static Matrix4x4 RandomRotation(System.Random random, Vector3 range)
+    {
+        return Matrix4x4.Rotate(Quaternion.Euler(
+            RandomRange(random , -range.x, range.x),
+            RandomRange(random, -range.y, range.y),
+            RandomRange(random, -range.z, range.z)
+        ));
+    }
+
+    public static Matrix4x4 RandomRotation(System.Random random, float range)
+    {
+        return RandomRotation(random, Vector3.one * range);
+    }
 }

@@ -102,3 +102,5 @@ MonoBehaviour:
   assetPrefabs:
   - {fileID: 2321417366923404954, guid: 4601b46d1827637448b1691b6bc0cc67, type: 3}
   - {fileID: 3621534232945799312, guid: 07d48794ec62e304db4e7827585ace1a, type: 3}
+  - {fileID: 8893307839089731174, guid: ccb0e36a05c01374584c5245a857df84, type: 3}
+  itemSpawning: {fileID: 0}
