@@ -788,6 +788,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 330585545}
+  vShakeMagnitude: 0.15
+  vShakeFrequency: 2.75
 --- !u!23 &1026169320
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1129,7 +1131,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: c1aea7eab66ab4e40bedfa71006f0b4b, type: 2}
-  - {fileID: 2100000, guid: 7b8c71f9016e02346b7a741665432cba, type: 2}
+  - {fileID: -876546973899608171, guid: 6e99748e499e5974dbf6c240a5399b13, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

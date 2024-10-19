@@ -6,6 +6,9 @@ public class PlayerControl : MonoBehaviour
 {
     public Camera cam;
     GradientController gradient;
+    float vShakeCounter = 0;
+    public float vShakeMagnitude = 0.15f;
+    public float vShakeFrequency = 2.75f;
 
     void Start()
     {
@@ -38,11 +41,16 @@ public class PlayerControl : MonoBehaviour
             vertical *= verticalFac;
             horizontal *= verticalFac;
         }
-        float sin = 3f * Mathf.Sin(cam.transform.eulerAngles.y * Mathf.PI / 180f) * Time.deltaTime;
-        float cos = 3f * Mathf.Cos(cam.transform.eulerAngles.y * Mathf.PI / 180f) * Time.deltaTime;
+        float sin = 3f * Mathf.Sin(cam.transform.eulerAngles.y * Mathf.PI / 180f);
+        float cos = 3f * Mathf.Cos(cam.transform.eulerAngles.y * Mathf.PI / 180f);
         float xDel = vertical * sin + horizontal * cos;
         float zDel = vertical * cos - horizontal * sin;
-        transform.position = gradient.GetAdjustedPosition(transform, xDel, zDel, levels:2);
-        cam.transform.position = transform.position + new Vector3(0f, 2f, 0f);
+        transform.position = gradient.GetAdjustedPosition(transform, xDel * Time.deltaTime, zDel * Time.deltaTime, levels:2);
+
+        // Walking Vertical Shake
+        float sqrDist = Mathf.Sqrt(xDel * xDel + zDel * zDel);
+        float offset = sqrDist * vShakeMagnitude * (Mathf.PerlinNoise1D(vShakeCounter += Time.deltaTime * vShakeFrequency) - 0.5f);
+
+        cam.transform.position = transform.position + new Vector3(0f, 2f + offset, 0f);
     }
 }
