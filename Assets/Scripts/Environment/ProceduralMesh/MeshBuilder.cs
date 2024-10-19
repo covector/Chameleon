@@ -42,6 +42,11 @@ public class MeshBuilder
         return m_Indices.Count;
     }
 
+    public int GetLastVertInd()
+    {
+        return m_Vertices.Count - 1;
+    }
+
     public static void AddTriangle(List<int> indices, int ind1, int ind2, int ind3)
     {
         indices.Add(ind1);
@@ -159,6 +164,20 @@ public class MeshBuilder
         }
 
         return new TempMesh(vertices, uv, inds, normals);
+    }
+
+    public void MergeCylinders(int lastVertInd1, int lastVertInd2, int vertexCount)
+    {
+        int step = vertexCount / 2;
+
+        for (int i = 0; i < step; i++)
+        {
+            int ind1 = (lastVertInd1 - 2 * step + 1) + (2 * i + 1);
+            int ind2 = (lastVertInd2 - 2 * step + 1) + (2 * i);
+            Vector3 midPt = (m_Vertices[ind1] + m_Vertices[ind2]) / 2f;
+            m_Vertices[ind1] = midPt;
+            m_Vertices[ind2] = midPt;
+        }
     }
 
     public static TempMesh CreateCube(float length, int step)
