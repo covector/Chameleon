@@ -16,7 +16,7 @@ public abstract class PreGenerate<T> : ProceduralAsset where T : class
             {
                 MeshBuilder meshBuilder = new MeshBuilder(MaterialCount(), Random.Range(0, 10000));
                 Edit(meshBuilder);
-                s_preGenerated.Add(meshBuilder.Build());
+                s_preGenerated.Add(meshBuilder.Build(RecalculateNormals()));
             }
             if (ItemSpawnCheck() && s_maxDims.Count != s_preGenerated.Count)
             {

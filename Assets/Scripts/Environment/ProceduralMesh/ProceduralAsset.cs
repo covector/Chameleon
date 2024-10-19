@@ -16,12 +16,12 @@ public abstract class ProceduralAsset : MonoBehaviour
         this.rand = new System.Random(seed);
         MeshBuilder meshBuilder = new MeshBuilder(MaterialCount(), seed);
         Edit(meshBuilder);
-        GetComponent<MeshFilter>().mesh = meshBuilder.Build();
+        GetComponent<MeshFilter>().mesh = meshBuilder.Build(RecalculateNormals());
     }
 
     protected abstract void Edit(MeshBuilder meshBuilder);
     public float MaxDim() { return maxDim; }
-
+    public virtual bool RecalculateNormals() { return false; }
     public abstract List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed);
     public virtual bool FilterPoint(float globalX, float globalZ, int maskSeed) { return true; }
     public virtual bool ItemSpawnCheck() { return false; }

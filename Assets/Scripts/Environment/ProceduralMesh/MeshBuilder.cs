@@ -262,7 +262,7 @@ public class MeshBuilder
         return newMesh;
     }
 
-    public Mesh Build()
+    public Mesh Build(bool recalculateNormals)
     {
         Mesh mesh = new Mesh();
 
@@ -276,7 +276,8 @@ public class MeshBuilder
         mesh.normals = m_Normals.ToArray();
 
         mesh.RecalculateBounds();
-
+        if (recalculateNormals) { mesh.RecalculateNormals(); }
+        mesh.RecalculateTangents();
         return mesh;
     }
 }

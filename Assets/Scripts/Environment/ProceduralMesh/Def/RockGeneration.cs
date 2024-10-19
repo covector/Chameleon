@@ -6,10 +6,11 @@ public class RockGeneration : PreGenerate<RockGeneration>
 {
     public override bool ItemSpawnCheck() { return true; }
 
+    public override bool RecalculateNormals() { return true; }
+
     protected override void Edit(MeshBuilder meshBuilder)
     {
         TempMesh plane = TransformMesh(VoronoiDisplace(UNIT_CUBESPHERE, 0.1f, 1f), RandomTransform(rand));
-
         meshBuilder.AddMesh(plane, 0);
     }
 
