@@ -788,6 +788,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 330585545}
+  tgen: {fileID: 1192531229}
   vShakeMagnitude: 0.15
   vShakeFrequency: 2.75
 --- !u!23 &1026169320

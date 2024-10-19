@@ -8,6 +8,20 @@ public class Utils
         return new Vector2(vector.x, vector.z);
     }
 
+    public static Vector3 ProjectToGround(Vector2 loc, int levels = 1)
+    {
+        return ProjectToGround(loc.x, loc.y, levels);
+    }
+
+    public static Vector3 ProjectToGround(float x, float z, int levels = 1)
+    {
+        return new Vector3(
+            x,
+            ChunkGeneration.GetGroudLevel(x, z, levels),
+            z
+        );
+    }
+
     public static Vector2Int GetChunkIndFromCoord(float x, float z, float chunkSize)
     {
         return new Vector2Int(Mathf.FloorToInt(x / chunkSize), Mathf.FloorToInt(z / chunkSize));

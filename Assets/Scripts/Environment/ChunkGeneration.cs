@@ -146,6 +146,24 @@ public class ChunkGeneration : MonoBehaviour
         return false;
     }
 
+    public Vector2 CheckCollision(Vector2 newPos, float offset)
+    {
+        foreach (GameObject g in assets)
+        {
+            if (!g.GetComponent<ProceduralAsset>().CollisionCheck()) { continue; }
+            float maxDim = g.GetComponent<ProceduralAsset>().MaxDim();
+            if (maxDim < 0.1f) { continue; }
+            float radius = maxDim + offset;
+            Vector2 diff = newPos - Utils.ToVector2(g.transform.position);
+            float sqrMag = diff.sqrMagnitude;
+            if (sqrMag < radius * radius)
+            {
+                newPos = Utils.ToVector2(g.transform.position) + radius * diff / Mathf.Sqrt(sqrMag);
+            }
+        }
+        return newPos;
+    }
+
     void PlaceAssets()
     {
         float offset = size / 2f;

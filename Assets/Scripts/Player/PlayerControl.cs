@@ -6,6 +6,7 @@ public class PlayerControl : MonoBehaviour
 {
     public Camera cam;
     GradientController gradient;
+    public TerrainGeneration tgen;
     float vShakeCounter = 0;
     public float vShakeMagnitude = 0.15f;
     public float vShakeFrequency = 2.75f;
@@ -46,6 +47,10 @@ public class PlayerControl : MonoBehaviour
         float xDel = vertical * sin + horizontal * cos;
         float zDel = vertical * cos - horizontal * sin;
         transform.position = gradient.GetAdjustedPosition(transform, xDel * Time.deltaTime, zDel * Time.deltaTime, levels:2);
+
+        // Collision Check
+        Vector2 collisionCorrected = tgen.CheckCollision(Utils.ToVector2(transform.position), 0.7f);
+        transform.position = Utils.ProjectToGround(collisionCorrected, 2);
 
         // Walking Vertical Shake
         float sqrDist = Mathf.Sqrt(xDel * xDel + zDel * zDel);

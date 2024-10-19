@@ -15,4 +15,5 @@ public class TreeGeneration : GenericTreeGeneration<TreeGeneration>
     public override int PreGenCount() { return 50; }
 
     public override bool ItemSpawnCheck() { return true; }
+    public override bool CollisionCheck() { return true; }
 }

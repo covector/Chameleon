@@ -8,10 +8,6 @@ public class GradientController
         float y = ChunkGeneration.GetGroudLevel(transform.position.x + xDel, transform.position.z + zDel, levels);
         float gradient = Mathf.Max((y - lastY) / Time.deltaTime + 3f, 2.5f) / 3f;
         lastY = y;
-        return new Vector3(
-            transform.position.x + xDel / gradient,
-            ChunkGeneration.GetGroudLevel(transform.position.x + xDel / gradient, transform.position.z + zDel / gradient, levels) + yOffset,
-            transform.position.z + zDel / gradient
-        );
+        return Utils.ProjectToGround(transform.position.x + xDel / gradient, transform.position.z + zDel / gradient, levels) + Vector3.up * yOffset;
     }
 }
