@@ -105,6 +105,15 @@ public class Utils
         ));
     }
 
+    public static Matrix4x4 RandomRotation(System.Random random, Vector3 range, Vector3 offset)
+    {
+        return Matrix4x4.Rotate(Quaternion.Euler(
+            offset.x + RandomRange(random, -range.x, range.x),
+            offset.y + RandomRange(random, -range.y, range.y),
+            offset.z + RandomRange(random, -range.z, range.z)
+        ));
+    }
+
     public static Matrix4x4 RandomRotation(System.Random random, float range)
     {
         return RandomRotation(random, Vector3.one * range);

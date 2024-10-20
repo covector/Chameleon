@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.UI.GridLayoutGroup;
 
 public class MeshBuilder
 {
@@ -34,7 +33,6 @@ public class MeshBuilder
             m_Indices.Add(new List<int>());
         }
         Random = new System.Random(seed);
-        TryInit();
     }
 
     public int SubmeshCount()
@@ -219,20 +217,6 @@ public class MeshBuilder
             cube.normals[i] = cube.vertices[i];
         }
         return cube;
-    }
-
-    public static TempMesh UNIT_CYLINDER;
-    public static TempMesh UNIT_CUBE;
-    public static TempMesh UNIT_CUBESPHERE;
-    public static bool primitivesInit = false;
-    private static void TryInit()
-    {
-        if (!primitivesInit)
-        {
-            UNIT_CYLINDER = CreateCylinder(1f, 1f, 8);
-            UNIT_CUBE = CreateCube(1f, 4);
-            UNIT_CUBESPHERE = CreateCubeSphere(1f, 8);
-        }
     }
 
     public void AddMesh(TempMesh mesh, int materialInd = 0)

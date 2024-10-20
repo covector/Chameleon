@@ -8,9 +8,21 @@ public class RockGeneration : PreGenerate<RockGeneration>
 
     public override bool RecalculateNormals() { return true; }
 
+    public static TempMesh UNIT_CUBESPHERE;
+    private static bool primitivesInit = false;
+    private static void TryInit()
+    {
+        if (!primitivesInit)
+        {
+            UNIT_CUBESPHERE = CreateCubeSphere(1f, 10);
+            primitivesInit = true;
+        }
+    }
+
     protected override void Edit(MeshBuilder meshBuilder)
     {
-        TempMesh plane = TransformMesh(VoronoiDisplace(UNIT_CUBESPHERE, 0.1f, 1f), RandomTransform(rand));
+        TryInit();
+        TempMesh plane = TransformMesh(VoronoiDisplace(UNIT_CUBESPHERE, 0.1f, 1.5f), RandomTransform(rand));
         meshBuilder.AddMesh(plane, 0);
     }
 

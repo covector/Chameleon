@@ -17,6 +17,10 @@ public abstract class ProceduralAsset : MonoBehaviour
         MeshBuilder meshBuilder = new MeshBuilder(MaterialCount(), seed);
         Edit(meshBuilder);
         GetComponent<MeshFilter>().mesh = meshBuilder.Build(RecalculateNormals());
+        foreach (Material mat in GetComponent<MeshRenderer>().materials)
+        {
+            mat.SetFloat("_Seed", seed);
+        }
     }
 
     protected abstract void Edit(MeshBuilder meshBuilder);

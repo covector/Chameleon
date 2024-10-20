@@ -33,7 +33,11 @@ public abstract class PreGenerate<T> : ProceduralAsset where T : class
         int index = this.rand.Next(preGenerated.Count);
         GetComponent<MeshFilter>().mesh = preGenerated[index];
         maxDim = maxDims[index];
+        foreach (Material mat in GetComponent<MeshRenderer>().materials)
+        {
+            mat.SetFloat("_Seed", seed);
+        }
     }
 
-    public virtual int PreGenCount() { return 10; }
+    public virtual int PreGenCount() { return 20; }
 }

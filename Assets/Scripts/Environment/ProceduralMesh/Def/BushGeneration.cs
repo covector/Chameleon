@@ -4,16 +4,18 @@ using UnityEngine;
 public class BushGeneration : GenericTreeGeneration<BushGeneration>
 {
     public BushGeneration() : base(
-        new Vector2Int(8, 12),
-        new Vector2(0.03f, 0.03f),
-        0.1f, 0.4f,
-        30f, 10f,
-        new Vector2(0.15f, 0.25f), new Vector2(0.15f, 0.25f),
-        5, new Vector2(0.1f, 0.2f), new Vector3(30f, 180f, 30f)
+        depth: new Vector2Int(8, 12),
+        radius: new Vector2(0.03f, 0.03f),
+        cylinderStep: 4,
+        trunkSplitChance: 0.1f, splitChance: 0.4f,
+        splitRotate: 30f, nonSplitRotate: 10f,
+        trunkHeight: new Vector2(0.15f, 0.25f), branchLength: new Vector2(0.15f, 0.25f),
+        leavesCount: 5, nonEndLeafChance: 0.1f,
+        crossRenderLeaves: false,
+        leavesDim: new Vector2(1f, 2f), leavesScale: new Vector2(0.08f, 0.12f),
+        leavesRotationRange: new Vector3(30f, 180f, 30f), leavesRotationOffset: Vector3.zero
     )
     { }
-
-    public override int PreGenCount() { return 20; }
 
     public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
     {
