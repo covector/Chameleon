@@ -7,6 +7,7 @@ public class AIStrategy : MonoBehaviour
     private AIController controller;
     private bool approaching = false;
     private float lastDist = float.PositiveInfinity;
+    const float minHideDist = 15f;
     void Start()
     {
         cam = Camera.main.transform;
@@ -30,12 +31,19 @@ public class AIStrategy : MonoBehaviour
 
     void StartApproaching()
     {
-        float randomAngle = Random.Range(0f, 2 * Mathf.PI);
-        transform.position = new Vector3(cam.position.x + 30f * Mathf.Cos(randomAngle), 0f, cam.position.z + 30f * Mathf.Sin(randomAngle));
+        transform.position = GetSpawnLocation();
         controller.TryInitMorph();
         controller.ApproachPlayer();
         approaching = true;
         lastDist = float.PositiveInfinity;
+    }
+
+    Vector3 GetSpawnLocation()
+    {
+        float theta = Random.Range(0f, 1f) < 0.4f ?
+            Random.Range(0f, 2 * Mathf.PI) :  // random 
+            cam.transform.eulerAngles.y * Mathf.Deg2Rad + Mathf.PI;  // back
+        return new Vector3(cam.position.x + 30f * Mathf.Sin(theta), 0f, cam.position.z + 30f * Mathf.Cos(theta));
     }
 
     void OnApproaching()
@@ -53,7 +61,7 @@ public class AIStrategy : MonoBehaviour
         }
         float dot = Vector2.Dot(Utils.ToVector2(cam.forward), diff);
         bool facing = dot > 0f;
-        if (facing)
+        if (facing && dist < minHideDist)
         {
             controller.Hide();
         } else

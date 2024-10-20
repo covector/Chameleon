@@ -531,7 +531,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!23 &747644060
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1108,6 +1108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   display: {fileID: 1879168157}
   isEnabled: 0
+  volume: {fileID: 832575518}
 --- !u!23 &1565428697819436574
 MeshRenderer:
   m_ObjectHideFlags: 0

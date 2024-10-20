@@ -14,20 +14,20 @@ public class PlayerControl : MonoBehaviour
     void Start()
     {
         gradient = new GradientController();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
     {
         // Rotation Control
-        float sensitivity = 1000.0f;
+        float sensitivity = 10.0f;
         float rotateHorizontal = Input.GetAxis("Mouse X");
         float rotateVertical = Input.GetAxis("Mouse Y");
-        float dt = Mathf.Min(1f / 60f, Time.deltaTime);
         cam.transform.eulerAngles = new Vector3(
-            Mathf.Clamp(cam.transform.eulerAngles.x - rotateVertical * sensitivity * dt,
+            Mathf.Clamp(cam.transform.eulerAngles.x - rotateVertical * sensitivity,
                     cam.transform.eulerAngles.x < 180f ? -90f : 270f,
                     cam.transform.eulerAngles.x < 180f ? 90f : 400f),
-            cam.transform.eulerAngles.y + rotateHorizontal * sensitivity * dt,
+            cam.transform.eulerAngles.y + rotateHorizontal * sensitivity,
             0
         );
 
