@@ -6,18 +6,21 @@ public class AIController : MonoBehaviour
     public bool isHiding { get; private set; }
     public GameObject[] morphPrefabs;
     private GameObject currentMorph = null;
+    public GameObject monster;
     public Vector2 goal { get; set; }
     public bool relativeGoal { get; set; }
     public bool isMoving { get; set; }
     public float baseSpeed = 4f;
-    private float runningSpeed = 6f;
+    private float runningSpeed = 7f;
     public float speed { get; set; }
     GradientController gradient;
+    public bool lost { get; private set; }
 
     void Start()
     {
         speed = baseSpeed;
         gradient = new GradientController();
+        lost = false;
     }
 
     void Update()
@@ -30,13 +33,18 @@ public class AIController : MonoBehaviour
                     Utils.ToVector2(transform.position)
                 ).normalized * speed * Time.deltaTime;
             transform.position = gradient.GetAdjustedPosition(transform, velocity.x, velocity.y, yOffset: 1f);
-
-            LoseCheck();
+        }
+        LoseCheck();
+        if (lost)
+        {
+            Vector2 diff = Utils.ToVector2(transform.position - player.position);
+            monster.transform.eulerAngles = new Vector3(0, Mathf.Atan2(diff.x, diff.y) * Mathf.Rad2Deg + 180f, 0);
         }
     }
 
     public void ChangeMorph()
     {
+        monster.SetActive(false);
         if (currentMorph != null)
         {
             Destroy(currentMorph);
@@ -61,7 +69,6 @@ public class AIController : MonoBehaviour
         if (isHiding) { return; }
         isHiding = true;
         TryInitMorph();
-        GetComponent<MeshRenderer>().enabled = false;
         currentMorph.GetComponent<MeshRenderer>().enabled = true;
     }
 
@@ -70,7 +77,6 @@ public class AIController : MonoBehaviour
         if (!isHiding) { return; }
         isHiding = false;
         TryInitMorph();
-        GetComponent<MeshRenderer>().enabled = true;
         currentMorph.GetComponent<MeshRenderer>().enabled = false;
     }
 
@@ -84,12 +90,23 @@ public class AIController : MonoBehaviour
 
     public void RunAway()
     {
-        isMoving = true;
+        isMoving = false;
         relativeGoal = false;
         speed = runningSpeed;
         Unhide();
         Debug.Log("RUNNING AWAY");
-        goal = Utils.ToVector2(player.position) + Utils.ToVector2(transform.position - player.position).normalized * 100f;
+        Vector2 diff = Utils.ToVector2(transform.position - player.position).normalized;
+        goal = Utils.ToVector2(player.position) + diff * 100f;
+        monster.SetActive(true);
+        monster.transform.eulerAngles = new Vector3(0, Mathf.Atan2(diff.x, diff.y) * Mathf.Rad2Deg + 180f, 0);
+        monster.GetComponent<Animator>().ResetTrigger("Run");
+        monster.GetComponent<Animator>().SetTrigger("Run");
+        lost = false; // temp
+    }
+
+    public void StartRunning()
+    {
+        isMoving = true;
     }
 
     public void LoseCheck()
@@ -97,6 +114,12 @@ public class AIController : MonoBehaviour
         Vector2 diff = Utils.ToVector2(transform.position - player.position);
         if (diff.sqrMagnitude < 1f)
         {
+            isMoving = false;
+            lost = true;
+            currentMorph.GetComponent<MeshRenderer>().enabled = false;
+            monster.SetActive(true);
+            monster.GetComponent<Animator>().ResetTrigger("TPose");
+            monster.GetComponent<Animator>().SetTrigger("TPose");
             Debug.Log("YOU FUCKING LOST LOL");
         }
     }

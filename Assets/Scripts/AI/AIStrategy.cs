@@ -32,7 +32,7 @@ public class AIStrategy : MonoBehaviour
     void StartApproaching()
     {
         transform.position = GetSpawnLocation();
-        controller.TryInitMorph();
+        controller.ChangeMorph();
         controller.ApproachPlayer();
         approaching = true;
         lastDist = float.PositiveInfinity;
@@ -50,7 +50,7 @@ public class AIStrategy : MonoBehaviour
     {
         Vector2 diff = Utils.ToVector2(transform.position - cam.position);
         float dist = diff.magnitude;
-        if (dist > lastDist + 8f)
+        if (dist > lastDist + 5f)
         {
             EndApproaching();
             return;

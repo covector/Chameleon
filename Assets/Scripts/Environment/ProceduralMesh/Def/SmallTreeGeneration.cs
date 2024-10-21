@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SmallTreeGeneration : GenericTreeGeneration<SmallTreeGeneration>
@@ -14,6 +15,12 @@ public class SmallTreeGeneration : GenericTreeGeneration<SmallTreeGeneration>
         leavesDim: new Vector2(1f, 3f), leavesScale: new Vector2(0.25f, 0.35f),
         leavesRotationRange: new Vector3(45f, 180f, 180f), leavesRotationOffset: new Vector3(-90f, 0f, 0f)
     ) { }
+
+    public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
+    {
+        FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(chunkSize, chunkSize, chunkSize / 1.5f, seed: seed);
+        return fpds.fill();
+    }
 
     public override int PreGenCount() { return 30; }
 }

@@ -20,7 +20,7 @@ public class PlayerControl : MonoBehaviour
     void Update()
     {
         // Rotation Control
-        float sensitivity = 10.0f;
+        float sensitivity = 4.0f;
         float rotateHorizontal = Input.GetAxis("Mouse X");
         float rotateVertical = Input.GetAxis("Mouse Y");
         cam.transform.eulerAngles = new Vector3(
