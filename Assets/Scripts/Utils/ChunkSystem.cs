@@ -45,6 +45,7 @@ public abstract class ChunkSystem : MonoBehaviour
         {
             PruneChunks(playerLoc);
         }
+        loadOrPrune = !loadOrPrune;
     }
 
     void LoadChunks(Vector2Int playerLoc)
@@ -83,7 +84,7 @@ public abstract class ChunkSystem : MonoBehaviour
         {
             foreach (KeyValuePair<Vector2Int, GameObject> entry in chunks)
             {
-                if ((entry.Key - playerLoc).sqrMagnitude > sqrUnloadRadius)
+                if ((entry.Key - playerLoc).sqrMagnitude > sqrUnloadRadius + 1f)
                 {
                     unloadKeys.Enqueue(entry.Key);
                 }
