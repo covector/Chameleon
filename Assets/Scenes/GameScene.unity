@@ -523,6 +523,7 @@ GameObject:
   - component: {fileID: 747644062}
   - component: {fileID: 747644064}
   - component: {fileID: 747644063}
+  - component: {fileID: 747644065}
   m_Layer: 0
   m_Name: Chameleon
   m_TagString: Untagged
@@ -543,7 +544,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2036104881}
+  - {fileID: 543450651705809221}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &747644063
@@ -573,8 +574,24 @@ MonoBehaviour:
   player: {fileID: 1026169322}
   morphPrefabs:
   - {fileID: 3621534232945799312, guid: 07d48794ec62e304db4e7827585ace1a, type: 3}
-  monster: {fileID: 2036104879}
+  monster: {fileID: 919132147968721919}
   baseSpeed: 3
+--- !u!114 &747644065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747644059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4012419e3586b6409dd31202d95ea77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 5025510440166449668}
+  materialIndex: 0
+  duration: 1
+  reversed: 0
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -978,7 +995,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5f3f8b6b06090b1479ae9636122c0aad, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -988,16 +1005,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2036104882}
   m_SourcePrefab: {fileID: 100100000, guid: 5f3f8b6b06090b1479ae9636122c0aad, type: 3}
---- !u!1 &2036104879 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5f3f8b6b06090b1479ae9636122c0aad, type: 3}
-  m_PrefabInstance: {fileID: 2036104878}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2036104881 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5f3f8b6b06090b1479ae9636122c0aad, type: 3}
-  m_PrefabInstance: {fileID: 2036104878}
-  m_PrefabAsset: {fileID: 0}
 --- !u!95 &2036104882
 Animator:
   serializedVersion: 7
@@ -1005,7 +1012,7 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2036104879}
+  m_GameObject: {fileID: 919132147968721919}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: f755e08fbcf20ad46aef7da697cb805e, type: 2}
@@ -1070,6 +1077,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 543450651820864368}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &543450651705809221 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5f3f8b6b06090b1479ae9636122c0aad, type: 3}
+  m_PrefabInstance: {fileID: 2036104878}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &543450651820864368
 Transform:
   m_ObjectHideFlags: 0
@@ -1152,6 +1164,11 @@ MonoBehaviour:
   display: {fileID: 1879168157}
   isEnabled: 0
   volume: {fileID: 832575518}
+--- !u!1 &919132147968721919 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5f3f8b6b06090b1479ae9636122c0aad, type: 3}
+  m_PrefabInstance: {fileID: 2036104878}
+  m_PrefabAsset: {fileID: 0}
 --- !u!23 &1565428697819436574
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1387,6 +1404,11 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!137 &5025510440166449668 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -4197861598712357718, guid: 5f3f8b6b06090b1479ae9636122c0aad, type: 3}
+  m_PrefabInstance: {fileID: 2036104878}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5097964684725861535
 GameObject:
   m_ObjectHideFlags: 0

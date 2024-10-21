@@ -98,6 +98,7 @@ public class AIController : MonoBehaviour
         Vector2 diff = Utils.ToVector2(transform.position - player.position).normalized;
         goal = Utils.ToVector2(player.position) + diff * 100f;
         monster.SetActive(true);
+        GetComponent<AnimatedTexture>().Play();
         monster.transform.eulerAngles = new Vector3(0, Mathf.Atan2(diff.x, diff.y) * Mathf.Rad2Deg + 180f, 0);
         monster.GetComponent<Animator>().ResetTrigger("Run");
         monster.GetComponent<Animator>().SetTrigger("Run");
