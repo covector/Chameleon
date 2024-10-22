@@ -10,7 +10,7 @@ public abstract class ChunkSystem : MonoBehaviour
     protected int sqrUnloadRadius { get; }
     public float loadInterval { get; }
     public float unloadInterval { get; }
-    protected Queue<Vector2Int> unloadKeys = new Queue<Vector2Int>();
+    protected Queue<Pair<Vector2Int, float>> unloadKeys = new Queue<Pair<Vector2Int, float>>();
     protected Queue<Pair<Vector2Int, bool>> loadKeys = new Queue<Pair<Vector2Int, bool>>();
     protected float unloadChunkInterval = 0f;
     protected float loadChunkInterval = 0f;
@@ -84,9 +84,10 @@ public abstract class ChunkSystem : MonoBehaviour
         {
             foreach (KeyValuePair<Vector2Int, GameObject> entry in chunks)
             {
-                if ((entry.Key - playerLoc).sqrMagnitude > sqrUnloadRadius + 1f)
+                float sqrDist = (entry.Key - playerLoc).sqrMagnitude;
+                if (sqrDist > sqrUnloadRadius + 1f)
                 {
-                    unloadKeys.Enqueue(entry.Key);
+                    unloadKeys.Enqueue(new Pair<Vector2Int, float>(entry.Key, sqrDist));
                 }
             }
             if (unloadKeys.Count > 0)
@@ -100,8 +101,8 @@ public abstract class ChunkSystem : MonoBehaviour
             elapsedUnloadTime += Time.deltaTime / 2f;
             if (elapsedUnloadTime > unloadChunkInterval)
             {
-                Vector2Int key = unloadKeys.Dequeue();
-                UnloadChunk(key);
+                Pair<Vector2Int, float> pair = unloadKeys.Dequeue();
+                UnloadChunk(pair.left, pair.right);
                 elapsedUnloadTime -= unloadChunkInterval;
             }
         }
@@ -109,7 +110,7 @@ public abstract class ChunkSystem : MonoBehaviour
 
     protected abstract bool CanLoadChunk(Vector2Int chunkInd, bool playerInChunk);
     protected abstract void LoadChunk(Vector2Int chunkInd, bool playerInChunk);
-    protected abstract void UnloadChunk(Vector2Int chunkInd);
+    protected abstract void UnloadChunk(Vector2Int chunkInd, float squareRadius);
 
     // returns true if have things within radius
     public abstract bool CheckSpawnVicinity(Vector2 position, float squareRadius);

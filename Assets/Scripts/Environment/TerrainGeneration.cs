@@ -19,7 +19,7 @@ public class TerrainGeneration : ChunkSystem
 
     protected override bool CanLoadChunk(Vector2Int chunkInd, bool playerInChunk)
     {
-        return !chunks.ContainsKey(chunkInd);
+        return !chunks.ContainsKey(chunkInd) || !chunks[chunkInd].GetComponent<MeshRenderer>().enabled;
     }
 
     protected override void LoadChunk(Vector2Int chunkInd, bool playerInChunk)
@@ -31,18 +31,50 @@ public class TerrainGeneration : ChunkSystem
 
     protected void CreateChunk(Vector2Int chunkInd)
     {
-        GameObject chunk = Instantiate(chunkPrefab, new Vector3(chunkSize * chunkInd.x, 0f, chunkSize * chunkInd.y), Quaternion.identity, transform);
-        chunk.GetComponent<ChunkGeneration>().itemSpawning = itemSpawning;
-        chunk.GetComponent<ChunkGeneration>().Create(chunkInd);
-        chunks.Add(chunkInd, chunk);
+        if (!chunks.ContainsKey(chunkInd))
+        {
+            GameObject chunk = Instantiate(chunkPrefab, new Vector3(chunkSize * chunkInd.x, 0f, chunkSize * chunkInd.y), Quaternion.identity, transform);
+            chunk.GetComponent<ChunkGeneration>().itemSpawning = itemSpawning;
+            chunk.GetComponent<ChunkGeneration>().Create(chunkInd);
+            chunks.Add(chunkInd, chunk);
+        } else
+        {
+            ShowChunk(chunks[chunkInd]);
+        }
+        
     }
 
-    protected override void UnloadChunk(Vector2Int chunkInd)
+    protected override void UnloadChunk(Vector2Int chunkInd, float squareRadius)
     {
         if (!chunks.ContainsKey(chunkInd)) { return; }
         GameObject chunk = chunks[chunkInd];
-        Destroy(chunk);
-        chunks.Remove(chunkInd);
+        if (squareRadius < 64)
+        {
+            if (!chunks[chunkInd].GetComponent<MeshRenderer>().enabled) { return; }
+            HideChunk(chunk);
+        } else
+        {
+            Destroy(chunk);
+            chunks.Remove(chunkInd);
+        }
+    }
+
+    private void HideChunk(GameObject chunk)
+    {
+        chunk.GetComponent<MeshRenderer>().enabled = false;
+        foreach (Transform child in chunk.transform)
+        {
+            child.GetComponent<MeshRenderer>().enabled = false;
+        }
+    }
+
+    private void ShowChunk(GameObject chunk)
+    {
+        chunk.GetComponent<MeshRenderer>().enabled = true;
+        foreach (Transform child in chunk.transform)
+        {
+            child.GetComponent<MeshRenderer>().enabled = true;
+        }
     }
 
     public override bool CheckSpawnVicinity(Vector2 pos, float offset)

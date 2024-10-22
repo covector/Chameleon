@@ -72,7 +72,7 @@ public class ItemSpawning : ChunkSystem
         );
     }
 
-    protected override void UnloadChunk(Vector2Int chunkInd)
+    protected override void UnloadChunk(Vector2Int chunkInd, float squareRadius)
     {
         if (!chunks.ContainsKey(chunkInd)) { return; }
         GameObject chunk = chunks[chunkInd];
