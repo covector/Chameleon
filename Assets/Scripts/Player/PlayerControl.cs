@@ -1,18 +1,21 @@
 using System;
 using UnityEngine;
 
-//[RequireComponent(typeof(Rigidbody))]
 public class PlayerControl : MonoBehaviour
 {
     public Camera cam;
     GradientController gradient;
     public TerrainGeneration tgen;
     float vShakeCounter = 0;
-    public float vShakeMagnitude = 0.15f;
-    public float vShakeFrequency = 2.75f;
+    public float vShakeMagnitude = 0.04f;
+    public float vShakeFrequency = 8.6f;
+    RandomAudio randomAudio;
+    private bool canPlay = false;
+    const float threshold = 0.5f * Mathf.PI;
 
     void Start()
     {
+        randomAudio = GetComponent<RandomAudio>();
         gradient = new GradientController();
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -54,7 +57,15 @@ public class PlayerControl : MonoBehaviour
 
         // Walking Vertical Shake
         float sqrDist = Mathf.Sqrt(xDel * xDel + zDel * zDel);
-        float offset = sqrDist * vShakeMagnitude * (Mathf.PerlinNoise1D(vShakeCounter += Time.deltaTime * vShakeFrequency) - 0.5f);
+        vShakeCounter = Mathf.Repeat(vShakeCounter + Time.deltaTime * vShakeFrequency, 2f * Mathf.PI);
+        float offset = sqrDist * vShakeMagnitude * (Mathf.Sin(vShakeCounter) - 0.5f);
+
+        if (vShakeCounter < threshold) { canPlay = true; }
+        if (canPlay && vShakeCounter >= threshold && sqrDist > 0.1f)
+        {
+            randomAudio.PlayRandomSound(sqrDist / 3f);
+            canPlay = false;
+        }
 
         cam.transform.position = transform.position + new Vector3(0f, 2f + offset, 0f);
     }

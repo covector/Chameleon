@@ -5,13 +5,14 @@ public class AIStrategy : MonoBehaviour
 {
     private Transform cam;
     private AIController controller;
-    private bool approaching = false;
+    public bool approaching { get; private set; }
     private float lastDist = float.PositiveInfinity;
     const float minHideDist = 15f;
     void Start()
     {
         cam = Camera.main.transform;
         controller = GetComponent<AIController>();
+        approaching = false;
         StartCoroutine(ScheduleApproach(5));
     }
 
@@ -40,9 +41,10 @@ public class AIStrategy : MonoBehaviour
 
     Vector3 GetSpawnLocation()
     {
-        float theta = Random.Range(0f, 1f) < 0.4f ?
-            Random.Range(0f, 2 * Mathf.PI) :  // random 
-            cam.transform.eulerAngles.y * Mathf.Deg2Rad + Mathf.PI;  // back
+        //float theta = Random.Range(0f, 1f) < 0.4f ?
+        //    Random.Range(0f, 2 * Mathf.PI) :  // random 
+        //    cam.transform.eulerAngles.y * Mathf.Deg2Rad + Mathf.PI;  // back
+        float theta = Random.Range(0f, 2f * Mathf.PI);
         return new Vector3(cam.position.x + 30f * Mathf.Sin(theta), 0f, cam.position.z + 30f * Mathf.Cos(theta));
     }
 
@@ -74,6 +76,7 @@ public class AIStrategy : MonoBehaviour
     {
         approaching = false;
         controller.RunAway();
+        GetComponent<RandomAudio>().PlayRandomSound();
         StartCoroutine(ScheduleApproach(15));
     }
 }
