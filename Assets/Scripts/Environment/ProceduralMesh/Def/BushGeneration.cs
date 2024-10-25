@@ -3,6 +3,12 @@ using UnityEngine;
 
 public class BushGeneration : GenericTreeGeneration<BushGeneration>
 {
+    RandomAudio randomAudio;
+    private void Start()
+    {
+        randomAudio = GetComponent<RandomAudio>();
+    }
+
     public BushGeneration() : base(
         depth: new Vector2Int(8, 12),
         radius: new Vector2(0.03f, 0.03f),
@@ -29,5 +35,16 @@ public class BushGeneration : GenericTreeGeneration<BushGeneration>
         const float size = 0.5f;
         const float threshold = 0.4f;
         return Mathf.PerlinNoise(globalX * size, globalZ * size + maskSeed / 1000) > threshold;
+    }
+
+    public override float MaxDim() { return 1.0f; }
+
+    public override bool IntersectionCheck() { return true; }
+    public override void OnIntersect(float sqrSpeed)
+    {
+        if (!randomAudio.IsPlaying())
+        {
+            randomAudio.PlayRandomSound(sqrSpeed / 3f);
+        }
     }
 }

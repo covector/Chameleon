@@ -88,7 +88,7 @@ public class TerrainGeneration : ChunkSystem
         return false;
     }
 
-    public Vector2 CheckCollision(Vector2 pos, float offset)
+    public Vector2 CheckCollision(Vector2 pos, float offset = 0f)
     {
         Vector2 newPos = pos;
         foreach (Vector2Int neighbour in neighbourhood)
@@ -98,5 +98,15 @@ public class TerrainGeneration : ChunkSystem
             newPos = chunks[chunkInd].GetComponent<ChunkGeneration>().CheckCollision(newPos, offset);
         }
         return newPos;
+    }
+
+    public void CheckIntersection(Vector2 pos, float sqrSpeed, float offset = 0f)
+    {
+        foreach (Vector2Int neighbour in neighbourhood)
+        {
+            Vector2Int chunkInd = Utils.GetChunkIndFromCoord(pos, chunkSize) + neighbour;
+            if (!chunks.ContainsKey(chunkInd)) { continue; }
+            chunks[chunkInd].GetComponent<ChunkGeneration>().CheckIntersection(pos, sqrSpeed, offset);
+        }
     }
 }

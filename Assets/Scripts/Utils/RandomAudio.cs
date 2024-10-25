@@ -4,22 +4,16 @@ using UnityEngine;
 public class RandomAudio : MonoBehaviour
 {
     public AudioClip[] audioClips;
-    AudioSource audioSource;
+    public AudioSource audioSource;
 
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
     }
 
     public void PlayRandomSound(float volume = 1f)
     {
         audioSource.PlayOneShot(GetRandomClip(), volume);
-    }
-
-    public void PlayRandomSoundAt(Vector2 position, float volume = 1f)
-    {
-        float y = ChunkGeneration.GetGroudLevel(position.x, position.y) + 1f;
-        AudioSource.PlayClipAtPoint(GetRandomClip(), new Vector3(position.x, y, position.y), volume);
     }
 
     public AudioClip GetRandomClip()

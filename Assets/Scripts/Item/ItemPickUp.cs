@@ -7,10 +7,12 @@ public class ItemPickUp : MonoBehaviour
     const float pickUpAngle = 0.98f;
     public GameObject scanner;
     public bool pickedUp = false;
+    RandomAudio randomAudio;
 
     void Start()
     {
         cam = Camera.main.transform;
+        randomAudio = GetComponent<RandomAudio>();
     }
 
     void Update()
@@ -21,6 +23,7 @@ public class ItemPickUp : MonoBehaviour
             {
                 scanner.SetActive(false);
                 pickedUp = true;
+                randomAudio.PlayRandomSound();
             }
         }
     }

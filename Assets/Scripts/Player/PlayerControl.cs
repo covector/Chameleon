@@ -12,6 +12,7 @@ public class PlayerControl : MonoBehaviour
     RandomAudio randomAudio;
     private bool canPlay = false;
     const float threshold = 0.5f * Mathf.PI;
+    public 
 
     void Start()
     {
@@ -65,6 +66,11 @@ public class PlayerControl : MonoBehaviour
         {
             randomAudio.PlayRandomSound(sqrDist / 3f);
             canPlay = false;
+        }
+
+        // Intersection Check
+        if (sqrDist > 0.05f) {
+            tgen.CheckIntersection(Utils.ToVector2(transform.position), sqrDist);
         }
 
         cam.transform.position = transform.position + new Vector3(0f, 2f + offset, 0f);

@@ -164,6 +164,22 @@ public class ChunkGeneration : MonoBehaviour
         return newPos;
     }
 
+    public void CheckIntersection(Vector2 pos, float sqrSpeed, float offset)
+    {
+        foreach (GameObject g in assets)
+        {
+            if (!g.GetComponent<ProceduralAsset>().IntersectionCheck()) { continue; }
+            float maxDim = g.GetComponent<ProceduralAsset>().MaxDim();
+            float radius = maxDim + offset;
+            Vector2 diff = pos - Utils.ToVector2(g.transform.position);
+            float sqrMag = diff.sqrMagnitude;
+            if (sqrMag < radius * radius)
+            {
+                g.GetComponent<ProceduralAsset>().OnIntersect(sqrSpeed);
+            }
+        }
+    }
+
     void PlaceAssets()
     {
         float offset = size / 2f;

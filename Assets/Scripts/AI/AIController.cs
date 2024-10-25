@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class AIController : MonoBehaviour
@@ -91,6 +92,21 @@ public class AIController : MonoBehaviour
     public void RunAway()
     {
         isMoving = false;
+        StartCoroutine(Morph(0.2f));
+    }
+
+    IEnumerator Morph(float time)
+    {
+        for (float t = 0f; t < time; t += Time.deltaTime)
+        {
+            currentMorph.transform.localScale = Vector3.one * Mathf.Lerp(1f, 0.5f, t / time);
+            yield return null;
+        }
+        _RunAway();
+    }
+
+    private void _RunAway()
+    {
         relativeGoal = false;
         speed = runningSpeed;
         Unhide();

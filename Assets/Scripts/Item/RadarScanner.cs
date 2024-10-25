@@ -10,12 +10,15 @@ public class RadarScanner : MonoBehaviour
     public RadarDisplay display;
     public bool isEnabled = false;
     public Volume volume;
+    public AudioSource switchOnSound;
+    LoopAudio loop;
     DepthOfField dof;
     float t = 0;
     void Start()
     {
         animator = GetComponent<Animator>();
         volume.profile.TryGet(out dof);
+        loop = GetComponent<LoopAudio>();
     }
 
     void Update()
@@ -47,6 +50,7 @@ public class RadarScanner : MonoBehaviour
     {
         animator.ResetTrigger("RadarOut");
         animator.SetTrigger("RadarOut");
+        switchOnSound.Play();
     }
 
     void TurnOffRadar()
@@ -58,10 +62,13 @@ public class RadarScanner : MonoBehaviour
     public void MaterialScreenOn()
     {
         display.MaterialScreenOn();
+
+        loop.Play();
     }
 
     public void MaterialScreenOff()
     {
         display.MaterialScreenOff();
+        loop.Stop();
     }
 }

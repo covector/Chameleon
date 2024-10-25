@@ -24,10 +24,12 @@ public abstract class ProceduralAsset : MonoBehaviour
     }
 
     protected abstract void Edit(MeshBuilder meshBuilder);
-    public float MaxDim() { return maxDim; }
+    public virtual float MaxDim() { return maxDim; }
     public virtual bool RecalculateNormals() { return false; }
     public abstract List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed);
     public virtual bool FilterPoint(float globalX, float globalZ, int maskSeed) { return true; }
     public virtual bool ItemSpawnCheck() { return false; }
     public virtual bool CollisionCheck() { return false; }
+    public virtual bool IntersectionCheck() { return false; }
+    public virtual void OnIntersect(float sqrSpeed) { }
 }
