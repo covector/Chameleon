@@ -1434,7 +1434,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 3704a38686c2e6a41a2b491664c967e6, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.046
+  m_Volume: 0.069
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1692,6 +1692,7 @@ GameObject:
   - component: {fileID: 1132507673}
   - component: {fileID: 1132507677}
   - component: {fileID: 1132507678}
+  - component: {fileID: 1132507679}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1810,6 +1811,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0623eca4d0fa4d40a478decb6da7429, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1132507679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132507672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81130c0ee42fa644ab43334974b9b580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1157869232
@@ -2075,7 +2088,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioClip: {fileID: 8300000, guid: 0b477ddfe341bc04bac31e7fcef008d4, type: 3}
-  volume: 0.186
+  volume: 0.279
   blendTime: 3
   playOnAwake: 1
 --- !u!1 &1400558857
@@ -2934,7 +2947,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 7de91318a6b8f794aaf550d5b77bcd2e, type: 3}
   m_Resource: {fileID: 8300000, guid: 7de91318a6b8f794aaf550d5b77bcd2e, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.188
+  m_Volume: 0.282
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -3031,7 +3044,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioClip: {fileID: 8300000, guid: ef581a72e04640a46b0ebaf31136b9b5, type: 3}
-  volume: 0.04
+  volume: 0.06
   blendTime: 3
   playOnAwake: 0
 --- !u!1 &919132147968721919 stripped

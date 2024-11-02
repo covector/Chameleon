@@ -17,7 +17,7 @@ public class UIState : MonoBehaviour
     }
     public IEnumerator RemoveDelay(string state)
     {
-        yield return new WaitForSecondsRealtime(0.2f);
+        yield return new WaitForSecondsRealtime(0.1f);
         _Remove(state);
     }
 

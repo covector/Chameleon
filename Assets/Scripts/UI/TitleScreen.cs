@@ -10,12 +10,16 @@ public class TitleScreen : MonoBehaviour
 
     private void Start()
     {
+        FindFirstObjectByType<SceneTransition>().DelayedFadeIn();
+        Cursor.lockState = CursorLockMode.None;
+        Time.timeScale = 1.0f;
+        AudioListener.pause = false;
         Back();
     }
 
     public void Play()
     {
-        SceneManager.LoadScene("GameScene");
+        FindFirstObjectByType<SceneTransition>().FadeOut(callback: () => SceneManager.LoadScene("GameScene"));
     }
 
     public void Options()
@@ -57,7 +61,7 @@ public class TitleScreen : MonoBehaviour
     {
         confirm.Show("Exit Game?", (bool yes) =>
         {
-            if (yes) { Application.Quit(); }
+            if (yes) { FindFirstObjectByType<SceneTransition>().FadeOut(callback: () => Application.Quit()); }
         });
     }
 }

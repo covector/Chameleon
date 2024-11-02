@@ -15,6 +15,7 @@ public class PauseGame : MonoBehaviour
 
     void Start()
     {
+        FindFirstObjectByType<SceneTransition>().DelayedFadeIn();
         parentCanvas = GetComponent<Canvas>();
         instance = this;
         Resume();
@@ -76,9 +77,7 @@ public class PauseGame : MonoBehaviour
         confirm.Show("Back to Title?", (bool yes) =>
         {
             if (yes) {
-                Time.timeScale = 1.0f;
-                AudioListener.pause = false;
-                SceneManager.LoadScene("Title"); 
+                FindFirstObjectByType<SceneTransition>().FadeOut(callback:() => SceneManager.LoadScene("Title")); 
             }
         });
     }

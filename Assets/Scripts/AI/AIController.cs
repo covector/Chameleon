@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AIController : MonoBehaviour
 {
@@ -138,6 +139,13 @@ public class AIController : MonoBehaviour
             monster.GetComponent<Animator>().ResetTrigger("TPose");
             monster.GetComponent<Animator>().SetTrigger("TPose");
             Debug.Log("YOU FUCKING LOST LOL");
+            StartCoroutine(LoseTemp());
         }
+    }
+
+    private IEnumerator LoseTemp()
+    {
+        yield return new WaitForSeconds(5f);
+        SceneManager.LoadScene("Title");
     }
 }

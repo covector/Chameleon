@@ -80,6 +80,8 @@ public class LoopAudio : MonoBehaviour
             audioSource2.volume = finalVolume * (source1 ? progressIn : progressOut);
             yield return null;
         }
+        audioSource1.volume = source1 ? 0f : finalVolume;
+        audioSource2.volume = source1 ? finalVolume : 0f;
         fading = false;
     }
 
