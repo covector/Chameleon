@@ -3,11 +3,18 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering;
 using System;
+using UnityEngine.UI;
 
 [DisallowMultipleComponent]
 public class SceneTransition : MonoBehaviour
 {
     private Coroutine _coroutine;
+    private Image image;
+
+    private void Start()
+    {
+        image = GetComponent<Image>();
+    }
 
     public void StartAndReplace(IEnumerator coroutine)
     {
@@ -59,13 +66,8 @@ public class SceneTransition : MonoBehaviour
 
     private void UpdateFade(float progress)
     {
-        AudioListener.volume = progress;
-        LiftGammaGain liftGammaGain;
-        FindFirstObjectByType<Volume>().profile.TryGet(out liftGammaGain);
-        if (liftGammaGain != null)
-        {
-            liftGammaGain.gain.Override(Vector4.one * (PowerCorrect(progress) - 1f));
-        }
+        AudioListener.volume = progress * FindFirstObjectByType<PlayerOptions>().Volume;
+        image.color = new Color(0, 0, 0, 1 - PowerCorrect(progress));
     }
 
     public void DelayedFadeIn(float delay = 1f, bool unscaledTime = false)

@@ -98,9 +98,10 @@ public class AIController : MonoBehaviour
 
     IEnumerator Morph(float time)
     {
+        float goalScale = 0.5f / currentMorph.GetComponent<ProceduralAsset>().MaxDim();
         for (float t = 0f; t < time; t += Time.deltaTime)
         {
-            currentMorph.transform.localScale = Vector3.one * Mathf.Lerp(1f, 0.5f, t / time);
+            currentMorph.transform.localScale = Vector3.one * Mathf.Lerp(1f, goalScale, t / time);
             yield return null;
         }
         _RunAway();

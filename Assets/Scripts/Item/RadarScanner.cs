@@ -23,7 +23,7 @@ public class RadarScanner : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(PlayerOptions.instance.KeyBinds["Scanner"]))
+        if (Input.GetKeyDown(PlayerOptions.instance.KeyBinds["Scanner"]) && !FindFirstObjectByType<PauseGame>().pauseLock)
         {
             if (!isEnabled)
             {

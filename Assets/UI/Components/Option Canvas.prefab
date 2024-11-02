@@ -472,7 +472,9 @@ RectTransform:
   - {fileID: 7948479645177694684}
   - {fileID: 781090568556036513}
   - {fileID: 415740550783502130}
+  - {fileID: 1872882424181149458}
   - {fileID: 5041548477139021132}
+  - {fileID: 4981399000860842147}
   - {fileID: 8555082848019809067}
   - {fileID: 3389169510770892315}
   - {fileID: 6047693276664948418}
@@ -490,7 +492,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 551583317004598735}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -1090,7 +1092,7 @@ GameObject:
   - component: {fileID: 3691123560434223476}
   - component: {fileID: 6711368106332031807}
   m_Layer: 5
-  m_Name: Assigned
+  m_Name: Scanner Assigned
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1554,7 +1556,7 @@ GameObject:
   - component: {fileID: 8520177265971199660}
   - component: {fileID: 9172312966211085884}
   m_Layer: 5
-  m_Name: Assigned
+  m_Name: PickUp Assigned
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1728,7 +1730,7 @@ GameObject:
   - component: {fileID: 2784265393227089419}
   - component: {fileID: 3783615675083460294}
   m_Layer: 5
-  m_Name: Scanner Keybind
+  m_Name: Scanner Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1746,7 +1748,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4981399000860842147}
   - {fileID: 6326821340778440575}
   m_Father: {fileID: 7349060839100202704}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2152,7 +2153,7 @@ GameObject:
   - component: {fileID: 2120166362660547596}
   - component: {fileID: 1237727471673509589}
   m_Layer: 5
-  m_Name: Name
+  m_Name: Scanner Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2170,11 +2171,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8555082848019809067}
+  m_Father: {fileID: 7349060839100202704}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -126, y: 0.00017547607}
+  m_AnchoredPosition: {x: 166.698, y: -270.39984}
   m_SizeDelta: {x: 237.111, y: 47.857}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2120166362660547596
@@ -2399,7 +2400,7 @@ GameObject:
   - component: {fileID: 3469318614663458550}
   - component: {fileID: 6964223461949418510}
   m_Layer: 5
-  m_Name: Name
+  m_Name: PickUp Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2417,11 +2418,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5041548477139021132}
+  m_Father: {fileID: 7349060839100202704}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -126, y: 0.00017547607}
+  m_AnchoredPosition: {x: 166.698, y: -187.34381}
   m_SizeDelta: {x: 237.111, y: 47.857}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3469318614663458550
@@ -2823,7 +2824,7 @@ GameObject:
   - component: {fileID: 193110429364494485}
   - component: {fileID: 5405250030249323725}
   m_Layer: 5
-  m_Name: PickUp Keybind
+  m_Name: PickUp Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2841,7 +2842,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1872882424181149458}
   - {fileID: 2411649199678730711}
   m_Father: {fileID: 7349060839100202704}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2928,7 +2928,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 4792741865622571588}
+  m_TargetGraphic: {fileID: 9172312966211085884}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []

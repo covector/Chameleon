@@ -2,13 +2,14 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class PauseGame : MonoBehaviour
 {
     public static PauseGame instance;
     public bool isFrozen { get; private set; }
+    public bool pauseLock { get; private set; }
 
-    Canvas parentCanvas;
     public Canvas pauseCanvas;
     public Canvas optionCanvas;
     public ConfirmBox confirm;
@@ -16,7 +17,6 @@ public class PauseGame : MonoBehaviour
     void Start()
     {
         FindFirstObjectByType<SceneTransition>().DelayedFadeIn();
-        parentCanvas = GetComponent<Canvas>();
         instance = this;
         Resume();
     }
@@ -39,28 +39,36 @@ public class PauseGame : MonoBehaviour
     {
         ToggleDOF(true);
         Cursor.lockState = CursorLockMode.Locked;
-        parentCanvas.enabled = false;
+        pauseCanvas.enabled = false;
         FindFirstObjectByType<UIState>().Clear();
         isFrozen = false;
         Time.timeScale = 1.0f;
         AudioListener.pause = false;
+        StartCoroutine(PauseUnlock());
     }
 
     public void Pause()
     {
         ToggleDOF(false);
         Cursor.lockState = CursorLockMode.None;
-        parentCanvas.enabled = true;
+        pauseCanvas.enabled = true;
         isFrozen = true;
         Time.timeScale = 0.0f;
         AudioListener.pause = true;
+        pauseLock = true;
+    }
+
+    private IEnumerator PauseUnlock()
+    {
+        yield return new WaitForFixedUpdate();
+        pauseLock = false;
     }
 
     public void Options()
     {
         pauseCanvas.enabled = false;
         optionCanvas.enabled = true;
-        ToggleLensDistort(false);
+        ToggleLensDistort(true);
         FindFirstObjectByType<UIState>().Push("Page");
     }
 
@@ -68,7 +76,7 @@ public class PauseGame : MonoBehaviour
     {
         pauseCanvas.enabled = true;
         optionCanvas.enabled = false;
-        ToggleLensDistort(true);
+        ToggleLensDistort(false);
         FindFirstObjectByType<UIState>().Remove("Page");
     }
 
