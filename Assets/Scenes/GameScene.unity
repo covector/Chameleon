@@ -716,7 +716,7 @@ GameObject:
   m_Component:
   - component: {fileID: 747644062}
   - component: {fileID: 747644064}
-  - component: {fileID: 747644063}
+  - component: {fileID: 747644068}
   - component: {fileID: 747644065}
   - component: {fileID: 747644066}
   - component: {fileID: 747644067}
@@ -743,18 +743,6 @@ Transform:
   - {fileID: 543450651705809221}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &747644063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 747644059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21d55c3478e789747bcb5b4d07ae26d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &747644064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -901,6 +889,18 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 01e2b0adb7c337f4d9963d83a824ef6a, type: 3}
   - {fileID: 8300000, guid: 61fbea68666be384e9de40fde5e2e0ad, type: 3}
   audioSource: {fileID: 0}
+--- !u!114 &747644068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747644059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f00f6375324f47e46ac4dd9c4db7a414, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &808903045
 PrefabInstance:
   m_ObjectHideFlags: 0

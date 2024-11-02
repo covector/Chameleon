@@ -4,7 +4,7 @@ using UnityEngine;
 public class RandomLocationSound : MonoBehaviour
 {
     public Transform monster;
-    AIStrategy monsterAI;
+    MonsterStateMachine stateMachine;
     public Transform player;
     RandomAudio randomAudio;
     AudioSource audioSource;
@@ -17,7 +17,7 @@ public class RandomLocationSound : MonoBehaviour
     private void Start()
     {
         randomAudio = GetComponent<RandomAudio>();
-        monsterAI = monster.GetComponent<AIStrategy>();
+        stateMachine = monster.GetComponent<MonsterStateMachine>();
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -72,6 +72,6 @@ public class RandomLocationSound : MonoBehaviour
 
     bool CanPlaySound()
     {
-        return monsterAI.approaching && (monster.position - player.position).sqrMagnitude > 100f;
+        return stateMachine.current.Equals("Approach") && (monster.position - player.position).sqrMagnitude > 100f;
     }
 }

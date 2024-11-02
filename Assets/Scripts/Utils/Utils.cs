@@ -141,4 +141,14 @@ public class Utils
         }
         return (toMax - toMin) * (value - fromMin) / (fromMax - fromMin) + toMin;
     }
+
+    public static void RunDelay(MonoBehaviour mb, Action action, float delay, bool unscaledTime = false)
+    {
+        mb.StartCoroutine(_RunDelay(action, delay, unscaledTime));
+    }
+    public static IEnumerator _RunDelay(Action action, float delay, bool unscaledTime = false)
+    {
+        yield return unscaledTime ? new WaitForSecondsRealtime(delay) : new WaitForSeconds(delay);
+        action();
+    }
 }

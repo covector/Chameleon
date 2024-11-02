@@ -1,9 +1,8 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
-using UnityEngine.Rendering;
 using System;
 using UnityEngine.UI;
+using static Utils;
 
 [DisallowMultipleComponent]
 public class SceneTransition : MonoBehaviour
@@ -73,16 +72,6 @@ public class SceneTransition : MonoBehaviour
     public void DelayedFadeIn(float delay = 1f, bool unscaledTime = false)
     {
         UpdateFade(0);
-        RunDelay(() => FadeIn(), delay, unscaledTime);
-    }
-
-    public void RunDelay(Action action, float delay, bool unscaledTime = false)
-    {
-        StartCoroutine(_RunDelay(action, delay, unscaledTime));
-    }
-    public IEnumerator _RunDelay(Action action, float delay, bool unscaledTime = false)
-    {
-        yield return unscaledTime ? new WaitForSecondsRealtime(delay) : new WaitForSeconds(delay);
-        action();
+        RunDelay(this, () => FadeIn(), delay, unscaledTime);
     }
 }
