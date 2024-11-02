@@ -18,13 +18,14 @@ public class PlayerControl : MonoBehaviour
     {
         randomAudio = GetComponent<RandomAudio>();
         gradient = new GradientController();
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
     {
+        if (PauseGame.instance.isFrozen) return;
+
         // Rotation Control
-        float sensitivity = 4.0f;
+        float sensitivity = 4.0f * PlayerOptions.instance.Sensitivity;
         float rotateHorizontal = Input.GetAxis("Mouse X");
         float rotateVertical = Input.GetAxis("Mouse Y");
         cam.transform.eulerAngles = new Vector3(

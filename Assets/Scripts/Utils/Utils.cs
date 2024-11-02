@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class Utils
 {
@@ -117,5 +118,27 @@ public class Utils
     public static Matrix4x4 RandomRotation(System.Random random, float range)
     {
         return RandomRotation(random, Vector3.one * range);
+    }
+
+    public static KeyCode TryParseKey(string key, KeyCode fallback)
+    {
+        try
+        {
+            return (KeyCode)System.Enum.Parse(typeof(KeyCode), key, true);
+        }
+        catch
+        {
+            return fallback;
+        }
+    }
+
+    public static float MapValues(float value, float fromMin, float fromMax, float toMin, float toMax, bool clamp=true)
+    {
+        if (clamp)
+        {
+            if (value <= fromMin) { return toMin; }
+            else if (value >= fromMax) { return toMax; }
+        }
+        return (toMax - toMin) * (value - fromMin) / (fromMax - fromMin) + toMin;
     }
 }

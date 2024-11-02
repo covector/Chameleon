@@ -17,7 +17,7 @@ public class ItemPickUp : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown("e"))
+        if (Input.GetKeyDown(PlayerOptions.instance.KeyBinds["PickUp"]))
         {
             if (canBePickenUp())
             {

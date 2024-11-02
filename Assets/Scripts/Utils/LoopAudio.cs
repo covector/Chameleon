@@ -9,8 +9,9 @@ public class LoopAudio : MonoBehaviour
     public float volume = 0.1f;
     private float finalVolume = 0.1f;
     public float blendTime = 3.0f;
-    bool audioSource1Main = true;
-    bool playing = false;
+    private bool audioSource1Main = true;
+    private bool playing = false;
+    private bool fading = false;
     public bool playOnAwake = true;
     void Start()
     {
@@ -50,9 +51,20 @@ public class LoopAudio : MonoBehaviour
         }
     }
 
+    private float logTrans(float x)
+    {
+        return Mathf.Log(x + 1f, 2);
+    }
+
+    private float polyTrans(float x)
+    {
+        return Mathf.Pow(x, 0.5f);
+    }
+
     IEnumerator CrossFade(bool source1, float delay)
     {
         yield return new WaitForSeconds(delay);
+        fading = true;
         if (source1)
         {
             audioSource2.Play();
@@ -62,17 +74,22 @@ public class LoopAudio : MonoBehaviour
         }
         for (float t = 0; t < blendTime; t += Time.deltaTime)
         {
-            float progress = finalVolume * t / blendTime;
-            audioSource1.volume = source1 ? finalVolume - progress : progress;
-            audioSource2.volume = source1 ? progress : finalVolume - progress;
+            float progressIn = polyTrans(t / blendTime);
+            float progressOut = polyTrans(1f - t / blendTime);
+            audioSource1.volume = finalVolume * (source1 ? progressOut : progressIn);
+            audioSource2.volume = finalVolume * (source1 ? progressIn : progressOut);
             yield return null;
         }
+        fading = false;
     }
 
     public void SetVolume(float volume)
     {
-        audioSource1.volume = volume;
-        audioSource2.volume = volume;
+        if (!fading)
+        {
+            audioSource1.volume = volume;
+            audioSource2.volume = volume;
+        }
         finalVolume = volume;
     }
 
