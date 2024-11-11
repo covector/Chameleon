@@ -13,7 +13,7 @@ public class RunState : MonsterState
 
     public override void OnStateEnter()
     {
-        stateMachine.StartCoroutine(Morph(0.2f));
+        stateMachine.StartCoroutine(Morph(0.1f));
         isRunning = false;
     }
 

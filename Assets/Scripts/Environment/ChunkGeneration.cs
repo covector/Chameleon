@@ -11,7 +11,6 @@ public class ChunkGeneration : MonoBehaviour
     static Perlin[] perlins;
     static int terrainSeed;
     int chunkSeed;
-    System.Random rand;
     public GameObject[] assetPrefabs;
     List<GameObject> assets = new List<GameObject>();
     public ItemSpawning itemSpawning;
@@ -35,7 +34,6 @@ public class ChunkGeneration : MonoBehaviour
     {
         this.chunkInd = chunkInd;
         this.chunkSeed = terrainSeed + chunkInd.x * 727 - chunkInd.y * 757;  // arbitrary
-        this.rand = new System.Random(chunkSeed);
         name = "Chunk_" + chunkInd.ToString();  // For debug
         GetComponent<MeshRenderer>().material.SetVector("_Seed", new Vector4(chunkInd.x, chunkInd.y));
         GenerateChunk();
@@ -43,11 +41,11 @@ public class ChunkGeneration : MonoBehaviour
 
     void GenerateChunk()
     {
-        GetComponent<MeshFilter>().mesh = CreateGroundMesh(size, step);
+        GetComponent<MeshFilter>().mesh = CreateGroundMesh(transform.position, size, step);
         PlaceAssets();
     }
 
-    Mesh CreateGroundMesh(float size, int step)
+    public static Mesh CreateGroundMesh(Vector3 globalPos, float size, int step)
     {
         Mesh mesh = new Mesh { name = "Procedural Ground" };
         int gridPt = step + 2;
@@ -61,11 +59,11 @@ public class ChunkGeneration : MonoBehaviour
             {
                 float x = size * i / gridSqr - size / 2f;
                 float z = size * j / gridSqr - size / 2f;
-                float globalX = x + transform.position.x;
-                float globalZ = z + transform.position.z;
+                float globalX = x + globalPos.x;
+                float globalZ = z + globalPos.z;
                 float y = GetGroudLevel(globalX, globalZ);
                 vertices[i * gridPt + j] = new Vector3(x, y, z);
-                normals[i * gridPt + j] = GetNormal(transform.position.x + x, transform.position.z + z);
+                normals[i * gridPt + j] = GetNormal(globalPos.x + x, globalPos.z + z);
             }
         }
         mesh.vertices = vertices;
@@ -124,7 +122,7 @@ public class ChunkGeneration : MonoBehaviour
         );
     }
 
-    private Vector3 GetNormal(float x, float z, int levels = 1)
+    public static Vector3 GetNormal(float x, float z, int levels = 1)
     {
         return new Vector3(
             GetGroudLevel(x - 0.5f, z, levels) - GetGroudLevel(x + 0.5f, z, levels),
@@ -182,6 +180,7 @@ public class ChunkGeneration : MonoBehaviour
 
     void PlaceAssets()
     {
+        System.Random rand = new System.Random(chunkSeed);
         float offset = size / 2f;
         int i = 0;
         foreach (GameObject prefab in assetPrefabs) {

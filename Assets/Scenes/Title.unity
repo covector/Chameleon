@@ -1623,7 +1623,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 77.254, y: 44.188004}
+  m_AnchoredPosition: {x: 77.25403, y: 44.18802}
   m_SizeDelta: {x: 105.307, y: 39.623}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &839949853
@@ -2009,7 +2009,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 104.70999, y: 98.7}
+  m_AnchoredPosition: {x: 104.70996, y: 98.69998}
   m_SizeDelta: {x: 160.221, y: 39.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &900014854
@@ -2325,7 +2325,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1045197010}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.16852482
+  m_Size: 0.1685248
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3109,7 +3109,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -87.857025, y: -47.12999}
+  m_AnchoredPosition: {x: -87.857056, y: -47.129974}
   m_SizeDelta: {x: 144.452, y: 42.14502}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1974852930
@@ -3661,7 +3661,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 117.819, y: 148.764}
+  m_AnchoredPosition: {x: 117.81897, y: 148.764}
   m_SizeDelta: {x: 186.439, y: 43.671}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2103749221
@@ -4094,7 +4094,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5041548477139021132, guid: 67337f264488f2647a8c1a669c33156c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -267.57797
+      value: -267.578
       objectReference: {fileID: 0}
     - target: {fileID: 5209535920861792095, guid: 67337f264488f2647a8c1a669c33156c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -4238,7 +4238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8555082848019809067, guid: 67337f264488f2647a8c1a669c33156c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -267.57797
+      value: -267.578
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f8834e27d38610489ba004e67ec7574, type: 3}
+  m_Name: AssetTemplate
+  m_EditorClassIdentifier: 
+  terrain_step: 50
+  terrain_chunkSize: 10
+  terrain_perlins:
+  - frequency: 0.1
+    amplitude: 4
+  - frequency: 0.5
+    amplitude: 0.6
+  - frequency: 2
+    amplitude: 0.2
+  groundMaterial: {fileID: -876546973899608171, guid: 292755b4e45356644ac9b089be93abb7, type: 3}
+  treeParam:
+    enabled: 1
+    depth: {x: 10, y: 10}
+    radius: {x: 0.05, y: 0.4}
+    trunkSplitChance: 0.1
+    splitChance: 0.4
+    splitRotate: 30
+    nonSplitRotate: 10
+    trunkHeight: {x: 1, y: 6}
+    branchLength: {x: 1, y: 1}
+    leavesCount: 4
+    crossRenderLeaves: 0
+    leavesDim: {x: 1, y: 3}
+    leavesScale: {x: 0.35, y: 1}
+    leavesRotationOffset: {x: 0, y: 0, z: 0}
+    leavesRotationRange: {x: 45, y: 90, z: 180}
+    nonEndLeafChance: 0.1
+    cylinderStep: 9
+    materials:
+    - {fileID: -876546973899608171, guid: b5bc60c909b54964fa4771dce4cbd1de, type: 3}
+    - {fileID: 2100000, guid: 1e8c158b2f9a2a64aad675fffc718e5a, type: 2}
+    sampling:
+      algorithm: 0
+      spacing: 5.88
+      strength: 0
+      jitterCount: {x: 0, y: 0}
+      perlinFiltering: 0
+      filterSize: 0
+      filterThreshold: 0
+  rockParam:
+    enabled: 1
+    materials:
+    - {fileID: -876546973899608171, guid: b2338f7b0df53074c8c9fe7578174145, type: 3}
+    sampling:
+      algorithm: 2
+      spacing: 5
+      strength: 1
+      jitterCount: {x: 3, y: 12}
+      perlinFiltering: 1
+      filterSize: 1
+      filterThreshold: 0.4
+  bushParam:
+    enabled: 1
+    depth: {x: 8, y: 12}
+    radius: {x: 0.03, y: 0.03}
+    trunkSplitChance: 0.1
+    splitChance: 0.4
+    splitRotate: 30
+    nonSplitRotate: 10
+    trunkHeight: {x: 0.1, y: 0.15}
+    branchLength: {x: 0.1, y: 0.17}
+    leavesCount: 5
+    crossRenderLeaves: 0
+    leavesDim: {x: 1, y: 2}
+    leavesScale: {x: 0.05, y: 0.075}
+    leavesRotationOffset: {x: 0, y: 0, z: 0}
+    leavesRotationRange: {x: 30, y: 180, z: 30}
+    nonEndLeafChance: 0.1
+    cylinderStep: 4
+    materials:
+    - {fileID: -876546973899608171, guid: b5bc60c909b54964fa4771dce4cbd1de, type: 3}
+    - {fileID: 2100000, guid: 06c8ee383a380864eb3da2ada57d96e1, type: 2}
+    sampling:
+      algorithm: 1
+      spacing: 1.67
+      strength: 8.33
+      jitterCount: {x: 0, y: 0}
+      perlinFiltering: 1
+      filterSize: 0.5
+      filterThreshold: 0.4
+  smallTreeParam:
+    enabled: 1
+    depth: {x: 10, y: 14}
+    radius: {x: 0.03, y: 0.08}
+    trunkSplitChance: 0.3
+    splitChance: 0.3
+    splitRotate: 50
+    nonSplitRotate: 10
+    trunkHeight: {x: 0.6, y: 1}
+    branchLength: {x: 0.6, y: 0.6}
+    leavesCount: 4
+    crossRenderLeaves: 1
+    leavesDim: {x: 1, y: 3}
+    leavesScale: {x: 0.25, y: 0.35}
+    leavesRotationOffset: {x: -90, y: 0, z: 0}
+    leavesRotationRange: {x: 45, y: 180, z: 180}
+    nonEndLeafChance: 0.25
+    cylinderStep: 7
+    materials:
+    - {fileID: -876546973899608171, guid: b5bc60c909b54964fa4771dce4cbd1de, type: 3}
+    - {fileID: 2100000, guid: 6016a3eb643f5cc49ac3fbcea287da3f, type: 2}
+    sampling:
+      algorithm: 0
+      spacing: 6.67
+      strength: 0
+      jitterCount: {x: 0, y: 0}
+      perlinFiltering: 0
+      filterSize: 0
+      filterThreshold: 0

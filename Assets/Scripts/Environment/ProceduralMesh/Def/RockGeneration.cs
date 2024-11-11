@@ -29,8 +29,10 @@ public class RockGeneration : PreGenerate<RockGeneration>
     public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
     {
         float offset = chunkSize / 2f;
-        JitterGridSampling jgs = new JitterGridSampling(chunkSize, chunkSize, chunkSize / 4f, chunkSize / 1.2f, globalPosition - new Vector3(offset, 0, offset), seed);
-        return jgs.fill();
+        //JitterGridSampling jgs = new JitterGridSampling(chunkSize, chunkSize, chunkSize / 4f, chunkSize / 1.2f, globalPosition - new Vector3(offset, 0, offset), seed);
+        //return jgs.fill();
+        JitterPoissonSampling fpds = new JitterPoissonSampling(chunkSize, chunkSize, chunkSize / 0.5f, 1f, new Vector2Int(12, 12), seed: seed);
+        return fpds.fill();
     }
 
     public override bool FilterPoint(float globalX, float globalZ, int maskSeed)

@@ -24,6 +24,7 @@ public class ItemPickUp : MonoBehaviour
                 scanner.SetActive(false);
                 pickedUp = true;
                 randomAudio.PlayRandomSound();
+                FindAnyObjectByType<ItemCounter>().Increment();
             }
         }
     }

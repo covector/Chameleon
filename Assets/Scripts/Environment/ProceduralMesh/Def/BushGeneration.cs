@@ -15,10 +15,10 @@ public class BushGeneration : GenericTreeGeneration<BushGeneration>
         cylinderStep: 4,
         trunkSplitChance: 0.1f, splitChance: 0.4f,
         splitRotate: 30f, nonSplitRotate: 10f,
-        trunkHeight: new Vector2(0.15f, 0.25f), branchLength: new Vector2(0.15f, 0.25f),
+        trunkHeight: new Vector2(0.1f, 0.15f), branchLength: new Vector2(0.1f, 0.17f),
         leavesCount: 5, nonEndLeafChance: 0.1f,
         crossRenderLeaves: false,
-        leavesDim: new Vector2(1f, 2f), leavesScale: new Vector2(0.08f, 0.12f),
+        leavesDim: new Vector2(1f, 2f), leavesScale: new Vector2(0.05f, 0.075f),
         leavesRotationRange: new Vector3(30f, 180f, 30f), leavesRotationOffset: Vector3.zero
     )
     { }
@@ -37,7 +37,7 @@ public class BushGeneration : GenericTreeGeneration<BushGeneration>
         return Mathf.PerlinNoise(globalX * size, globalZ * size + maskSeed / 1000) > threshold;
     }
 
-    public override float MaxDim() { return 1.0f; }
+    public override float MaxDim() { return 0.6f; }
 
     public override bool IntersectionCheck() { return true; }
     public override void OnIntersect(float sqrSpeed)

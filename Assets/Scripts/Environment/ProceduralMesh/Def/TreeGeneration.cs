@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TreeGeneration : GenericTreeGeneration<TreeGeneration>
@@ -15,6 +16,11 @@ public class TreeGeneration : GenericTreeGeneration<TreeGeneration>
         leavesRotationRange: new Vector3(45f, 90f, 180f), leavesRotationOffset: Vector3.zero
     )
     { }
+    public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
+    {
+        FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(chunkSize, chunkSize, chunkSize / 1.7f, seed: seed);
+        return fpds.fill();
+    }
 
     public override int PreGenCount() { return 50; }
 

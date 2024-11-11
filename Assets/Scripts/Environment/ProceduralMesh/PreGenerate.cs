@@ -25,8 +25,19 @@ public abstract class PreGenerate<T> : ProceduralAsset where T : class
         }
     }
 
+    public void Reload()
+    {
+        s_preGenerated = new List<Mesh>();
+        s_maxDims = new List<float>();
+    }
+
     public override void Generate(int seed)
     {
+        if (PreGenCount() == 0)
+        {
+            base.Generate(seed);
+            return;
+        }
         this.seed = seed;
         this.rand = new System.Random(seed);
         Init(PreGenCount());

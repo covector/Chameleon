@@ -37,7 +37,11 @@ public class AIController : MonoBehaviour
             Destroy(currentMorph);
         }
         currentMorph = Instantiate(morphPrefabs[0]);
-        currentMorph.GetComponent<ProceduralAsset>().Generate(UnityEngine.Random.Range(0, 10000));
+        for (int i = 0; i < 10; i++)
+        {
+            currentMorph.GetComponent<ProceduralAsset>().Generate(UnityEngine.Random.Range(0, 10000));
+            if (currentMorph.GetComponent<ProceduralAsset>().MaxDim() > 0.5f) { break; }
+        }
         currentMorph.GetComponent<MeshRenderer>().enabled = false;
         currentMorph.transform.parent = transform;
         currentMorph.transform.localPosition = new Vector3(0f, -1f, 0f);

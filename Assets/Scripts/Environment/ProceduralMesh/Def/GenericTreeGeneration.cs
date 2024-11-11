@@ -4,7 +4,6 @@ using static MeshBuilder;
 
 public abstract class GenericTreeGeneration<T> : PreGenerate<T> where T : class
 {
-    protected int preGenCount;
     protected Vector2Int depth;
     protected Vector2 radius;
     protected float trunkSplitChance;
@@ -63,6 +62,8 @@ public abstract class GenericTreeGeneration<T> : PreGenerate<T> where T : class
         this.leavesRotationOffset = leavesRotationOffset;
         this.leavesRotationRange = leavesRotationRange;
     }
+
+    public GenericTreeGeneration() { }
 
     protected override void Edit(MeshBuilder meshBuilder)
     {

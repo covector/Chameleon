@@ -47,16 +47,16 @@ public class FastPoissonDiskSampling
 
     static int neighbourhoodLength = neighbourhood.Length;
 
-    float width;
-    float height;
-    float radius;
+    protected float width;
+    protected float height;
+    protected float radius;
     int maxTries;
     float squaredRadius;
     float cellSize;
     float angleIncrement;
     float angleIncrementOnSuccess;
     int triesIncrementOnSuccess;
-    System.Random random;
+    protected System.Random random;
     List<Point> processList;
     List<Vector2> samplePoints;
     Vector2Int gridShape;

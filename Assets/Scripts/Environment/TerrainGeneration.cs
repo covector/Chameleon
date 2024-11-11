@@ -14,6 +14,7 @@ public class TerrainGeneration : ChunkSystem
     
     void Start()
     {
+        seed = Random.Range(0, 10000);
         ChunkGeneration.Init(chunkSize, step, perlins, seed);
     }
 
