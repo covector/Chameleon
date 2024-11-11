@@ -24,9 +24,10 @@ public class JitterPoissonSampling : FastPoissonDiskSampling
             int count = RandomRange(random, jitterCount);
             for (int i = 0; i < count; i++)
             {
+                float subStrength = (float) random.NextDouble() * strength;
                 points.Add(new Vector2(
-                    p.x + strength * RandomRange(random, -strength, strength),
-                    p.y + strength * RandomRange(random, -strength, strength)
+                    p.x + RandomRange(random, -subStrength, subStrength),
+                    p.y + RandomRange(random, -subStrength, subStrength)
                 ));
             }
         }

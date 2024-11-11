@@ -10,7 +10,7 @@ public class TerrainGeneration : ChunkSystem
     public int seed;
     public ItemSpawning itemSpawning;
 
-    public TerrainGeneration() : base(10f, 3, 3) {}
+    public TerrainGeneration() : base(10f, 4, 5) {}
     
     void Start()
     {

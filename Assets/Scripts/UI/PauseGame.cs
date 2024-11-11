@@ -7,6 +7,7 @@ using System.Collections;
 public class PauseGame : MonoBehaviour
 {
     public static PauseGame instance;
+    private bool uiLock = false;
     public bool isFrozen { get; private set; }
     public bool pauseLock { get; private set; }
 
@@ -37,6 +38,7 @@ public class PauseGame : MonoBehaviour
 
     public void Resume()
     {
+        if (uiLock) { return; }
         ToggleDOF(true);
         Cursor.lockState = CursorLockMode.Locked;
         pauseCanvas.enabled = false;
@@ -66,6 +68,7 @@ public class PauseGame : MonoBehaviour
 
     public void Options()
     {
+        if (uiLock) { return; }
         pauseCanvas.enabled = false;
         optionCanvas.enabled = true;
         ToggleLensDistort(true);
@@ -82,9 +85,11 @@ public class PauseGame : MonoBehaviour
 
     public void Quit()
     {
+        if (uiLock) { return; }
         confirm.Show("Back to Title?", (bool yes) =>
         {
             if (yes) {
+                uiLock = true;
                 FindFirstObjectByType<SceneTransition>().FadeOut(callback:() => SceneManager.LoadScene("Title")); 
             }
         });

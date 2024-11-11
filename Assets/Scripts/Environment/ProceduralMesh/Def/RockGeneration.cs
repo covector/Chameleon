@@ -29,17 +29,18 @@ public class RockGeneration : PreGenerate<RockGeneration>
     public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
     {
         float offset = chunkSize / 2f;
-        //JitterGridSampling jgs = new JitterGridSampling(chunkSize, chunkSize, chunkSize / 4f, chunkSize / 1.2f, globalPosition - new Vector3(offset, 0, offset), seed);
-        //return jgs.fill();
-        JitterPoissonSampling fpds = new JitterPoissonSampling(chunkSize, chunkSize, chunkSize / 0.5f, 1f, new Vector2Int(12, 12), seed: seed);
-        return fpds.fill();
+        const float spacing = 20f;
+        const float strength = 3f;
+        Vector2Int jitterCount = new Vector2Int(8, 12);
+        JitterPoissonSampling jps = new JitterPoissonSampling(chunkSize, chunkSize, spacing, strength, jitterCount, seed: seed);
+        return jps.fill();
     }
 
     public override bool FilterPoint(float globalX, float globalZ, int maskSeed)
     {
         const float size = 1f;
         const float threshold = 0.4f;
-        return Mathf.PerlinNoise(globalX * size, globalZ * size + maskSeed/1000) > threshold;
+        return Mathf.PerlinNoise(globalX * size, globalZ * size + maskSeed / 1000) > threshold;
     }
 
     Matrix4x4 RandomTransform(System.Random random)

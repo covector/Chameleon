@@ -26,13 +26,16 @@ public class BushGeneration : GenericTreeGeneration<BushGeneration>
     public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
     {
         float offset = chunkSize / 2f;
-        JitterGridSampling jgs = new JitterGridSampling(chunkSize, chunkSize, chunkSize / 6f, chunkSize / 1.2f, globalPosition - new Vector3(offset, 0, offset), seed);
-        return jgs.fill();
+        const float spacing = 8f;
+        const float strength = 6f;
+        Vector2Int jitterCount = new Vector2Int(6, 20);
+        JitterPoissonSampling jps = new JitterPoissonSampling(chunkSize, chunkSize, spacing, strength, jitterCount, seed: seed);
+        return jps.fill();
     }
 
     public override bool FilterPoint(float globalX, float globalZ, int maskSeed)
     {
-        const float size = 0.5f;
+        const float size = 1f;
         const float threshold = 0.4f;
         return Mathf.PerlinNoise(globalX * size, globalZ * size + maskSeed / 1000) > threshold;
     }

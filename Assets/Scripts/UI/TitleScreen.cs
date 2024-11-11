@@ -1,8 +1,10 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static Unity.Collections.AllocatorManager;
 
 public class TitleScreen : MonoBehaviour
 {
+    private bool uiLock = false;
     public Canvas titleCanvas;
     public Canvas optionCanvas;
     public Canvas creditCanvas;
@@ -19,11 +21,14 @@ public class TitleScreen : MonoBehaviour
 
     public void Play()
     {
+        if (uiLock) { return; }
+        uiLock = true;
         FindFirstObjectByType<SceneTransition>().FadeOut(callback: () => SceneManager.LoadScene("GameScene"));
     }
 
     public void Options()
     {
+        if (uiLock) { return; }
         titleCanvas.enabled = false;
         creditCanvas.enabled = false;
         optionCanvas.enabled = true;
@@ -32,6 +37,7 @@ public class TitleScreen : MonoBehaviour
 
     public void Credits()
     {
+        if (uiLock) { return; }
         titleCanvas.enabled = false;
         creditCanvas.enabled = true;
         optionCanvas.enabled = false;
@@ -59,9 +65,10 @@ public class TitleScreen : MonoBehaviour
 
     public void Quit()
     {
+        if (uiLock) { return; }
         confirm.Show("Exit Game?", (bool yes) =>
         {
-            if (yes) { FindFirstObjectByType<SceneTransition>().FadeOut(callback: () => Application.Quit()); }
+            if (yes) { uiLock = true; FindFirstObjectByType<SceneTransition>().FadeOut(callback: () => Application.Quit()); }
         });
     }
 }

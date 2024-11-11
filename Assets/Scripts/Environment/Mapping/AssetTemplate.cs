@@ -125,6 +125,11 @@ public class AssetTemplate : ScriptableObject
             this.cylinderStep = treeParam.cylinderStep;
         }
 
+        public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
+        {
+            return new List<Vector2>();
+        }
+
         public override int PreGenCount() { return 0; }
     }
 
@@ -186,6 +191,7 @@ public class AssetTemplate : ScriptableObject
     [Header("Small Trees")]
     [SerializeField]
     public MutableTreeParam smallTreeParam;
+
     public MutableParam[] GetParams()
     {
         MutableParam[] param = new MutableParam[4];

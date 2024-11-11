@@ -18,8 +18,16 @@ public class SmallTreeGeneration : GenericTreeGeneration<SmallTreeGeneration>
 
     public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
     {
-        FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(chunkSize, chunkSize, chunkSize / 1.5f, seed: seed);
+        const float spacing = 10f;
+        FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(chunkSize, chunkSize, spacing, seed: seed);
         return fpds.fill();
+    }
+
+    public override bool FilterPoint(float globalX, float globalZ, int maskSeed)
+    {
+        const float size = 1f;
+        const float threshold = 0.3f;
+        return Mathf.PerlinNoise(globalX * size, globalZ * size + maskSeed / 1000) > threshold;
     }
 
     public override int PreGenCount() { return 30; }

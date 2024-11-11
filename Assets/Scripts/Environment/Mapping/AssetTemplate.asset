@@ -45,21 +45,21 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 1e8c158b2f9a2a64aad675fffc718e5a, type: 2}
     sampling:
       algorithm: 0
-      spacing: 5.88
+      spacing: 4
       strength: 0
       jitterCount: {x: 0, y: 0}
-      perlinFiltering: 0
-      filterSize: 0
-      filterThreshold: 0
+      perlinFiltering: 1
+      filterSize: 10
+      filterThreshold: 0.5
   rockParam:
     enabled: 1
     materials:
     - {fileID: -876546973899608171, guid: b2338f7b0df53074c8c9fe7578174145, type: 3}
     sampling:
       algorithm: 2
-      spacing: 5
-      strength: 1
-      jitterCount: {x: 3, y: 12}
+      spacing: 20
+      strength: 3
+      jitterCount: {x: 8, y: 12}
       perlinFiltering: 1
       filterSize: 1
       filterThreshold: 0.4
@@ -85,12 +85,12 @@ MonoBehaviour:
     - {fileID: -876546973899608171, guid: b5bc60c909b54964fa4771dce4cbd1de, type: 3}
     - {fileID: 2100000, guid: 06c8ee383a380864eb3da2ada57d96e1, type: 2}
     sampling:
-      algorithm: 1
-      spacing: 1.67
-      strength: 8.33
-      jitterCount: {x: 0, y: 0}
+      algorithm: 2
+      spacing: 8
+      strength: 6
+      jitterCount: {x: 6, y: 20}
       perlinFiltering: 1
-      filterSize: 0.5
+      filterSize: 1
       filterThreshold: 0.4
   smallTreeParam:
     enabled: 1
@@ -115,9 +115,9 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 6016a3eb643f5cc49ac3fbcea287da3f, type: 2}
     sampling:
       algorithm: 0
-      spacing: 6.67
+      spacing: 10
       strength: 0
       jitterCount: {x: 0, y: 0}
-      perlinFiltering: 0
-      filterSize: 0
-      filterThreshold: 0
+      perlinFiltering: 1
+      filterSize: 1
+      filterThreshold: 0.3
