@@ -104,4 +104,6 @@ MonoBehaviour:
   - {fileID: 3621534232945799312, guid: 07d48794ec62e304db4e7827585ace1a, type: 3}
   - {fileID: 8893307839089731174, guid: ccb0e36a05c01374584c5245a857df84, type: 3}
   - {fileID: 4246571690064805299, guid: fe9fa03032215734f95ce85d2ddbbe7a, type: 3}
+  - {fileID: 8893307839089731174, guid: d8bb29f34f452784d9a778bd8c55aeb3, type: 3}
+  - {fileID: 5066372182696496190, guid: 778ab498fc01f1243852c1463072ddbe, type: 3}
   itemSpawning: {fileID: 0}

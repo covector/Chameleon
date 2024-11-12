@@ -174,6 +174,7 @@ public class ChunkGeneration : MonoBehaviour
             if (sqrMag < radius * radius)
             {
                 g.GetComponent<ProceduralAsset>().OnIntersect(sqrSpeed);
+                break;
             }
         }
     }
@@ -191,7 +192,8 @@ public class ChunkGeneration : MonoBehaviour
                 float globalX = point.x + transform.position.x - offset;
                 float globalZ = point.y + transform.position.z - offset;
                 if (!proceduralPrefab.FilterPoint(globalX, globalZ, terrainSeed + 696 * i)) { continue; }
-                GameObject asset = Instantiate(prefab, new Vector3(globalX, GetGroudLevel(globalX, globalZ, 1) - 0.1f, globalZ), Quaternion.identity, transform);
+                Quaternion rotation = proceduralPrefab.RotateToGround() ? GetTangentRotation(globalX, globalZ) : Quaternion.identity;
+                GameObject asset = Instantiate(prefab, new Vector3(globalX, GetGroudLevel(globalX, globalZ, 1) + proceduralPrefab.SpawnYOffset(), globalZ), rotation, transform);
                 ProceduralAsset procedural = asset.GetComponent<ProceduralAsset>();
                 asset.name = "Asset_" + assets.Count;  // For debug
                 procedural.Generate(rand.Next(10000));

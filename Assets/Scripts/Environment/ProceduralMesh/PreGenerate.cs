@@ -14,7 +14,7 @@ public abstract class PreGenerate<T> : ProceduralAsset where T : class
         {
             for (int i = 0; i < count; i++)
             {
-                MeshBuilder meshBuilder = new MeshBuilder(MaterialCount(), Random.Range(0, 10000));
+                MeshBuilder meshBuilder = new MeshBuilder(MaterialCount());
                 Edit(meshBuilder);
                 s_preGenerated.Add(meshBuilder.Build(RecalculateNormals()));
             }

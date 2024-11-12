@@ -32,6 +32,7 @@ public class MappingChunk : MonoBehaviour
 
     void PlaceAssets(AssetTemplate.MutableParam[] param)
     {
+        chunkSeed = terrainSeed + chunkInd.x * 727 - chunkInd.y * 757;
         System.Random rand = new System.Random(chunkSeed);
         float offset = size / 2f;
         for (int i = 0; i < param.Length; i++) 
@@ -44,9 +45,10 @@ public class MappingChunk : MonoBehaviour
                 float globalZ = point.y + transform.position.z - offset;
                 if (!p.FilterPoint(globalX, globalZ, terrainSeed + 696 * i)) { continue; }
                 GameObject asset = p.CreateObject();
-                asset.transform.SetPositionAndRotation(new Vector3(globalX, ChunkGeneration.GetGroudLevel(globalX, globalZ, 1) - 0.1f, globalZ), Quaternion.identity);
-                asset.transform.parent = transform;
                 ProceduralAsset procedural = asset.GetComponent<ProceduralAsset>();
+                Quaternion rotation = procedural.RotateToGround() ? ChunkGeneration.GetTangentRotation(globalX, globalZ) : Quaternion.identity;
+                asset.transform.SetPositionAndRotation(new Vector3(globalX, ChunkGeneration.GetGroudLevel(globalX, globalZ, 1) + procedural.SpawnYOffset(), globalZ), rotation);
+                asset.transform.parent = transform;
                 asset.name = "Asset_" + assets.Count;  // For debug
                 procedural.Generate(rand.Next(10000));
                 assets.Add(asset);

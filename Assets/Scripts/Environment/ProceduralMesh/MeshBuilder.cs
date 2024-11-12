@@ -8,7 +8,11 @@ public class MeshBuilder
     private List<Vector2> m_UVs = new List<Vector2>();
     private List<List<int>> m_Indices;
     private List<Vector3> m_Normals = new List<Vector3>();
-    public System.Random Random;
+
+    public List<Vector3> Vertices { get { return m_Vertices; } }
+    public List<Vector2> UVs { get { return m_UVs; } }
+    private List<List<int>> Indices { get { return m_Indices; } }
+    private List<Vector3> Normals { get { return m_Normals; } }
 
     public struct TempMesh
     {
@@ -25,14 +29,13 @@ public class MeshBuilder
         }
     }
 
-    public MeshBuilder(int materialCount = 1, int seed = 0)
+    public MeshBuilder(int materialCount = 1)
     {
         m_Indices = new List<List<int>>();
         for (int i = 0; i < materialCount; i++)
         {
             m_Indices.Add(new List<int>());
         }
-        Random = new System.Random(seed);
     }
 
     public int SubmeshCount()
@@ -83,6 +86,35 @@ public class MeshBuilder
         uv.Add(new Vector2(0, 1));
 
         Vector3 normal = Vector3.Cross(vec2, vec1).normalized;
+        normals.Add(normal);
+        normals.Add(normal);
+        normals.Add(normal);
+        normals.Add(normal);
+
+        return new TempMesh(vertices, uv, inds, normals);
+    }
+
+    public static TempMesh CreateQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
+    {
+        List<Vector3> vertices = new List<Vector3>();
+        List<int> inds = new List<int>();
+        List<Vector2> uv = new List<Vector2>();
+        List<Vector3> normals = new List<Vector3>();
+
+        vertices.Add(v1);
+        vertices.Add(v2);
+        vertices.Add(v3);
+        vertices.Add(v4);
+
+        AddTriangle(inds, 0, 2, 1);
+        AddTriangle(inds, 0, 3, 2);
+
+        uv.Add(new Vector2(0, 0));
+        uv.Add(new Vector2(1, 0));
+        uv.Add(new Vector2(1, 1));
+        uv.Add(new Vector2(0, 1));
+
+        Vector3 normal = Vector3.Cross(v4 - v1, v2 - v1).normalized;
         normals.Add(normal);
         normals.Add(normal);
         normals.Add(normal);

@@ -26,22 +26,22 @@ MonoBehaviour:
     enabled: 1
     depth: {x: 10, y: 10}
     radius: {x: 0.05, y: 0.4}
+    cylinderStep: 9
     trunkSplitChance: 0.1
     splitChance: 0.4
     splitRotate: 30
-    nonSplitRotate: 10
+    nonSplitRotate: 4
     trunkHeight: {x: 1, y: 6}
     branchLength: {x: 1, y: 1}
-    leavesCount: 4
+    leavesCount: 7
+    nonEndLeafChance: 0.1
     crossRenderLeaves: 0
     leavesDim: {x: 1, y: 3}
     leavesScale: {x: 0.35, y: 1}
-    leavesRotationOffset: {x: 0, y: 0, z: 0}
     leavesRotationRange: {x: 45, y: 90, z: 180}
-    nonEndLeafChance: 0.1
-    cylinderStep: 9
+    leavesRotationOffset: {x: 0, y: 0, z: 0}
     materials:
-    - {fileID: -876546973899608171, guid: b5bc60c909b54964fa4771dce4cbd1de, type: 3}
+    - {fileID: -876546973899608171, guid: b0bec46c906f10347b1518f8a8c13987, type: 3}
     - {fileID: 2100000, guid: 1e8c158b2f9a2a64aad675fffc718e5a, type: 2}
     sampling:
       algorithm: 0
@@ -66,7 +66,8 @@ MonoBehaviour:
   bushParam:
     enabled: 1
     depth: {x: 8, y: 12}
-    radius: {x: 0.03, y: 0.03}
+    radius: {x: 0.02, y: 0.03}
+    cylinderStep: 4
     trunkSplitChance: 0.1
     splitChance: 0.4
     splitRotate: 30
@@ -74,28 +75,57 @@ MonoBehaviour:
     trunkHeight: {x: 0.1, y: 0.15}
     branchLength: {x: 0.1, y: 0.17}
     leavesCount: 5
+    nonEndLeafChance: 0.1
     crossRenderLeaves: 0
     leavesDim: {x: 1, y: 2}
     leavesScale: {x: 0.05, y: 0.075}
-    leavesRotationOffset: {x: 0, y: 0, z: 0}
     leavesRotationRange: {x: 30, y: 180, z: 30}
-    nonEndLeafChance: 0.1
-    cylinderStep: 4
+    leavesRotationOffset: {x: 0, y: 0, z: 0}
     materials:
-    - {fileID: -876546973899608171, guid: b5bc60c909b54964fa4771dce4cbd1de, type: 3}
+    - {fileID: 2100000, guid: 2028119a854d4254889bca8e9a959f9d, type: 2}
     - {fileID: 2100000, guid: 06c8ee383a380864eb3da2ada57d96e1, type: 2}
     sampling:
       algorithm: 2
       spacing: 8
-      strength: 6
-      jitterCount: {x: 6, y: 20}
+      strength: 3
+      jitterCount: {x: 4, y: 8}
       perlinFiltering: 1
+      filterSize: 1
+      filterThreshold: 0.4
+  newBushParam:
+    enabled: 1
+    depth: {x: 12, y: 15}
+    radius: {x: 0.02, y: 0.02}
+    cylinderStep: 4
+    trunkSplitChance: 0.5
+    splitChance: 0.2
+    splitRotate: 90
+    nonSplitRotate: 30
+    trunkHeight: {x: 0.05, y: 0.1}
+    branchLength: {x: 0.05, y: 0.1}
+    leavesCount: 4
+    nonEndLeafChance: 0.6
+    crossRenderLeaves: 0
+    leavesDim: {x: 1, y: 2}
+    leavesScale: {x: 0.05, y: 0.1}
+    leavesRotationRange: {x: 30, y: 180, z: 60}
+    leavesRotationOffset: {x: 0, y: 0, z: 0}
+    materials:
+    - {fileID: 2100000, guid: 2028119a854d4254889bca8e9a959f9d, type: 2}
+    - {fileID: -876546973899608171, guid: c46c731254e591c4f9d891af520cc3e0, type: 3}
+    sampling:
+      algorithm: 2
+      spacing: 5
+      strength: 3
+      jitterCount: {x: 10, y: 14}
+      perlinFiltering: 0
       filterSize: 1
       filterThreshold: 0.4
   smallTreeParam:
     enabled: 1
     depth: {x: 10, y: 14}
-    radius: {x: 0.03, y: 0.08}
+    radius: {x: 0.03, y: 0.05}
+    cylinderStep: 7
     trunkSplitChance: 0.3
     splitChance: 0.3
     splitRotate: 50
@@ -103,21 +133,38 @@ MonoBehaviour:
     trunkHeight: {x: 0.6, y: 1}
     branchLength: {x: 0.6, y: 0.6}
     leavesCount: 4
+    nonEndLeafChance: 0.25
     crossRenderLeaves: 1
     leavesDim: {x: 1, y: 3}
     leavesScale: {x: 0.25, y: 0.35}
-    leavesRotationOffset: {x: -90, y: 0, z: 0}
     leavesRotationRange: {x: 45, y: 180, z: 180}
-    nonEndLeafChance: 0.25
-    cylinderStep: 7
+    leavesRotationOffset: {x: -90, y: 0, z: 0}
     materials:
-    - {fileID: -876546973899608171, guid: b5bc60c909b54964fa4771dce4cbd1de, type: 3}
+    - {fileID: 2100000, guid: 2028119a854d4254889bca8e9a959f9d, type: 2}
     - {fileID: 2100000, guid: 6016a3eb643f5cc49ac3fbcea287da3f, type: 2}
     sampling:
       algorithm: 0
-      spacing: 10
+      spacing: 15
       strength: 0
       jitterCount: {x: 0, y: 0}
-      perlinFiltering: 1
+      perlinFiltering: 0
       filterSize: 1
       filterThreshold: 0.3
+  straw:
+    enabled: 1
+    segmentLength: {x: 0.2, y: 0.3}
+    width: {x: 0.01, y: 0.02}
+    segments: 10
+    duplicate: 10
+    duplicateSpread: 2
+    yFactor: 0.1
+    materials:
+    - {fileID: 2100000, guid: d75b90cef42278a4a8ebdfa31cb3007f, type: 2}
+    sampling:
+      algorithm: 1
+      spacing: 3
+      strength: 3
+      jitterCount: {x: 8, y: 12}
+      perlinFiltering: 0
+      filterSize: 0
+      filterThreshold: 0

@@ -120,6 +120,12 @@ public class Utils
         return RandomRotation(random, Vector3.one * range);
     }
 
+    public static float TriangleDistr(System.Random random, float sigma)
+    {
+        float subRange = (float)random.NextDouble() * sigma;
+        return RandomRange(random, -subRange, subRange);
+    } 
+
     public static KeyCode TryParseKey(string key, KeyCode fallback)
     {
         try

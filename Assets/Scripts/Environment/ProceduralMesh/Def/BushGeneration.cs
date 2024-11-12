@@ -11,7 +11,7 @@ public class BushGeneration : GenericTreeGeneration<BushGeneration>
 
     public BushGeneration() : base(
         depth: new Vector2Int(8, 12),
-        radius: new Vector2(0.03f, 0.03f),
+        radius: new Vector2(0.02f, 0.03f),
         cylinderStep: 4,
         trunkSplitChance: 0.1f, splitChance: 0.4f,
         splitRotate: 30f, nonSplitRotate: 10f,
@@ -27,8 +27,8 @@ public class BushGeneration : GenericTreeGeneration<BushGeneration>
     {
         float offset = chunkSize / 2f;
         const float spacing = 8f;
-        const float strength = 6f;
-        Vector2Int jitterCount = new Vector2Int(6, 20);
+        const float strength = 3f;
+        Vector2Int jitterCount = new Vector2Int(4, 8);
         JitterPoissonSampling jps = new JitterPoissonSampling(chunkSize, chunkSize, spacing, strength, jitterCount, seed: seed);
         return jps.fill();
     }

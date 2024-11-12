@@ -62,6 +62,7 @@ public class AssetTemplate : ScriptableObject
         public bool enabled;
         public Vector2Int depth;
         public Vector2 radius;
+        public int cylinderStep;
         public float trunkSplitChance;
         public float splitChance;
         public float splitRotate;
@@ -69,13 +70,12 @@ public class AssetTemplate : ScriptableObject
         public Vector2 trunkHeight;
         public Vector2 branchLength;
         public int leavesCount;
+        public float nonEndLeafChance;
         public bool crossRenderLeaves;
         public Vector2 leavesDim;
         public Vector2 leavesScale;
-        public Vector3 leavesRotationOffset;
         public Vector3 leavesRotationRange;
-        public float nonEndLeafChance;
-        public int cylinderStep;
+        public Vector3 leavesRotationOffset;
         public Material[] materials;
         public SamplingParam sampling;
 
@@ -172,6 +172,58 @@ public class AssetTemplate : ScriptableObject
 
         public override int PreGenCount() { return 0; }
     }
+
+    [System.Serializable]
+    public struct MutableStrawParam : MutableParam
+    {
+        public bool enabled;
+        public Vector2 segmentLength;
+        public Vector2 width;
+        public int segments;
+        public int duplicate;
+        public float duplicateSpread;
+        public float yFactor;
+        public Material[] materials;
+        public SamplingParam sampling;
+
+        public GameObject CreateObject()
+        {
+            GameObject go = new GameObject();
+            go.AddComponent<MeshRenderer>().materials = materials;
+            go.AddComponent<MeshFilter>();
+            go.AddComponent<MutableStraw>().EditParam(this);
+            return go;
+        }
+
+        public List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
+        {
+            if (!enabled) { return new List<Vector2>(); }
+            return sampling.SamplePoints(chunkSize, globalPosition, seed);
+        }
+
+        public bool FilterPoint(float globalX, float globalZ, int maskSeed)
+        {
+            return sampling.FilterPoint(globalX, globalZ, maskSeed);
+        }
+    }
+
+    public class MutableStraw : StrawGeneration, MutableAsset
+    {
+        public MutableStraw() : base() { }
+
+        public void EditParam(MutableParam param)
+        {
+            MutableStrawParam strawParam = (MutableStrawParam)param;
+            this.segmentLength = strawParam.segmentLength;
+            this.segments = strawParam.segments;
+            this.width = strawParam.width;
+            this.yFactor = strawParam.yFactor;
+            this.duplicate = strawParam.duplicate;
+            this.duplicateSpread = strawParam.duplicateSpread;
+        }
+
+        public override int PreGenCount() { return 0; }
+    }
     #endregion
 
     [Header("Terrain")]
@@ -188,18 +240,26 @@ public class AssetTemplate : ScriptableObject
     [Header("Bushes")]
     [SerializeField]
     public MutableTreeParam bushParam;
+    [Header("New Bushes")]
+    [SerializeField]
+    public MutableTreeParam newBushParam;
     [Header("Small Trees")]
     [SerializeField]
     public MutableTreeParam smallTreeParam;
+    [Header("Straw")]
+    [SerializeField]
+    public MutableStrawParam straw;
 
     public MutableParam[] GetParams()
     {
-        MutableParam[] param = new MutableParam[4];
+        MutableParam[] param = new MutableParam[6];
 
         param[0] = treeParam;
         param[1] = rockParam;
         param[2] = bushParam;
-        param[3] = smallTreeParam;
+        param[3] = newBushParam;
+        param[4] = smallTreeParam;
+        param[5] = straw;
 
         return param;
     }

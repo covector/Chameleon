@@ -107,13 +107,14 @@ public abstract class GenericTreeGeneration<T> : PreGenerate<T> where T : class
         {
             Matrix4x4 newTrans = cumTrans * Utils.RandomRotation(random, split ? splitRotate : nonSplitRotate);
             float height = state.split == 0 ? Utils.RandomRange(rand, trunkHeight) : Utils.RandomRange(rand, branchLength);
-            float radius = state.radius * depth / state.totalDepth;
+            float branchRadius = i == 0 ? state.radius : state.radius * 0.7f;
+            float radius = Mathf.Max(0.003f, branchRadius * (depth - 1) / (state.totalDepth - 1));
             if (depth == state.totalDepth && i == 0) { maxDims.Add(radius); }
             TempMesh cylinder = TransformMesh(UNIT_CYLINDER, newTrans * Matrix4x4.Scale(new Vector3(radius, height, radius)));
-            for (int u = 0; u < cylinder.uvs.Count; u++)
-            {
-                cylinder.uvs[u] = new Vector2(cylinder.uvs[u].x, cylinder.uvs[u].y + state.uvOffset);
-            }
+            //for (int u = 0; u < cylinder.uvs.Count; u++)
+            //{
+            //    cylinder.uvs[u] = new Vector2(cylinder.uvs[u].x, cylinder.uvs[u].y + state.uvOffset);
+            //}
             meshBuilder.AddMesh(cylinder, 0);
             int newLastVertInd = meshBuilder.GetLastVertInd();
             if (state.lastVertInd > 0 && i == 0)
@@ -123,14 +124,17 @@ public abstract class GenericTreeGeneration<T> : PreGenerate<T> where T : class
             if (depth > 1)
             {
                 newTrans = newTrans * Matrix4x4.Translate(new Vector3(0f, 0.9f * height, 0f));
-                State newState = new State(split ? state.split : state.split + 1, state.radius, state.totalDepth, newLastVertInd, i == 0 ? state.uvOffset + 1 : 0);
+                State newState = new State(split ? state.split : state.split + 1, branchRadius, state.totalDepth, newLastVertInd, i == 0 ? state.uvOffset + 1 : 0);
                 Grow(meshBuilder, random, newTrans, depth - 1, newState);
             }
 
-            for (int j = 0; j < leavesCount; j++)
+            if (state.split != 0)
             {
-                if (depth > 1 && (float)random.NextDouble() > nonEndLeafChance) { continue; }
-                AddLeaf(meshBuilder, random, newTrans, height, depth == 1 && j == 0);
+                for (int j = 0; j < leavesCount; j++)
+                {
+                    if (depth > 1 && (float)random.NextDouble() > nonEndLeafChance) { continue; }
+                    AddLeaf(meshBuilder, random, newTrans, height, depth == 1 && j == 0);
+                }
             }
         }
     }

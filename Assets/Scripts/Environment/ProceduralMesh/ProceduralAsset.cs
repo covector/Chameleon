@@ -14,7 +14,7 @@ public abstract class ProceduralAsset : MonoBehaviour
     {
         this.seed = seed;
         this.rand = new System.Random(seed);
-        MeshBuilder meshBuilder = new MeshBuilder(MaterialCount(), seed);
+        MeshBuilder meshBuilder = new MeshBuilder(MaterialCount());
         Edit(meshBuilder);
         GetComponent<MeshFilter>().mesh = meshBuilder.Build(RecalculateNormals());
         foreach (Material mat in GetComponent<MeshRenderer>().materials)
@@ -32,4 +32,6 @@ public abstract class ProceduralAsset : MonoBehaviour
     public virtual bool CollisionCheck() { return false; }
     public virtual bool IntersectionCheck() { return false; }
     public virtual void OnIntersect(float sqrSpeed) { }
+    public virtual bool RotateToGround() { return false; }
+    public virtual float SpawnYOffset() { return -0.1f; }
 }

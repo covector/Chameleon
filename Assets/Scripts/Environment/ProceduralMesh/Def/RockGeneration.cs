@@ -5,7 +5,7 @@ using static MeshBuilder;
 public class RockGeneration : PreGenerate<RockGeneration>
 {
     public override bool ItemSpawnCheck() { return true; }
-
+    public override int PreGenCount() { return 60; }
     public override bool RecalculateNormals() { return true; }
 
     public static TempMesh UNIT_CUBESPHERE;
@@ -22,8 +22,8 @@ public class RockGeneration : PreGenerate<RockGeneration>
     protected override void Edit(MeshBuilder meshBuilder)
     {
         TryInit();
-        TempMesh plane = TransformMesh(VoronoiDisplace(UNIT_CUBESPHERE, 0.1f, 1.5f), RandomTransform(rand));
-        meshBuilder.AddMesh(plane, 0);
+        TempMesh mesh = TransformMesh(VoronoiDisplace(UNIT_CUBESPHERE, 0.1f, 1.5f), RandomTransform(rand));
+        meshBuilder.AddMesh(mesh, 0);
     }
 
     public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
@@ -45,11 +45,11 @@ public class RockGeneration : PreGenerate<RockGeneration>
 
     Matrix4x4 RandomTransform(System.Random random)
     {
-        float scale = Utils.RandomRange(random, 0.4f, 1.2f);
+        float scale = random.NextDouble() > 0.45f ? Utils.RandomRange(random, 0.4f, 1.2f) : Utils.RandomRange(random, 0.4f, 0.7f);
         maxDims.Add(scale);
         return Matrix4x4.Scale(new Vector3(
             scale,
-            scale * Utils.RandomRange(random, 0.4f, 1f),
+            scale * Utils.RandomRange(random, 0.6f, 1.5f),
             scale * Utils.RandomRange(random, 0.4f, 1f)
         )) *
         Utils.RandomRotation(random, Vector3.up * 360f);

@@ -5,8 +5,9 @@ using UnityEngine;
 public class MappingTerrainGeneration : MonoBehaviour
 {
     public AssetTemplate template;
-    public float refreshPeriod = 0.5f;
+    public float refreshPeriod = 0.1f;
     public bool update;
+    int updateChunkInd = 0;
     int step;
     float chunkSize;
     ChunkGeneration.Perlin[] perlins;
@@ -16,7 +17,7 @@ public class MappingTerrainGeneration : MonoBehaviour
         this.step = template.terrain_step;
         this.chunkSize = template.terrain_chunkSize;
         this.perlins = template.terrain_perlins;
-        ChunkGeneration.Init(chunkSize, step, perlins, seed);
+        MappingChunk.Init(chunkSize, step, perlins, seed);
     }
 
     protected static Vector2Int[] chunkInds = new Vector2Int[] {
@@ -31,8 +32,10 @@ public class MappingTerrainGeneration : MonoBehaviour
     {
         if (counter > refreshPeriod)
         {
-            UpdateTerrain();
+            MappingChunk.Init(chunkSize, step, perlins, seed);
+            UpdateTerrain(updateChunkInd);
             counter = 0.0f;
+            updateChunkInd = (updateChunkInd + 1) % chunkInds.Length;
         }
         if (update)
         {
@@ -40,13 +43,10 @@ public class MappingTerrainGeneration : MonoBehaviour
         }
     }
 
-    void UpdateTerrain()
+    void UpdateTerrain(int ind)
     {
         if (chunks.Count == 0) { CreateChunks(); }
-        foreach (MappingChunk chunk in chunks)
-        {
-            chunk.UpdateAssets(template);
-        }
+        chunks[ind].UpdateAssets(template);
     }
 
     void CreateChunks()
