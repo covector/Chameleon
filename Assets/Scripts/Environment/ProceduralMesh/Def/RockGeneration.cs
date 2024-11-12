@@ -22,7 +22,7 @@ public class RockGeneration : PreGenerate<RockGeneration>
     protected override void Edit(MeshBuilder meshBuilder)
     {
         TryInit();
-        TempMesh mesh = TransformMesh(VoronoiDisplace(UNIT_CUBESPHERE, 0.1f, 1.5f), RandomTransform(rand));
+        TempMesh mesh = TransformMesh(VoronoiDisplace(UNIT_CUBESPHERE, rand, 0.1f, 1.5f), RandomTransform(rand));
         meshBuilder.AddMesh(mesh, 0);
     }
 
@@ -55,51 +55,6 @@ public class RockGeneration : PreGenerate<RockGeneration>
         Utils.RandomRotation(random, Vector3.up * 360f);
     }
 
-    private TempMesh VoronoiDisplace(TempMesh mesh, float density, float intensity)
-    {
-        TempMesh newMesh = mesh;
-        List<Vector3> vertices = new List<Vector3>();
-        List<Vector3> normals = new List<Vector3>();
-        // Sample random points
-        List<Vector3> randomPt = new List<Vector3>();
-        for (int i = 0; i < mesh.vertices.Count; i++)
-        {
-            if (rand.NextDouble() < density)
-            {
-                randomPt.Add(mesh.vertices[i]);
-            }
-        }
-        // Displace based on squared distance to nearest random point
-        for (int i = 0; i < mesh.vertices.Count; i++)
-        {
-            float minDist = float.MaxValue;
-            Vector3 minDistNormal = Vector3.zero;
-            for (int j = 0; j < randomPt.Count; j++)
-            {
-                float dist = Vector3.SqrMagnitude(mesh.vertices[i] - randomPt[j]);
-                if (dist < minDist) { minDist = dist; minDistNormal = mesh.normals[i]; }
-            }
-            vertices.Add(mesh.vertices[i] + intensity * minDist * newMesh.normals[i]);
-            normals.Add(minDistNormal);
-            //vertices[i] += intensity * Mathf.Sqrt(minDist) * newMesh.normals[i];
-        }
-        newMesh.vertices = vertices;
-        newMesh.normals = normals;
-        return newMesh;
-    }
-
-    private TempMesh PerlinDisplace(TempMesh mesh, float frequency, float intensity)
-    {
-        TempMesh newMesh = mesh;
-        List<Vector3> vertices = new List<Vector3>();
-        for (int i = 0; i < mesh.vertices.Count; i++)
-        {
-            vertices.Add(mesh.vertices[i] + intensity * (Mathf.PerlinNoise(frequency * newMesh.uvs[i].x, frequency * newMesh.uvs[i].y) - 0.5f) * newMesh.normals[i]);
-        }
-        newMesh.vertices = vertices;
-        return newMesh;
-    }
-
-    protected float renderRadiusSquare = 250f;
+    protected float renderRadiusSquare = 400f;
     public override float RenderRadiusSquare() { return renderRadiusSquare; }
 }

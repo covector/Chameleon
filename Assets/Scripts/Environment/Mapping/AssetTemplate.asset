@@ -24,26 +24,26 @@ MonoBehaviour:
   groundMaterial: {fileID: -876546973899608171, guid: 292755b4e45356644ac9b089be93abb7, type: 3}
   treeParam:
     enabled: 1
-    depth: {x: 10, y: 10}
-    radius: {x: 0.05, y: 0.4}
+    depth: 15
+    radius: {x: 0.1, y: 0.4}
     cylinderStep: 9
-    trunkSplitChance: 0.1
+    trunkSplitChance: 0.05
     splitChance: 0.4
-    splitRotate: 30
-    nonSplitRotate: 4
-    trunkHeight: {x: 1, y: 6}
-    branchLength: {x: 1, y: 1}
-    leavesCount: 7
-    nonEndLeafChance: 0.1
+    splitRotate: 25
+    splitRadiusFactor: 0.6
+    nonSplitRotate: 10
+    branchLength: 2.5
+    branchLengthFactor: 0.8
+    leavesCount: 6
+    startLeaveDepth: 4
     crossRenderLeaves: 0
-    leavesDim: {x: 1, y: 3}
-    leavesScale: {x: 0.35, y: 1}
+    leavesDim: {x: 1, y: 1}
+    leavesScale: {x: 0.2, y: 0.5}
     leavesRotationRange: {x: 45, y: 90, z: 180}
-    leavesRotationOffset: {x: 0, y: 0, z: 0}
-    renderRadiusSquare: 10000
+    leavesRotationOffset: {x: -45, y: 0, z: 0}
     materials:
     - {fileID: -876546973899608171, guid: b0bec46c906f10347b1518f8a8c13987, type: 3}
-    - {fileID: 2100000, guid: 1e8c158b2f9a2a64aad675fffc718e5a, type: 2}
+    - {fileID: 2100000, guid: 9a7c22ec84b5a5e4bb382132870583a0, type: 2}
     sampling:
       algorithm: 0
       spacing: 4
@@ -54,7 +54,6 @@ MonoBehaviour:
       filterThreshold: 0.5
   rockParam:
     enabled: 1
-    renderRadiusSquare: 100
     materials:
     - {fileID: -876546973899608171, guid: b2338f7b0df53074c8c9fe7578174145, type: 3}
     sampling:
@@ -67,23 +66,23 @@ MonoBehaviour:
       filterThreshold: 0.4
   bushParam:
     enabled: 1
-    depth: {x: 8, y: 12}
+    depth: 10
     radius: {x: 0.02, y: 0.03}
     cylinderStep: 4
     trunkSplitChance: 0.1
     splitChance: 0.4
     splitRotate: 30
+    splitRadiusFactor: 0.7
     nonSplitRotate: 10
-    trunkHeight: {x: 0.1, y: 0.15}
-    branchLength: {x: 0.1, y: 0.17}
-    leavesCount: 5
-    nonEndLeafChance: 0.1
+    branchLength: 0.15
+    branchLengthFactor: 0.9
+    leavesCount: 1
+    startLeaveDepth: 3
     crossRenderLeaves: 0
     leavesDim: {x: 1, y: 2}
     leavesScale: {x: 0.05, y: 0.075}
     leavesRotationRange: {x: 30, y: 180, z: 30}
     leavesRotationOffset: {x: 0, y: 0, z: 0}
-    renderRadiusSquare: 100
     materials:
     - {fileID: 2100000, guid: 2028119a854d4254889bca8e9a959f9d, type: 2}
     - {fileID: 2100000, guid: 06c8ee383a380864eb3da2ada57d96e1, type: 2}
@@ -97,23 +96,23 @@ MonoBehaviour:
       filterThreshold: 0.4
   newBushParam:
     enabled: 1
-    depth: {x: 12, y: 15}
+    depth: 12
     radius: {x: 0.02, y: 0.02}
     cylinderStep: 4
     trunkSplitChance: 0.5
-    splitChance: 0.2
+    splitChance: 0.4
     splitRotate: 90
+    splitRadiusFactor: 1
     nonSplitRotate: 30
-    trunkHeight: {x: 0.05, y: 0.1}
-    branchLength: {x: 0.05, y: 0.1}
-    leavesCount: 4
-    nonEndLeafChance: 0.6
+    branchLength: 0.1
+    branchLengthFactor: 0.9
+    leavesCount: 1
+    startLeaveDepth: 8
     crossRenderLeaves: 0
     leavesDim: {x: 1, y: 2}
     leavesScale: {x: 0.05, y: 0.1}
     leavesRotationRange: {x: 30, y: 180, z: 60}
     leavesRotationOffset: {x: 0, y: 0, z: 0}
-    renderRadiusSquare: 100
     materials:
     - {fileID: 2100000, guid: 2028119a854d4254889bca8e9a959f9d, type: 2}
     - {fileID: -876546973899608171, guid: c46c731254e591c4f9d891af520cc3e0, type: 3}
@@ -127,23 +126,23 @@ MonoBehaviour:
       filterThreshold: 0.4
   smallTreeParam:
     enabled: 1
-    depth: {x: 10, y: 14}
-    radius: {x: 0.03, y: 0.05}
+    depth: 15
+    radius: {x: 0.04, y: 0.05}
     cylinderStep: 7
     trunkSplitChance: 0.3
     splitChance: 0.3
-    splitRotate: 50
+    splitRotate: 45
+    splitRadiusFactor: 0.8
     nonSplitRotate: 10
-    trunkHeight: {x: 0.6, y: 1}
-    branchLength: {x: 0.6, y: 0.6}
-    leavesCount: 4
-    nonEndLeafChance: 0.25
+    branchLength: 0.8
+    branchLengthFactor: 0.8
+    leavesCount: 1
+    startLeaveDepth: 1
     crossRenderLeaves: 1
     leavesDim: {x: 1, y: 3}
     leavesScale: {x: 0.25, y: 0.35}
     leavesRotationRange: {x: 45, y: 180, z: 180}
-    leavesRotationOffset: {x: -90, y: 0, z: 0}
-    renderRadiusSquare: 100
+    leavesRotationOffset: {x: -33.67, y: 0, z: 0}
     materials:
     - {fileID: 2100000, guid: 2028119a854d4254889bca8e9a959f9d, type: 2}
     - {fileID: 2100000, guid: 6016a3eb643f5cc49ac3fbcea287da3f, type: 2}
@@ -163,7 +162,6 @@ MonoBehaviour:
     duplicate: 10
     duplicateSpread: 2
     yFactor: 0.1
-    renderRadiusSquare: 70
     materials:
     - {fileID: 2100000, guid: d75b90cef42278a4a8ebdfa31cb3007f, type: 2}
     sampling:

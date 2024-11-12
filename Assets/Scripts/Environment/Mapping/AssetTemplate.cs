@@ -60,17 +60,18 @@ public class AssetTemplate : ScriptableObject
     public struct MutableTreeParam : MutableParam
     {
         public bool enabled;
-        public Vector2Int depth;
+        public int depth;
         public Vector2 radius;
         public int cylinderStep;
         public float trunkSplitChance;
         public float splitChance;
         public float splitRotate;
+        public float splitRadiusFactor;
         public float nonSplitRotate;
-        public Vector2 trunkHeight;
-        public Vector2 branchLength;
+        public float branchLength;
+        public float branchLengthFactor;
         public int leavesCount;
-        public float nonEndLeafChance;
+        public int startLeaveDepth;
         public bool crossRenderLeaves;
         public Vector2 leavesDim;
         public Vector2 leavesScale;
@@ -112,16 +113,17 @@ public class AssetTemplate : ScriptableObject
             this.trunkSplitChance = treeParam.trunkSplitChance;
             this.splitChance = treeParam.splitChance;
             this.splitRotate = treeParam.splitRotate;
+            this.splitRadiusFactor = treeParam.splitRadiusFactor;
             this.nonSplitRotate = treeParam.nonSplitRotate;
-            this.trunkHeight = treeParam.trunkHeight;
             this.branchLength = treeParam.branchLength;
+            this.branchLengthFactor = treeParam.branchLengthFactor;
             this.leavesCount = treeParam.leavesCount;
             this.crossRenderLeaves = treeParam.crossRenderLeaves;
             this.leavesDim = treeParam.leavesDim;
             this.leavesScale = treeParam.leavesScale;
             this.leavesRotationOffset = treeParam.leavesRotationOffset;
             this.leavesRotationRange = treeParam.leavesRotationRange;
-            this.nonEndLeafChance = treeParam.nonEndLeafChance;
+            this.startLeaveDepth = treeParam.startLeaveDepth;
             this.cylinderStep = treeParam.cylinderStep;
         }
 
@@ -131,6 +133,7 @@ public class AssetTemplate : ScriptableObject
         }
 
         public override int PreGenCount() { return 0; }
+        public override float RenderRadiusSquare() { return -1; }
     }
 
     [System.Serializable]
@@ -171,6 +174,7 @@ public class AssetTemplate : ScriptableObject
         }
 
         public override int PreGenCount() { return 0; }
+        public override float RenderRadiusSquare() { return -1; }
     }
 
     [System.Serializable]
@@ -223,6 +227,7 @@ public class AssetTemplate : ScriptableObject
         }
 
         public override int PreGenCount() { return 0; }
+        public override float RenderRadiusSquare() { return -1; }
     }
     #endregion
 

@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Utils
 {
+    public static Matrix4x4 GetTranslateOnly(Matrix4x4 trans)
+    {
+        return Matrix4x4.Translate(trans.MultiplyPoint3x4(new Vector3(0, 0, 0)));
+    }
+
     public static Vector2 ToVector2(Vector3 vector)
     {
         return new Vector2(vector.x, vector.z);

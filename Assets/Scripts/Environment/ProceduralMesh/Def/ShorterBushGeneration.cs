@@ -10,13 +10,13 @@ public class ShorterBushGeneration : GenericTreeGeneration<ShorterBushGeneration
     }
 
     public ShorterBushGeneration() : base(
-        depth: new Vector2Int(12, 15),
+        depth: 12,
         radius: new Vector2(0.02f, 0.02f),
         cylinderStep: 4,
-        trunkSplitChance: 0.5f, splitChance: 0.2f,
-        splitRotate: 90f, nonSplitRotate: 30f,
-        trunkHeight: new Vector2(0.05f, 0.1f), branchLength: new Vector2(0.05f, 0.1f),
-        leavesCount: 4, nonEndLeafChance: 0.6f,
+        trunkSplitChance: 0.5f, splitChance: 0.4f,
+        splitRotate: 90f, splitRadiusFactor: 1f, nonSplitRotate: 30f,
+        branchLength: 0.1f, branchLengthFactor: 0.9f,
+        leavesCount: 1, startLeaveDepth: 8,
         crossRenderLeaves: false,
         leavesDim: new Vector2(1f, 2f), leavesScale: new Vector2(0.05f, 0.1f),
         leavesRotationRange: new Vector3(30f, 180f, 60f), leavesRotationOffset: Vector3.zero

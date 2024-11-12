@@ -10,13 +10,13 @@ public class BushGeneration : GenericTreeGeneration<BushGeneration>
     }
 
     public BushGeneration() : base(
-        depth: new Vector2Int(8, 12),
+        depth: 10,
         radius: new Vector2(0.02f, 0.03f),
         cylinderStep: 4,
         trunkSplitChance: 0.1f, splitChance: 0.4f,
-        splitRotate: 30f, nonSplitRotate: 10f,
-        trunkHeight: new Vector2(0.1f, 0.15f), branchLength: new Vector2(0.1f, 0.17f),
-        leavesCount: 5, nonEndLeafChance: 0.1f,
+        splitRotate: 30f, splitRadiusFactor: 0.7f, nonSplitRotate: 10f,
+        branchLength: 0.15f, branchLengthFactor: 0.9f,
+        leavesCount: 1, startLeaveDepth: 3,
         crossRenderLeaves: false,
         leavesDim: new Vector2(1f, 2f), leavesScale: new Vector2(0.05f, 0.075f),
         leavesRotationRange: new Vector3(30f, 180f, 30f), leavesRotationOffset: Vector3.zero

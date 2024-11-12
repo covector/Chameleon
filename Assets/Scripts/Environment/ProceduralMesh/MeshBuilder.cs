@@ -251,6 +251,63 @@ public class MeshBuilder
         return cube;
     }
 
+    public static TempMesh VoronoiDisplace(TempMesh mesh, System.Random rand, float density, float intensity)
+    {
+        TempMesh newMesh = mesh;
+        List<Vector3> vertices = new List<Vector3>();
+        List<Vector3> normals = new List<Vector3>();
+        // Sample random points
+        List<Vector3> randomPt = new List<Vector3>();
+        for (int i = 0; i < mesh.vertices.Count; i++)
+        {
+            if (rand.NextDouble() < density)
+            {
+                randomPt.Add(mesh.vertices[i]);
+            }
+        }
+        // Displace based on squared distance to nearest random point
+        for (int i = 0; i < mesh.vertices.Count; i++)
+        {
+            float minDist = float.MaxValue;
+            Vector3 minDistNormal = Vector3.zero;
+            for (int j = 0; j < randomPt.Count; j++)
+            {
+                float dist = Vector3.SqrMagnitude(mesh.vertices[i] - randomPt[j]);
+                if (dist < minDist) { minDist = dist; minDistNormal = mesh.normals[i]; }
+            }
+            vertices.Add(mesh.vertices[i] + intensity * minDist * newMesh.normals[i]);
+            normals.Add(minDistNormal);
+            //vertices[i] += intensity * Mathf.Sqrt(minDist) * newMesh.normals[i];
+        }
+        newMesh.vertices = vertices;
+        newMesh.normals = normals;
+        return newMesh;
+    }
+
+    public static TempMesh PerlinDisplace(TempMesh mesh, float frequency, float intensity)
+    {
+        TempMesh newMesh = mesh;
+        List<Vector3> vertices = new List<Vector3>();
+        for (int i = 0; i < mesh.vertices.Count; i++)
+        {
+            vertices.Add(mesh.vertices[i] + intensity * (Mathf.PerlinNoise(frequency * newMesh.uvs[i].x, frequency * newMesh.uvs[i].y) - 0.5f) * newMesh.normals[i]);
+        }
+        newMesh.vertices = vertices;
+        return newMesh;
+    }
+
+    public static TempMesh RandomDisplace(TempMesh mesh, System.Random rand, float intensity)
+    {
+        TempMesh newMesh = mesh;
+        List<Vector3> vertices = new List<Vector3>();
+        for (int i = 0; i < mesh.vertices.Count; i++)
+        {
+            vertices.Add(mesh.vertices[i] + Utils.RandomRange(rand, -intensity, intensity) * newMesh.normals[i]);
+        }
+        newMesh.vertices = vertices;
+        return newMesh;
+    }
+
     public void AddMesh(TempMesh mesh, int materialInd = 0)
     {
         int currentInd = m_Vertices.Count;

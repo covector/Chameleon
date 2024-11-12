@@ -4,16 +4,16 @@ using UnityEngine;
 public class TreeGeneration : GenericTreeGeneration<TreeGeneration>
 {
     public TreeGeneration() : base(
-        depth: new Vector2Int(10, 10),
-        radius: new Vector2(0.05f, 0.4f),
+        depth: 15,
+        radius: new Vector2(0.1f, 0.4f),
         cylinderStep: 9,
-        trunkSplitChance: 0.1f, splitChance: 0.4f,
-        splitRotate: 30f, nonSplitRotate: 4f,
-        trunkHeight: new Vector2(1f, 6f), branchLength: new Vector2(1f, 1f),
-        leavesCount: 7, nonEndLeafChance: 0.1f,
+        trunkSplitChance: 0.05f, splitChance: 0.4f,
+        splitRotate: 25f, splitRadiusFactor: 0.6f, nonSplitRotate: 10f,
+        branchLength: 2.5f, branchLengthFactor: 0.8f,
+        leavesCount: 6, startLeaveDepth: 4,
         crossRenderLeaves: false,
-        leavesDim: new Vector2(1f, 3f), leavesScale: new Vector2(0.35f, 1f),
-        leavesRotationRange: new Vector3(45f, 90f, 180f), leavesRotationOffset: Vector3.zero
+        leavesDim: new Vector2(1f, 1f), leavesScale: new Vector2(0.2f, 0.5f),
+        leavesRotationRange: new Vector3(45f, 90f, 180f), leavesRotationOffset: new Vector3(-45f, 0f, 0f)
     )
     { }
     public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)

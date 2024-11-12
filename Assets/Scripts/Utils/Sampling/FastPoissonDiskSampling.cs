@@ -51,6 +51,10 @@ public class FastPoissonDiskSampling
     protected float height;
     protected float radius;
     int maxTries;
+    float floatPrecisionMitigation;
+    float epsilonRadius;
+    float epsilonAngle;
+    float radiusPlusEpsilon;
     float squaredRadius;
     float cellSize;
     float angleIncrement;
@@ -67,10 +71,14 @@ public class FastPoissonDiskSampling
         this.height = height;
         this.radius = radius;
         this.maxTries = maxTries;
+        this.floatPrecisionMitigation = Mathf.Max(1, Mathf.FloorToInt(Mathf.Max(this.width, this.height) / 64));
+        this.epsilonRadius = 1e-14f * floatPrecisionMitigation;
+        this.epsilonAngle = 2e-14f;
         this.squaredRadius = this.radius * this.radius;
+        this.radiusPlusEpsilon = this.radius + epsilonRadius;
         this.cellSize = this.radius * SQRT1_2;
         this.angleIncrement = Mathf.PI * 2 / this.maxTries;
-        this.angleIncrementOnSuccess = PIDIV3;
+        this.angleIncrementOnSuccess = PIDIV3 + epsilonAngle;
         this.triesIncrementOnSuccess = Mathf.CeilToInt(this.angleIncrementOnSuccess / this.angleIncrement);
         this.processList = new List<Point>();
         this.samplePoints = new List<Vector2>();
@@ -171,8 +179,8 @@ public class FastPoissonDiskSampling
             for (; tries < this.maxTries; tries++)
             {
                 newPoint = new Point(
-                    currentPoint.x + Mathf.Cos(currentAngle) * this.radius,
-                    currentPoint.y + Mathf.Sin(currentAngle) * this.radius,
+                    currentPoint.x + Mathf.Cos(currentAngle) * this.radiusPlusEpsilon,
+                    currentPoint.y + Mathf.Sin(currentAngle) * this.radiusPlusEpsilon,
                     currentAngle,
                     0
                 );
