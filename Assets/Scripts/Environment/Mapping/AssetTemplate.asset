@@ -40,6 +40,7 @@ MonoBehaviour:
     leavesScale: {x: 0.35, y: 1}
     leavesRotationRange: {x: 45, y: 90, z: 180}
     leavesRotationOffset: {x: 0, y: 0, z: 0}
+    renderRadiusSquare: 10000
     materials:
     - {fileID: -876546973899608171, guid: b0bec46c906f10347b1518f8a8c13987, type: 3}
     - {fileID: 2100000, guid: 1e8c158b2f9a2a64aad675fffc718e5a, type: 2}
@@ -53,6 +54,7 @@ MonoBehaviour:
       filterThreshold: 0.5
   rockParam:
     enabled: 1
+    renderRadiusSquare: 100
     materials:
     - {fileID: -876546973899608171, guid: b2338f7b0df53074c8c9fe7578174145, type: 3}
     sampling:
@@ -81,6 +83,7 @@ MonoBehaviour:
     leavesScale: {x: 0.05, y: 0.075}
     leavesRotationRange: {x: 30, y: 180, z: 30}
     leavesRotationOffset: {x: 0, y: 0, z: 0}
+    renderRadiusSquare: 100
     materials:
     - {fileID: 2100000, guid: 2028119a854d4254889bca8e9a959f9d, type: 2}
     - {fileID: 2100000, guid: 06c8ee383a380864eb3da2ada57d96e1, type: 2}
@@ -110,6 +113,7 @@ MonoBehaviour:
     leavesScale: {x: 0.05, y: 0.1}
     leavesRotationRange: {x: 30, y: 180, z: 60}
     leavesRotationOffset: {x: 0, y: 0, z: 0}
+    renderRadiusSquare: 100
     materials:
     - {fileID: 2100000, guid: 2028119a854d4254889bca8e9a959f9d, type: 2}
     - {fileID: -876546973899608171, guid: c46c731254e591c4f9d891af520cc3e0, type: 3}
@@ -139,6 +143,7 @@ MonoBehaviour:
     leavesScale: {x: 0.25, y: 0.35}
     leavesRotationRange: {x: 45, y: 180, z: 180}
     leavesRotationOffset: {x: -90, y: 0, z: 0}
+    renderRadiusSquare: 100
     materials:
     - {fileID: 2100000, guid: 2028119a854d4254889bca8e9a959f9d, type: 2}
     - {fileID: 2100000, guid: 6016a3eb643f5cc49ac3fbcea287da3f, type: 2}
@@ -158,12 +163,13 @@ MonoBehaviour:
     duplicate: 10
     duplicateSpread: 2
     yFactor: 0.1
+    renderRadiusSquare: 70
     materials:
     - {fileID: 2100000, guid: d75b90cef42278a4a8ebdfa31cb3007f, type: 2}
     sampling:
       algorithm: 1
-      spacing: 3
-      strength: 3
+      spacing: 4
+      strength: 4
       jitterCount: {x: 8, y: 12}
       perlinFiltering: 0
       filterSize: 0

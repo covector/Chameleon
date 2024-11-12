@@ -19,7 +19,7 @@ public class ItemPickUp : MonoBehaviour
     {
         if (Input.GetKeyDown(PlayerOptions.instance.KeyBinds["PickUp"]))
         {
-            if (canBePickenUp())
+            if (scanner.activeSelf && canBePickenUp())
             {
                 scanner.SetActive(false);
                 pickedUp = true;

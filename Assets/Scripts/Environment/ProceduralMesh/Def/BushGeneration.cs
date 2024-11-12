@@ -50,4 +50,7 @@ public class BushGeneration : GenericTreeGeneration<BushGeneration>
             randomAudio.PlayRandomSound(sqrSpeed / 3f);
         }
     }
+
+    protected float renderRadiusSquare = 250f;
+    public override float RenderRadiusSquare() { return renderRadiusSquare; }
 }

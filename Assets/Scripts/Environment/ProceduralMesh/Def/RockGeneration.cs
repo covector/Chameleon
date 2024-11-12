@@ -99,4 +99,7 @@ public class RockGeneration : PreGenerate<RockGeneration>
         newMesh.vertices = vertices;
         return newMesh;
     }
+
+    protected float renderRadiusSquare = 250f;
+    public override float RenderRadiusSquare() { return renderRadiusSquare; }
 }

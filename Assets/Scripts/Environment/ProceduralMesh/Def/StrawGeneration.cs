@@ -67,4 +67,7 @@ public class StrawGeneration : PreGenerate<StrawGeneration>
     public override int MaterialCount() { return 1; }
     public override bool RotateToGround() { return true; }
     public override float SpawnYOffset() { return 0; }
+
+    protected float renderRadiusSquare = 70f;
+    public override float RenderRadiusSquare() { return renderRadiusSquare; }
 }

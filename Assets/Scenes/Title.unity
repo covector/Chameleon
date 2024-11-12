@@ -378,7 +378,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 730463554}
   m_HandleRect: {fileID: 730463553}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -2515,6 +2515,7 @@ GameObject:
   - component: {fileID: 1544405480}
   - component: {fileID: 1544405479}
   - component: {fileID: 1544405481}
+  - component: {fileID: 1544405482}
   m_Layer: 0
   m_Name: Video Player
   m_TagString: Untagged
@@ -2587,6 +2588,19 @@ MonoBehaviour:
   volume: 0.25
   blendTime: 3
   playOnAwake: 1
+--- !u!114 &1544405482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544405478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a72c4098835f1ed4993f3ca8433f8de4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  url: 
 --- !u!1 &1572596959
 GameObject:
   m_ObjectHideFlags: 0
