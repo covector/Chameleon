@@ -64,10 +64,14 @@ public class AssetTemplate : ScriptableObject
         public Vector2 radius;
         public int cylinderStep;
         public float trunkSplitChance;
+        public int minTrunkDepth;
+        public float trunkRotate;
         public float splitChance;
-        public float splitRotate;
-        public float splitRadiusFactor;
-        public float nonSplitRotate;
+        public float splitChanceFactor;
+        public float branchRotate;
+        public float branchRotateFactor;
+        public float branchRadiusFactor;
+        public float minBranchRadius;
         public float branchLength;
         public float branchLengthFactor;
         public int leavesCount;
@@ -82,11 +86,18 @@ public class AssetTemplate : ScriptableObject
 
         public GameObject CreateObject()
         {
-            GameObject go = new GameObject();
-            go.AddComponent<MeshRenderer>().materials = materials;
-            go.AddComponent<MeshFilter>();
-            go.AddComponent<MutableTree>().EditParam(this);
-            return go;
+            GameObject branch = new GameObject();
+            MeshRenderer branchRenderer = branch.AddComponent<MeshRenderer>();
+            branchRenderer.material = materials[0];
+            branch.AddComponent<MeshFilter>();
+            branch.AddComponent<MutableTree>().EditParam(this);
+            GameObject leaves = new GameObject();
+            MeshRenderer leavesRenderer = leaves.AddComponent<MeshRenderer>();
+            leavesRenderer.materials = materials;
+            leaves.AddComponent<MeshFilter>();
+            leaves.transform.parent = branch.transform;
+            branch.GetComponent<MutableTree>().meshRenderers = new MeshRenderer[2] { branchRenderer, leavesRenderer };
+            return branch;
         }
 
         public List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
@@ -111,10 +122,14 @@ public class AssetTemplate : ScriptableObject
             this.depth = treeParam.depth;
             this.radius = treeParam.radius;
             this.trunkSplitChance = treeParam.trunkSplitChance;
+            this.minTrunkDepth = treeParam.minTrunkDepth;
+            this.trunkRotate = treeParam.trunkRotate;
             this.splitChance = treeParam.splitChance;
-            this.splitRotate = treeParam.splitRotate;
-            this.splitRadiusFactor = treeParam.splitRadiusFactor;
-            this.nonSplitRotate = treeParam.nonSplitRotate;
+            this.splitChanceFactor = treeParam.splitChanceFactor;
+            this.branchRotate = treeParam.branchRotate;
+            this.branchRotateFactor = treeParam.branchRotateFactor;
+            this.branchRadiusFactor = treeParam.branchRadiusFactor;
+            this.minBranchRadius = treeParam.minBranchRadius;
             this.branchLength = treeParam.branchLength;
             this.branchLengthFactor = treeParam.branchLengthFactor;
             this.leavesCount = treeParam.leavesCount;
@@ -132,8 +147,9 @@ public class AssetTemplate : ScriptableObject
             return new List<Vector2>();
         }
 
-        public override int PreGenCount() { return 0; }
-        public override float RenderRadiusSquare() { return -1; }
+        protected override int PreGenCount() { return 0; }
+        private static List<float> defaultRRS = new List<float> { -1f };
+        public override List<float> RenderRadiusSquare() { return defaultRRS; }
     }
 
     [System.Serializable]
@@ -149,6 +165,7 @@ public class AssetTemplate : ScriptableObject
             go.AddComponent<MeshRenderer>().materials = materials;
             go.AddComponent<MeshFilter>();
             go.AddComponent<MutableRock>().EditParam(this);
+            go.GetComponent<MutableRock>().meshRenderers = new MeshRenderer[1] { go.GetComponent<MeshRenderer>() };
             return go;
         }
 
@@ -173,8 +190,9 @@ public class AssetTemplate : ScriptableObject
             MutableRockParam rockParam = (MutableRockParam)param;
         }
 
-        public override int PreGenCount() { return 0; }
-        public override float RenderRadiusSquare() { return -1; }
+        protected override int PreGenCount() { return 0; }
+        private static List<float> defaultRRS = new List<float> { -1f };
+        public override List<float> RenderRadiusSquare() { return defaultRRS; }
     }
 
     [System.Serializable]
@@ -196,6 +214,7 @@ public class AssetTemplate : ScriptableObject
             go.AddComponent<MeshRenderer>().materials = materials;
             go.AddComponent<MeshFilter>();
             go.AddComponent<MutableStraw>().EditParam(this);
+            go.GetComponent<MutableStraw>().meshRenderers = new MeshRenderer[1] { go.GetComponent<MeshRenderer>() };
             return go;
         }
 
@@ -226,8 +245,9 @@ public class AssetTemplate : ScriptableObject
             this.duplicateSpread = strawParam.duplicateSpread;
         }
 
-        public override int PreGenCount() { return 0; }
-        public override float RenderRadiusSquare() { return -1; }
+        protected override int PreGenCount() { return 0; }
+        private static List<float> defaultRRS = new List<float> { -1f };
+        public override List<float> RenderRadiusSquare() { return defaultRRS; }
     }
     #endregion
 

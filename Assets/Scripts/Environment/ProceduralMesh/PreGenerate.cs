@@ -3,20 +3,17 @@ using UnityEngine;
 
 public abstract class PreGenerate<T> : ProceduralAsset where T : class
 {
-    protected static List<Mesh> s_preGenerated = new List<Mesh>();
+    protected static List<List<Mesh>> s_preGenerated = new List<List<Mesh>>();
     protected static List<float> s_maxDims = new List<float>();
-    public List<Mesh> preGenerated { get => s_preGenerated; }
     public List<float> maxDims { get => s_maxDims; }
 
-    protected void Init(int count)
+    protected void InitPreGen(int count)
     {
         if (s_preGenerated.Count == 0)
         {
             for (int i = 0; i < count; i++)
             {
-                MeshBuilder meshBuilder = new MeshBuilder(MaterialCount());
-                Edit(meshBuilder);
-                s_preGenerated.Add(meshBuilder.Build(RecalculateNormals()));
+                s_preGenerated.Add(BuildMesh());
             }
             if (ItemSpawnCheck() && s_maxDims.Count != s_preGenerated.Count)
             {
@@ -25,30 +22,39 @@ public abstract class PreGenerate<T> : ProceduralAsset where T : class
         }
     }
 
-    public void Reload()
+    public void ReloadPreGen()
     {
-        s_preGenerated = new List<Mesh>();
+        s_preGenerated = new List<List<Mesh>>();
         s_maxDims = new List<float>();
     }
 
     public override void Generate(int seed)
     {
+        MeshRenderer[] renderers = Renderers();
+        rand = new System.Random(seed);
+        List<Mesh> list = new List<Mesh>();
         if (PreGenCount() == 0)
         {
-            base.Generate(seed);
-            return;
+            list = BuildMesh();
         }
-        this.seed = seed;
-        this.rand = new System.Random(seed);
-        Init(PreGenCount());
-        int index = this.rand.Next(preGenerated.Count);
-        GetComponent<MeshFilter>().mesh = preGenerated[index];
-        maxDim = maxDims[index];
-        foreach (Material mat in GetComponent<MeshRenderer>().materials)
+        else
         {
-            mat.SetFloat("_Seed", seed);
+            InitPreGen(PreGenCount());
+            int index = rand.Next(s_preGenerated.Count);
+            list = s_preGenerated[index];
+            maxDim = maxDims[index];
+        }
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            MeshRenderer mr = renderers[i];
+            mr.GetComponent<MeshFilter>().mesh = list[i];
+            foreach (Material mat in mr.materials)
+            {
+                mat.SetFloat("_Seed", seed);
+            }
         }
     }
 
-    public virtual int PreGenCount() { return 20; }
+    protected virtual int PreGenCount() { return 20; }
 }

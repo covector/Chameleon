@@ -7,9 +7,10 @@ public class SmallTreeGeneration : GenericTreeGeneration<SmallTreeGeneration>
         depth: 15,
         radius: new Vector2(0.04f, 0.05f),
         cylinderStep: 7,
-        trunkSplitChance: 0.3f, splitChance: 0.3f,
-        splitRotate: 45f, splitRadiusFactor: 0.8f, nonSplitRotate: 10f,
-        branchLength: 0.8f, branchLengthFactor: 0.8f,
+        trunkSplitChance: 0.3f, minTrunkDepth: 1, trunkRotate: 10f,
+        splitChance: 0.3f, splitChanceFactor: 1f,
+        branchRotate: 45f, branchRotateFactor: 1f,
+        branchRadiusFactor: 0.8f, minBranchRadius: 0.005f, branchLength: 0.8f, branchLengthFactor: 0.8f,
         leavesCount: 1, startLeaveDepth: 1,
         crossRenderLeaves: true,
         leavesDim: new Vector2(1f, 3f), leavesScale: new Vector2(0.25f, 0.35f),
@@ -23,5 +24,6 @@ public class SmallTreeGeneration : GenericTreeGeneration<SmallTreeGeneration>
         return fpds.fill();
     }
 
-    public override int PreGenCount() { return 30; }
+    private static List<float> RRS = new List<float> { 500f, 500f };
+    public override List<float> RenderRadiusSquare() { return RRS; }
 }

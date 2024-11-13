@@ -28,13 +28,17 @@ MonoBehaviour:
     radius: {x: 0.1, y: 0.4}
     cylinderStep: 9
     trunkSplitChance: 0.05
-    splitChance: 0.4
-    splitRotate: 25
-    splitRadiusFactor: 0.6
-    nonSplitRotate: 10
-    branchLength: 2.5
+    minTrunkDepth: 2
+    trunkRotate: 5
+    splitChance: 0.3
+    splitChanceFactor: 1.05
+    branchRotate: 20
+    branchRotateFactor: 1.1
+    branchRadiusFactor: 0.6
+    minBranchRadius: 0.01
+    branchLength: 3
     branchLengthFactor: 0.8
-    leavesCount: 6
+    leavesCount: 4
     startLeaveDepth: 4
     crossRenderLeaves: 0
     leavesDim: {x: 1, y: 1}
@@ -70,10 +74,14 @@ MonoBehaviour:
     radius: {x: 0.02, y: 0.03}
     cylinderStep: 4
     trunkSplitChance: 0.1
+    minTrunkDepth: 1
+    trunkRotate: 10
     splitChance: 0.4
-    splitRotate: 30
-    splitRadiusFactor: 0.7
-    nonSplitRotate: 10
+    splitChanceFactor: 1
+    branchRotate: 30
+    branchRotateFactor: 1
+    branchRadiusFactor: 0.7
+    minBranchRadius: 0.003
     branchLength: 0.15
     branchLengthFactor: 0.9
     leavesCount: 1
@@ -99,11 +107,15 @@ MonoBehaviour:
     depth: 12
     radius: {x: 0.02, y: 0.02}
     cylinderStep: 4
-    trunkSplitChance: 0.5
-    splitChance: 0.4
-    splitRotate: 90
-    splitRadiusFactor: 1
-    nonSplitRotate: 30
+    trunkSplitChance: 1
+    minTrunkDepth: 0
+    trunkRotate: 30
+    splitChance: 0.3
+    splitChanceFactor: 1
+    branchRotate: 90
+    branchRotateFactor: 1
+    branchRadiusFactor: 1
+    minBranchRadius: 0.003
     branchLength: 0.1
     branchLengthFactor: 0.9
     leavesCount: 1
@@ -130,10 +142,14 @@ MonoBehaviour:
     radius: {x: 0.04, y: 0.05}
     cylinderStep: 7
     trunkSplitChance: 0.3
+    minTrunkDepth: 1
+    trunkRotate: 10
     splitChance: 0.3
-    splitRotate: 45
-    splitRadiusFactor: 0.8
-    nonSplitRotate: 10
+    splitChanceFactor: 1
+    branchRotate: 45
+    branchRotateFactor: 1
+    branchRadiusFactor: 0.8
+    minBranchRadius: 0.005
     branchLength: 0.8
     branchLengthFactor: 0.8
     leavesCount: 1

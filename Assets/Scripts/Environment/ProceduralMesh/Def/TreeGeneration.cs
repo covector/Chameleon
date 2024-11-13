@@ -7,10 +7,11 @@ public class TreeGeneration : GenericTreeGeneration<TreeGeneration>
         depth: 15,
         radius: new Vector2(0.1f, 0.4f),
         cylinderStep: 9,
-        trunkSplitChance: 0.05f, splitChance: 0.4f,
-        splitRotate: 25f, splitRadiusFactor: 0.6f, nonSplitRotate: 10f,
-        branchLength: 2.5f, branchLengthFactor: 0.8f,
-        leavesCount: 6, startLeaveDepth: 4,
+        trunkSplitChance: 0.05f, minTrunkDepth: 2, trunkRotate: 5f, 
+        splitChance: 0.3f, splitChanceFactor: 1.05f,
+        branchRotate: 20f, branchRotateFactor: 1.1f,
+        branchRadiusFactor: 0.6f, minBranchRadius: 0.01f, branchLength: 3f, branchLengthFactor: 0.8f,
+        leavesCount: 4, startLeaveDepth: 4,
         crossRenderLeaves: false,
         leavesDim: new Vector2(1f, 1f), leavesScale: new Vector2(0.2f, 0.5f),
         leavesRotationRange: new Vector3(45f, 90f, 180f), leavesRotationOffset: new Vector3(-45f, 0f, 0f)
@@ -30,8 +31,9 @@ public class TreeGeneration : GenericTreeGeneration<TreeGeneration>
         return Mathf.PerlinNoise(globalX * size, globalZ * size + maskSeed / 1000) > threshold;
     }
 
-    public override int PreGenCount() { return 40; }
-
+    protected override int PreGenCount() { return 40; }
     public override bool ItemSpawnCheck() { return true; }
     public override bool CollisionCheck() { return true; }
+    private static List<float> RRS = new List<float> { -1, 600f };
+    public override List<float> RenderRadiusSquare() { return RRS; }
 }

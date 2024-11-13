@@ -13,9 +13,10 @@ public class ShorterBushGeneration : GenericTreeGeneration<ShorterBushGeneration
         depth: 12,
         radius: new Vector2(0.02f, 0.02f),
         cylinderStep: 4,
-        trunkSplitChance: 0.5f, splitChance: 0.4f,
-        splitRotate: 90f, splitRadiusFactor: 1f, nonSplitRotate: 30f,
-        branchLength: 0.1f, branchLengthFactor: 0.9f,
+        trunkSplitChance: 1f, minTrunkDepth: 0, trunkRotate: 30f,
+        splitChance: 0.3f, splitChanceFactor: 1f,
+        branchRotate: 90f, branchRotateFactor: 1f,
+        branchRadiusFactor: 1f, minBranchRadius: 0.003f, branchLength: 0.1f, branchLengthFactor: 0.9f,
         leavesCount: 1, startLeaveDepth: 8,
         crossRenderLeaves: false,
         leavesDim: new Vector2(1f, 2f), leavesScale: new Vector2(0.05f, 0.1f),
@@ -34,7 +35,7 @@ public class ShorterBushGeneration : GenericTreeGeneration<ShorterBushGeneration
     }
 
     public override float MaxDim() { return 0.6f; }
-
+    protected override int PreGenCount() { return 30; }
     public override bool IntersectionCheck() { return true; }
     public override void OnIntersect(float sqrSpeed)
     {
@@ -43,7 +44,6 @@ public class ShorterBushGeneration : GenericTreeGeneration<ShorterBushGeneration
             randomAudio.PlayRandomSound(sqrSpeed / 3f);
         }
     }
-
-    protected float renderRadiusSquare = 250f;
-    public override float RenderRadiusSquare() { return renderRadiusSquare; }
+    private static List<float> RRS = new List<float> { 250f, 250f };
+    public override List<float> RenderRadiusSquare() { return RRS; }
 }

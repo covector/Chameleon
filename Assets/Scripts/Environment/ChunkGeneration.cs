@@ -195,7 +195,7 @@ public class ChunkGeneration : MonoBehaviour
                 Quaternion rotation = proceduralPrefab.RotateToGround() ? GetTangentRotation(globalX, globalZ) : Quaternion.identity;
                 GameObject asset = Instantiate(prefab, new Vector3(globalX, GetGroudLevel(globalX, globalZ, 1) + proceduralPrefab.SpawnYOffset(), globalZ), rotation, transform);
                 ProceduralAsset procedural = asset.GetComponent<ProceduralAsset>();
-                asset.name = "Asset_" + assets.Count;  // For debug
+                asset.name = asset.name + "_" + assets.Count;  // For debug
                 procedural.Generate(rand.Next(10000));
                 float radius = procedural.MaxDim() + ItemSpawning.vicinityRadiusOffset;
                 if (procedural.ItemSpawnCheck() && itemSpawning.CheckSpawnVicinity(new Vector2(globalX, globalZ), radius * radius))

@@ -5,6 +5,7 @@ using static Utils;
 
 public class StrawGeneration : PreGenerate<StrawGeneration>
 {
+    public MeshRenderer[] meshRenderers;
     protected Vector2 segmentLength = new Vector2(0.2f, 0.3f);
     protected Vector2 width = new Vector2(0.01f, 0.02f);
     protected int segments = 10;
@@ -12,12 +13,12 @@ public class StrawGeneration : PreGenerate<StrawGeneration>
     protected float duplicateSpread = 2.0f;
     protected float yFactor = 0.4f;
 
-    protected override void Edit(MeshBuilder meshBuilder)
+    protected override void Edit(List<MeshBuilder> builders)
     {
         maxDims.Add(0);
         for (int i = 0; i < duplicate; i++)
         {
-            Grow(meshBuilder, rand,
+            Grow(builders[0], rand,
                 //new Vector3(RandomRange(rand, -duplicateSpread, duplicateSpread), 0f, RandomRange(rand, -duplicateSpread, duplicateSpread)),
                 new Vector3(TriangleDistr(rand, duplicateSpread), 0f, TriangleDistr(rand, duplicateSpread)),
                 segments, width, segmentLength);
@@ -64,10 +65,10 @@ public class StrawGeneration : PreGenerate<StrawGeneration>
         return jgs.fill();
     }
 
-    public override int MaterialCount() { return 1; }
+    protected override MeshRenderer[] Renderers() { return meshRenderers; }
     public override bool RotateToGround() { return true; }
     public override float SpawnYOffset() { return 0; }
 
-    protected float renderRadiusSquare = 70f;
-    public override float RenderRadiusSquare() { return renderRadiusSquare; }
+    private static List<float> RRS = new List<float> { 70f };
+    public override List<float> RenderRadiusSquare() { return RRS; }
 }

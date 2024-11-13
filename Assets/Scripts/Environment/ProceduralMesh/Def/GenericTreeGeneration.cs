@@ -4,14 +4,19 @@ using static MeshBuilder;
 
 public abstract class GenericTreeGeneration<T> : PreGenerate<T> where T : class
 {
+    public MeshRenderer[] meshRenderers;
     protected int depth;
     protected Vector2 radius;
     protected int cylinderStep;
     protected float trunkSplitChance;
+    protected float trunkRotate;
+    protected int minTrunkDepth;
     protected float splitChance;
-    protected float splitRotate;
-    protected float splitRadiusFactor;
-    protected float nonSplitRotate;
+    protected float splitChanceFactor;
+    protected float branchRotate;
+    protected float branchRotateFactor;
+    protected float branchRadiusFactor;
+    protected float minBranchRadius;
     protected float trunkHeight;
     protected float branchLength;
     protected float branchLengthFactor;
@@ -34,13 +39,18 @@ public abstract class GenericTreeGeneration<T> : PreGenerate<T> where T : class
         }
     }
 
+    private static List<int> materialCount = new List<int> { 1, 2 };
+    protected override List<int> MaterialCount() { return materialCount; }
+    protected override MeshRenderer[] Renderers() { return meshRenderers; }
+
     public GenericTreeGeneration(
         int depth,
         Vector2 radius,
         int cylinderStep,
-        float trunkSplitChance, float splitChance,
-        float splitRotate, float splitRadiusFactor, float nonSplitRotate,
-        float branchLength, float branchLengthFactor,
+        float trunkSplitChance, int minTrunkDepth, float trunkRotate,
+        float splitChance, float splitChanceFactor,
+        float branchRotate, float branchRotateFactor,
+        float branchRadiusFactor, float minBranchRadius, float branchLength, float branchLengthFactor,
         int leavesCount, int startLeaveDepth,
         bool crossRenderLeaves,
         Vector2 leavesDim, Vector2 leavesScale,
@@ -51,10 +61,14 @@ public abstract class GenericTreeGeneration<T> : PreGenerate<T> where T : class
         this.radius = radius;
         this.cylinderStep = cylinderStep;
         this.trunkSplitChance = trunkSplitChance;
+        this.minTrunkDepth = minTrunkDepth;
+        this.trunkRotate = trunkRotate;
         this.splitChance = splitChance;
-        this.splitRotate = splitRotate;
-        this.splitRadiusFactor = splitRadiusFactor;
-        this.nonSplitRotate = nonSplitRotate;
+        this.splitChanceFactor = splitChanceFactor;
+        this.branchRotate = branchRotate;
+        this.branchRotateFactor = branchRotateFactor;
+        this.branchRadiusFactor = branchRadiusFactor;
+        this.minBranchRadius = minBranchRadius;
         this.branchLength = branchLength;
         this.branchLengthFactor = branchLengthFactor;
         this.leavesCount = leavesCount;
@@ -68,11 +82,11 @@ public abstract class GenericTreeGeneration<T> : PreGenerate<T> where T : class
 
     public GenericTreeGeneration() { }
 
-    protected override void Edit(MeshBuilder meshBuilder)
+    protected override void Edit(List<MeshBuilder> builders)
     {
         TryInit(cylinderStep);
         float randRadius = Utils.RandomRange(rand, radius);
-        Grow(meshBuilder, rand, Matrix4x4.identity, depth, new State(0, randRadius, branchLength, -1));
+        Grow(builders, rand, Matrix4x4.identity, depth, new State(0, randRadius, branchLength, splitChance, branchRotate, -1));
     }
 
     public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
@@ -81,54 +95,70 @@ public abstract class GenericTreeGeneration<T> : PreGenerate<T> where T : class
         return fpds.fill();
     }
 
-    public override int MaterialCount() { return 2; }
-
     struct State
     {
         public int split;
         public float radius;
         public float length;
+        public float splitChance;
+        public float branchRotate;
         public int lastVertInd;
-        public State(int split, float radius, float length, int lastVertInd)
+        public State(int split, float radius, float length, float splitChance, float branchRotate, int lastVertInd)
         {
             this.radius = radius;
             this.length = length;
             this.split = split;
+            this.splitChance = splitChance;
+            this.branchRotate = branchRotate;
             this.lastVertInd = lastVertInd;
         }
     }
 
-    void Grow(MeshBuilder meshBuilder, System.Random random, Matrix4x4 cumTrans, int currentDepth, State state)
+    void Grow(List<MeshBuilder> builders, System.Random random, Matrix4x4 cumTrans, int currentDepth, State state)
     {
         if (currentDepth == 0) { return; }
-        float splitSample = state.split == 0 ? trunkSplitChance : splitChance;
-        bool split = currentDepth < depth && random.NextDouble() < splitSample;
+        bool split = false;
+        if (depth - currentDepth >= minTrunkDepth) {
+            float splitSample = state.split == 0 ? trunkSplitChance : state.splitChance;
+            split = currentDepth < depth && random.NextDouble() < splitSample;
+        }
         float height = split ? state.length : state.length * branchLengthFactor;
+        float brotate = split ? state.branchRotate : trunkRotate;
         for (int i = 0; i < (split ? 2 : 1); i++)
         {
-            Matrix4x4 newTrans = cumTrans * Utils.RandomRotation(random, split ? splitRotate : nonSplitRotate);
-            float branchRadius = i == 0 ? state.radius : state.radius * splitRadiusFactor;
-            float radius = Mathf.Max(0.003f, branchRadius * (currentDepth - 1) / (depth - 1));
+            Matrix4x4 newTrans = cumTrans * Utils.RandomRotation(random, new Vector3(brotate, 0, brotate));
+            float branchRadius = i == 0 ? state.radius : state.radius * branchRadiusFactor;
+            float radius = Mathf.Max(minBranchRadius, branchRadius * (currentDepth - 1) / (depth - 1));
             if (currentDepth == depth && i == 0) { maxDims.Add(radius); }
             TempMesh cylinder = TransformMesh(UNIT_CYLINDER, newTrans * Matrix4x4.Scale(new Vector3(radius, height, radius)));
-            meshBuilder.AddMesh(cylinder, 0);
-            int newLastVertInd = meshBuilder.GetLastVertInd();
+            bool startLeaving = currentDepth <= startLeaveDepth;  // lol
+            MeshBuilder builder = builders[startLeaving ? 1 : 0];
+            builder.AddMesh(cylinder);
+            int newLastVertInd = builder.GetLastVertInd();
+            bool justStartedLeaving = currentDepth == startLeaveDepth;
             if (state.lastVertInd > 0 && i == 0)
             {
-                meshBuilder.MergeCylinders(state.lastVertInd, newLastVertInd, cylinder.vertices.Count);
+                builder.MergeCylinders(state.lastVertInd, newLastVertInd, cylinder.vertices.Count, justStartedLeaving ? builders[0] : builder);
             }
             if (currentDepth > 1)
             {
                 newTrans = newTrans * Matrix4x4.Translate(new Vector3(0f, 0.9f * height, 0f));
-                State newState = new State(split ? state.split : state.split + 1, branchRadius, height, newLastVertInd);
-                Grow(meshBuilder, random, newTrans, currentDepth - 1, newState);
+                State newState = new State(
+                    split ? state.split : state.split + 1,
+                    branchRadius,
+                    height,
+                    state.split == 0 ? state.splitChance : state.splitChance * splitChanceFactor,
+                    state.split == 0 ? state.branchRotate : state.branchRotate * branchRotateFactor,
+                    newLastVertInd
+                );
+                Grow(builders, random, newTrans, currentDepth - 1, newState);
             }
 
-            if (currentDepth <= startLeaveDepth)
+            if (startLeaving)
             {
                 for (int j = 0; j < leavesCount; j++)
                 {
-                    AddLeaf(meshBuilder, random, newTrans, height, currentDepth == 1 && j == 0);
+                    AddLeaf(builders[1], random, newTrans, height, currentDepth == 1 && j == 0);
                 }
             }
         }

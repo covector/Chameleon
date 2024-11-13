@@ -198,14 +198,19 @@ public class MeshBuilder
 
     public void MergeCylinders(int lastVertInd1, int lastVertInd2, int vertexCount)
     {
+        MergeCylinders(lastVertInd1, lastVertInd2, vertexCount, this);
+    }
+
+    public void MergeCylinders(int lastVertInd1, int lastVertInd2, int vertexCount, MeshBuilder builder1)
+    {
         int step = vertexCount / 2;
 
         for (int i = 0; i < step; i++)
         {
             int ind1 = (lastVertInd1 - 2 * step + 1) + (2 * i + 1);
             int ind2 = (lastVertInd2 - 2 * step + 1) + (2 * i);
-            Vector3 midPt = (m_Vertices[ind1] + m_Vertices[ind2]) / 2f;
-            m_Vertices[ind1] = midPt;
+            Vector3 midPt = (builder1.m_Vertices[ind1] + m_Vertices[ind2]) / 2f;
+            builder1.Vertices[ind1] = midPt;
             m_Vertices[ind2] = midPt;
         }
     }

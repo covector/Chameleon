@@ -1,53 +1,64 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.MaterialProperty;
 using static Utils;
 
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public abstract class ProceduralAsset : MonoBehaviour
 {
     protected System.Random rand;
-    protected int seed;
     protected float maxDim = 0f;
-    private MeshRenderer meshRenderer;
-    private float updater = float.PositiveInfinity;
 
-    public virtual int MaterialCount() { return 1; }
-
-    public virtual void Generate(int seed)
+    protected List<Mesh> BuildMesh()
     {
-        this.seed = seed;
-        this.rand = new System.Random(seed);
-        MeshBuilder meshBuilder = new MeshBuilder(MaterialCount());
-        Edit(meshBuilder);
-        GetComponent<MeshFilter>().mesh = meshBuilder.Build(RecalculateNormals());
-        foreach (Material mat in GetComponent<MeshRenderer>().materials)
+        List<Mesh> list = new List<Mesh>();
+        List<MeshBuilder> builders = new List<MeshBuilder>();
+        foreach (int mc in MaterialCount())
         {
-            mat.SetFloat("_Seed", seed);
+            builders.Add(new MeshBuilder(mc));
         }
+        Edit(builders);
+        foreach (MeshBuilder builder in builders)
+        {
+            list.Add(builder.Build(RecalculateNormals()));
+        }
+        return list;
     }
 
-    private void Awake()
-    {
-        meshRenderer = GetComponent<MeshRenderer>();
-    }
-
+    private float updater = float.PositiveInfinity;
     private void Update()
     {
         if (updater > 0.5f)
         {
             updater = 0f;
-            float rrs = RenderRadiusSquare();
-            if (rrs > 0)
+            MeshRenderer[] renderers = Renderers();
+            List<float> rrs = RenderRadiusSquare();
+            bool cached = false;
+            float dist = 0;
+            for (int i = 0; i < rrs.Count; i++)
             {
-                GetComponent<MeshRenderer>().enabled = (ToVector2(Camera.main.transform.position) - ToVector2(transform.position)).sqrMagnitude < rrs;
+                if (rrs[i] > 0)
+                {
+                    if (!cached)
+                    {
+                        dist = (ToVector2(Camera.main.transform.position) - ToVector2(transform.position)).sqrMagnitude;
+                        cached = true;
+                    }
+                    renderers[i].enabled = dist < rrs[i];
+                }
             }
+
         }
         updater += Time.deltaTime;
     }
 
-    protected abstract void Edit(MeshBuilder meshBuilder);
+    public abstract void Generate(int seed);
+
+    private static List<int> defaultMaterialCount = new List<int> { 1 };
+    protected virtual List<int> MaterialCount() { return defaultMaterialCount; }
+    protected abstract void Edit(List<MeshBuilder> meshBuilders);
+    protected abstract MeshRenderer[] Renderers();
     public virtual float MaxDim() { return maxDim; }
-    public virtual bool RecalculateNormals() { return false; }
+    protected virtual bool RecalculateNormals() { return false; }
     public abstract List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed);
     public virtual bool FilterPoint(float globalX, float globalZ, int maskSeed) { return true; }
     public virtual bool ItemSpawnCheck() { return false; }
@@ -56,5 +67,6 @@ public abstract class ProceduralAsset : MonoBehaviour
     public virtual void OnIntersect(float sqrSpeed) { }
     public virtual bool RotateToGround() { return false; }
     public virtual float SpawnYOffset() { return -0.1f; }
-    public virtual float RenderRadiusSquare() { return -1f; }
+    private static List<float> defaultRRS = new List<float> { -1f };
+    public virtual List<float> RenderRadiusSquare() { return defaultRRS; }
 }

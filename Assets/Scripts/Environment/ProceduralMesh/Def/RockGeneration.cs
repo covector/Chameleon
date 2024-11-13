@@ -4,9 +4,10 @@ using static MeshBuilder;
 
 public class RockGeneration : PreGenerate<RockGeneration>
 {
+    public MeshRenderer[] meshRenderers;
     public override bool ItemSpawnCheck() { return true; }
-    public override int PreGenCount() { return 60; }
-    public override bool RecalculateNormals() { return true; }
+    protected override int PreGenCount() { return 60; }
+    protected override bool RecalculateNormals() { return true; }
 
     public static TempMesh UNIT_CUBESPHERE;
     private static bool primitivesInit = false;
@@ -19,11 +20,11 @@ public class RockGeneration : PreGenerate<RockGeneration>
         }
     }
 
-    protected override void Edit(MeshBuilder meshBuilder)
+    protected override void Edit(List<MeshBuilder> builders)
     {
         TryInit();
         TempMesh mesh = TransformMesh(VoronoiDisplace(UNIT_CUBESPHERE, rand, 0.1f, 1.5f), RandomTransform(rand));
-        meshBuilder.AddMesh(mesh, 0);
+        builders[0].AddMesh(mesh, 0);
     }
 
     public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
@@ -55,6 +56,7 @@ public class RockGeneration : PreGenerate<RockGeneration>
         Utils.RandomRotation(random, Vector3.up * 360f);
     }
 
-    protected float renderRadiusSquare = 400f;
-    public override float RenderRadiusSquare() { return renderRadiusSquare; }
+    protected override MeshRenderer[] Renderers() { return meshRenderers; }
+    private static List<float> RRS = new List<float> { 400f };
+    public override List<float> RenderRadiusSquare() { return RRS; }
 }
