@@ -9,11 +9,13 @@ public class TerrainGeneration : ChunkSystem
     public GameObject chunkPrefab;
     public int seed;
     public ItemSpawning itemSpawning;
+    public static TerrainGeneration instance;
 
     public TerrainGeneration() : base(10f, 4, 5) {}
     
     void Start()
     {
+        instance = this;
         seed = Random.Range(0, 10000);
         ChunkGeneration.Init(chunkSize, step, perlins, seed);
     }

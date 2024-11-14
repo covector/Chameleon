@@ -153,6 +153,10 @@ public class Utils
         return (toMax - toMin) * (value - fromMin) / (fromMax - fromMin) + toMin;
     }
 
+    public static void RunDelay(Action action, float delay, bool unscaledTime = false)
+    {
+        TerrainGeneration.instance.StartCoroutine(_RunDelay(action, delay, unscaledTime));
+    }
     public static void RunDelay(MonoBehaviour mb, Action action, float delay, bool unscaledTime = false)
     {
         mb.StartCoroutine(_RunDelay(action, delay, unscaledTime));

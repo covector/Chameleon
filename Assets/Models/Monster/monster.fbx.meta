@@ -40,7 +40,7 @@ ModelImporter:
       takeName: Running.001
       internalID: -7118674957655483468
       firstFrame: 13
-      lastFrame: 46
+      lastFrame: 47
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -127,7 +127,7 @@ ModelImporter:
       takeName: Turn.001
       internalID: -2807649157748281266
       firstFrame: 0
-      lastFrame: 93
+      lastFrame: 96
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -152,18 +152,18 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: TPose.001
-      takeName: TPose.001
-      internalID: -1999573598089043341
+      name: Jumpscare.002
+      takeName: Jumpscare.002
+      internalID: 3795491224372897483
       firstFrame: 0
-      lastFrame: 1
+      lastFrame: 132
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0

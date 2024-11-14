@@ -32,7 +32,7 @@ public abstract class PreGenerate<T> : ProceduralAsset where T : class
     {
         MeshRenderer[] renderers = Renderers();
         rand = new System.Random(seed);
-        List<Mesh> list = new List<Mesh>();
+        List<Mesh> list;
         if (PreGenCount() == 0)
         {
             list = BuildMesh();

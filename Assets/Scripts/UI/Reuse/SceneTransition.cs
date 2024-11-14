@@ -74,4 +74,14 @@ public class SceneTransition : MonoBehaviour
         UpdateFade(0);
         RunDelay(this, () => FadeIn(), delay, unscaledTime);
     }
+
+    public void BlockScreen()
+    {
+        image.color = new Color(0, 0, 0, 1);
+    }
+
+    public void UnblockScreen()
+    {
+        image.color = new Color(0, 0, 0, 0);
+    }
 }

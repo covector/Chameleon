@@ -6,7 +6,7 @@ public class ApproachState : MonsterState
     private float lastDist = float.PositiveInfinity;
     private const float minHideDist = 15f;
     private bool isHiding = false;
-    private const float speed = 3f;
+    private const float speed = 3.2f;
 
     public ApproachState(MonsterStateMachine stateMachine, AIController controller) : base(stateMachine, controller) { }
 

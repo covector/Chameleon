@@ -6,6 +6,7 @@ public class MonsterStateMachine : MonoBehaviour
     public Dictionary<string, MonsterState> states { get; private set; }
     public string current { get; private set; }
     private AIController controller;
+    public bool intercept { get; set; }
 
     private void Start()
     {
@@ -17,11 +18,12 @@ public class MonsterStateMachine : MonoBehaviour
         states["Jumpscare"] = new JumpscareState(this, controller);
         InitState();
         states[current].OnStateEnter();
+        intercept = true;
     }
 
     private void Update()
     {
-        InterceptState();
+        if (intercept) { InterceptState(); }
 
         if (current != null && !states[current].OnStateUpdate())
         {
@@ -61,6 +63,7 @@ public class MonsterStateMachine : MonoBehaviour
         {
             states[current].OnStateExit();
             current = "Jumpscare";
+            intercept = false;
             states[current].OnStateEnter();
         }
     }

@@ -9,6 +9,7 @@ public class AIController : MonoBehaviour
     public GameObject currentMorph { get; private set; }
     public GameObject monster;
     GradientController gradient;
+    public Transform centerOfMass;
 
     void Start()
     {
@@ -18,12 +19,33 @@ public class AIController : MonoBehaviour
 
     public void Move(Vector2 velocity)
     {
-        transform.position = gradient.GetAdjustedPosition(transform, velocity.x, velocity.y, yOffset: 1f);
+        Vector3 withAccurateY = gradient.GetAdjustedPosition(centerOfMass, velocity.x, velocity.y, yOffset: 1f);
+        transform.position = new Vector3(
+            transform.position.x - centerOfMass.position.x + withAccurateY.x,
+            withAccurateY.y,
+            transform.position.z - centerOfMass.position.z + withAccurateY.z
+        );
     }
     public void MoveTo(Vector2 position)
     {
-        transform.position = ProjectToGround(position.x, position.y) + Vector3.up;
+        Vector3 withAccurateY = ProjectToGround(centerOfMass.position.x, centerOfMass.position.z) + Vector3.up;
+        transform.position = new Vector3(
+            position.x,
+            withAccurateY.y,
+            position.y
+        );
     }
+    public void Correct()
+    {
+        Vector3 withAccurateY = ProjectToGround(centerOfMass.position.x, centerOfMass.position.z) + Vector3.up;
+        transform.position = new Vector3(
+            transform.position.x,
+            withAccurateY.y,
+            transform.position.z
+        );
+    }
+
+
     public Vector2 GetDiff(bool normalized = true)
     {
         Vector2 diff = ToVector2(player.position) - ToVector2(transform.position);
