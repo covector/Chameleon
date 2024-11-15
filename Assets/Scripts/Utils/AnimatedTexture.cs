@@ -12,7 +12,7 @@ public class AnimatedTexture : MonoBehaviour
     {
         for (float t = 0f; t < duration; t += Time.deltaTime)
         {
-            meshRenderer.materials[materialIndex].SetFloat("_Blend", (reversed ? (1f-t) : t) / duration);
+            SetTo((reversed ? (1f-t) : t) / duration);
             yield return null;
         }
     }
@@ -20,5 +20,10 @@ public class AnimatedTexture : MonoBehaviour
     public void Play()
     {
         StartCoroutine(_Animate());
+    }
+
+    public void SetTo(float t)
+    {
+        meshRenderer.materials[materialIndex].SetFloat("_Blend", t);
     }
 }

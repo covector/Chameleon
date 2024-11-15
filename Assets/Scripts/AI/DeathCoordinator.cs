@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class DeathCoordinator : MonoBehaviour
 {
@@ -11,9 +13,14 @@ public class DeathCoordinator : MonoBehaviour
     public Transform cameraCoordinator;
     public Animator monsterAnimator;
     public GameObject scanner;
+    public Volume volume;
+    public Transform[] monsterEyes;
 
     public void StartDeathScene()
     {
+        DepthOfField dof;
+        volume.profile.TryGet(out dof);
+        dof.focusDistance.value = 5f;
         scanner.SetActive(false);
         playerControl.enabled = false;
         transform.position = cam.position + Vector3.down;
@@ -50,6 +57,12 @@ public class DeathCoordinator : MonoBehaviour
         controller.ToggleMonster(true);
         monsterAnimator.ResetTrigger("Kill");
         monsterAnimator.SetTrigger("Kill");
+        monster.GetComponent<AnimatedTexture>().SetTo(0f);
+    }
+
+    public void TextureChange()
+    {
+        monster.GetComponent<AnimatedTexture>().Play();
     }
 
     public void Death()
@@ -58,14 +71,20 @@ public class DeathCoordinator : MonoBehaviour
     }
 
     private bool lookAt = false;
-    private void Update()
+    private void LateUpdate()
     {
         if (lookAt)
         {
             Quaternion lookAtRotation = Quaternion.LookRotation(controller.centerOfMass.position - cam.position);
             cam.rotation = Quaternion.Slerp(cam.rotation, lookAtRotation, Time.deltaTime);
+            Quaternion inverseLookAtRotation = Quaternion.LookRotation(cam.position - controller.centerOfMass.position);
+            foreach (Transform eye in monsterEyes)
+            {
+                eye.rotation = inverseLookAtRotation;
+            }
         }
     }
+
     public void StartLookAt() { lookAt = true; }
     public void StopLookAt() { lookAt = false; }
 }

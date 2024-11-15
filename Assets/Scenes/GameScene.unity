@@ -118,6 +118,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &131407419 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3515644968333466971, guid: 5f3f8b6b06090b1479ae9636122c0aad, type: 3}
+  m_PrefabInstance: {fileID: 2036104878}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -873,6 +878,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 920060944}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &714513519 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8338792895837732483, guid: 5f3f8b6b06090b1479ae9636122c0aad, type: 3}
+  m_PrefabInstance: {fileID: 2036104878}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &747644059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1671,6 +1681,10 @@ MonoBehaviour:
   cameraCoordinator: {fileID: 702094187}
   monsterAnimator: {fileID: 2036104882}
   scanner: {fileID: 919132147813247434}
+  volume: {fileID: 832575518}
+  monsterEyes:
+  - {fileID: 131407419}
+  - {fileID: 714513519}
 --- !u!95 &920060947
 Animator:
   serializedVersion: 7

@@ -3,19 +3,24 @@ using UnityEngine;
 
 public class MonsterStateMachine : MonoBehaviour
 {
-    public Dictionary<string, MonsterState> states { get; private set; }
-    public string current { get; private set; }
+    public enum State
+    {
+        Idle, Approach, Run, Jumpscare
+    }
+
+    public Dictionary<State, MonsterState> states { get; private set; }
+    public State current { get; private set; }
     private AIController controller;
     public bool intercept { get; set; }
 
     private void Start()
     {
         controller = GetComponent<AIController>();
-        states = new Dictionary<string, MonsterState>();
-        states["Idle"] = new IdleState(this, controller);
-        states["Approach"] = new ApproachState(this, controller);
-        states["Run"] = new RunState(this, controller);
-        states["Jumpscare"] = new JumpscareState(this, controller);
+        states = new Dictionary<State, MonsterState>();
+        states[State.Idle] = new IdleState(this, controller);
+        states[State.Approach] = new ApproachState(this, controller);
+        states[State.Run] = new RunState(this, controller);
+        states[State.Jumpscare] = new JumpscareState(this, controller);
         InitState();
         states[current].OnStateEnter();
         intercept = true;
@@ -25,7 +30,7 @@ public class MonsterStateMachine : MonoBehaviour
     {
         if (intercept) { InterceptState(); }
 
-        if (current != null && !states[current].OnStateUpdate())
+        if (!states[current].OnStateUpdate())
         {
             states[current].OnStateExit();
             ToNewState();
@@ -35,23 +40,23 @@ public class MonsterStateMachine : MonoBehaviour
 
     private void InitState()
     {
-        current = "Idle";
-        ((IdleState)states["Idle"]).waitTime = 5f;
+        current = State.Idle;
+        ((IdleState)states[State.Idle]).waitTime = 5f;
     }
 
     private void ToNewState()
     {
         switch (current)
         {
-            case "Idle":
-                current = "Approach";
+            case State.Idle:
+                current = State.Approach;
                 break;
-            case "Approach":
-                current = "Run";
+            case State.Approach:
+                current = State.Run;
                 break;
-            case "Run":
-                current = "Idle";
-                ((IdleState)states["Idle"]).waitTime = 15f;
+            case State.Run:
+                current = State.Idle;
+                ((IdleState)states[State.Idle]).waitTime = 15f;
                 break;
         }
         Debug.Log(current);
@@ -59,10 +64,10 @@ public class MonsterStateMachine : MonoBehaviour
 
     private void InterceptState()
     {
-        if (controller.IsLost())
+        if (current != State.Idle && controller.IsLost())
         {
             states[current].OnStateExit();
-            current = "Jumpscare";
+            current = State.Jumpscare;
             intercept = false;
             states[current].OnStateEnter();
         }
