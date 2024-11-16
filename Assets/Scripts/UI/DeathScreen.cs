@@ -22,7 +22,8 @@ public class DeathScreen : MonoBehaviour
     public void Play()
     {
         Cursor.lockState = CursorLockMode.None;
-        failText.text = "SUBJECT ID." + TerrainGeneration.instance.seed.ToString().PadLeft(5, '0') + "\n-<b>FAILED</b>-";
+        int itemsCollected = FindFirstObjectByType<ItemCounter>().GetCount();
+        failText.text = "SUBJECT ID." + TerrainGeneration.instance.seed.ToString().PadLeft(5, '0') + "\n-<b>FAILED</b>-" + "\nCOLLECTED." + itemsCollected;
         GetComponent<Typing>().HideAll();
         canvas = GetComponent<Canvas>();
         canvas.enabled = true;

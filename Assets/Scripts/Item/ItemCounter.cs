@@ -22,4 +22,6 @@ public class ItemCounter : MonoBehaviour
     {
         counter.text = count > 0 ? count.ToString() : "";
     }
+
+    public int GetCount() { return count; }
 }

@@ -32,7 +32,7 @@ public class ShorterBushGeneration : GenericTreeGeneration<ShorterBushGeneration
     public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
     {
         float offset = chunkSize / 2f;
-        const float spacing = 5f;
+        const float spacing = 6f;
         const float strength = 3f;
         Vector2Int jitterCount = new Vector2Int(10, 14);
         JitterPoissonSampling jps = new JitterPoissonSampling(chunkSize, chunkSize, spacing, strength, jitterCount, seed: seed);

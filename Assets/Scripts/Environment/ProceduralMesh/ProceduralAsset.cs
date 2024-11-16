@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.MaterialProperty;
 using static Utils;
 
 public abstract class ProceduralAsset : MonoBehaviour

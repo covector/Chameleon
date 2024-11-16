@@ -130,7 +130,7 @@ MonoBehaviour:
     - {fileID: -876546973899608171, guid: c46c731254e591c4f9d891af520cc3e0, type: 3}
     sampling:
       algorithm: 2
-      spacing: 5
+      spacing: 6
       strength: 3
       jitterCount: {x: 10, y: 14}
       perlinFiltering: 0

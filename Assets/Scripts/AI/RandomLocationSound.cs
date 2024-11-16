@@ -26,7 +26,7 @@ public class RandomLocationSound : MonoBehaviour
         if (playAtNextAvailable && CanPlaySound())
         {
             playAtNextAvailable = false;
-            PlayRandomSound();
+            StartCoroutine(SchedulePlaySound());
         }
 
         if (playing)

@@ -42,7 +42,7 @@ public class PauseGame : MonoBehaviour
     {
         if (uiLock) { return; }
         ToggleDOF(true);
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = FindFirstObjectByType<Dialogue>().CursorIsLocked() ? CursorLockMode.Locked : CursorLockMode.None;
         pauseCanvas.enabled = false;
         FindFirstObjectByType<UIState>().Clear();
         isFrozen = false;

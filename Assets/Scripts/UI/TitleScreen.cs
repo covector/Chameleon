@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using static Unity.Collections.AllocatorManager;
 
 public class TitleScreen : MonoBehaviour
 {
@@ -9,6 +7,7 @@ public class TitleScreen : MonoBehaviour
     public Canvas optionCanvas;
     public Canvas creditCanvas;
     public ConfirmBox confirm;
+    public ModeSelection modeSelection;
 
     private void Start()
     {
@@ -22,8 +21,10 @@ public class TitleScreen : MonoBehaviour
     public void Play()
     {
         if (uiLock) { return; }
-        uiLock = true;
-        FindFirstObjectByType<SceneTransition>().FadeOut(callback: () => SceneManager.LoadScene("GameScene"));
+        modeSelection.Show(() =>
+        {
+            uiLock = true;
+        });
     }
 
     public void Options()

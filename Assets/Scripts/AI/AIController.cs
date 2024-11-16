@@ -13,6 +13,10 @@ public class AIController : MonoBehaviour
 
     void Start()
     {
+        if (!GameSettings.includeMonster) {
+            FindFirstObjectByType<RandomLocationSound>().gameObject.SetActive(false);
+            gameObject.SetActive(false);
+        }
         currentMorph = null;
         gradient = new GradientController();
     }

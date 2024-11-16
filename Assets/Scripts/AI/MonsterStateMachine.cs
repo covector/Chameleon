@@ -5,7 +5,7 @@ public class MonsterStateMachine : MonoBehaviour
 {
     public enum State
     {
-        Idle, Approach, Run, Jumpscare
+        Tutorial, Idle, Approach, Run, Jumpscare
     }
 
     public Dictionary<State, MonsterState> states { get; private set; }
@@ -17,6 +17,7 @@ public class MonsterStateMachine : MonoBehaviour
     {
         controller = GetComponent<AIController>();
         states = new Dictionary<State, MonsterState>();
+        states[State.Tutorial] = new TutorialState(this, controller);
         states[State.Idle] = new IdleState(this, controller);
         states[State.Approach] = new ApproachState(this, controller);
         states[State.Run] = new RunState(this, controller);
@@ -40,7 +41,7 @@ public class MonsterStateMachine : MonoBehaviour
 
     private void InitState()
     {
-        current = State.Idle;
+        current = State.Tutorial;
         ((IdleState)states[State.Idle]).waitTime = 5f;
     }
 
@@ -48,10 +49,13 @@ public class MonsterStateMachine : MonoBehaviour
     {
         switch (current)
         {
+            case State.Tutorial:
+                current = State.Idle;
+                break;
             case State.Idle:
                 current = State.Approach;
-                //current = State.Jumpscare;
-                //intercept = false;
+                current = State.Jumpscare;
+                intercept = false;
                 break;
             case State.Approach:
                 current = State.Run;
@@ -66,7 +70,7 @@ public class MonsterStateMachine : MonoBehaviour
 
     private void InterceptState()
     {
-        if (current != State.Idle && controller.IsLost())
+        if (current != State.Idle && current != State.Tutorial && controller.IsLost())
         {
             states[current].OnStateExit();
             current = State.Jumpscare;
