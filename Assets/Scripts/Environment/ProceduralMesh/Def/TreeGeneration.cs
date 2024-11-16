@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class TreeGeneration : GenericTreeGeneration<TreeGeneration>
 {
+    public override string ID()
+    {
+        return "tree";
+    }
     public TreeGeneration() : base(
         depth: 15,
         radius: new Vector2(0.1f, 0.4f),

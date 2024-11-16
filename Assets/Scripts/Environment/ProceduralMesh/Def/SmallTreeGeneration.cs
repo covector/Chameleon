@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class SmallTreeGeneration : GenericTreeGeneration<SmallTreeGeneration>
 {
+    public override string ID()
+    {
+        return "smallTree";
+    }
     public SmallTreeGeneration() : base(
         depth: 15,
         radius: new Vector2(0.04f, 0.05f),

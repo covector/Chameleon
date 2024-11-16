@@ -16,7 +16,7 @@ public class JumpscareState : MonsterState
     {
         //Vector2 diff = controller.GetDiff(normalized: false);
         //monster.transform.eulerAngles = new Vector3(0, Mathf.Atan2(diff.x, diff.y) * Mathf.Rad2Deg + 180f, 0);
-        controller.Correct();
+        controller.CorrectToMonster();
         return true;
     }
 

@@ -73,7 +73,7 @@ public class DeathCoordinator : MonoBehaviour
         monsterAnimator.ResetTrigger("Kill");
         monsterAnimator.SetTrigger("Kill");
         monster.GetComponent<AnimatedTexture>().SetTo(0f);
-        monster.GetComponent<AudioSource>().PlayOneShot(clips.chimpanzee_close, 0.4f);
+        monster.GetComponent<AudioSource>().PlayOneShot(clips.chimpanzee_close, 0.16f);
     }
 
     public void TextureChange()

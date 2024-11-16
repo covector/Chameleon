@@ -112,4 +112,16 @@ public class TerrainGeneration : ChunkSystem
             chunks[chunkInd].GetComponent<ChunkGeneration>().CheckIntersection(pos, sqrSpeed, offset);
         }
     }
+
+    public List<ProceduralAsset> GetNearAsset(Vector2 pos, System.Func<ProceduralAsset, bool> filter = null)
+    {
+        List<ProceduralAsset> pas = new List<ProceduralAsset>();
+        foreach (Vector2Int neighbour in neighbourhood)
+        {
+            Vector2Int chunkInd = Utils.GetChunkIndFromCoord(pos, chunkSize) + neighbour;
+            if (!chunks.ContainsKey(chunkInd)) { continue; }
+            chunks[chunkInd].GetComponent<ChunkGeneration>().GetNearAsset(pos, filter);
+        }
+        return pas;
+    }
 }

@@ -9,6 +9,11 @@ public class BushGeneration : GenericTreeGeneration<BushGeneration>
         randomAudio = GetComponent<RandomAudio>();
     }
 
+    public override string ID()
+    {
+        return "bush";
+    }
+
     public BushGeneration() : base(
         depth: 10,
         radius: new Vector2(0.02f, 0.03f),

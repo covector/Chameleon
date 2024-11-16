@@ -39,7 +39,7 @@ public class RunState : MonsterState
         if (isRunning)
         {
             Vector2 velocity = (goal - ToVector2(monster.position)).normalized * speed * Time.deltaTime;
-            controller.Move(velocity);
+            controller.MoveMonster(velocity);
 
             if (controller.GetDiff(normalized: false).sqrMagnitude > 2500)
             {

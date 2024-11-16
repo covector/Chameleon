@@ -179,6 +179,17 @@ public class ChunkGeneration : MonoBehaviour
         }
     }
 
+    public List<ProceduralAsset> GetNearAsset(Vector2 pos, Func<ProceduralAsset, bool> filter = null)
+    {
+        List<ProceduralAsset> pas = new List<ProceduralAsset>();
+        foreach (GameObject g in assets)
+        {
+            ProceduralAsset pa = g.GetComponent<ProceduralAsset>();
+            if (filter == null || filter(pa)) { pas.Add(pa); }
+        }
+        return pas;
+    }
+
     void PlaceAssets()
     {
         System.Random rand = new System.Random(chunkSeed);

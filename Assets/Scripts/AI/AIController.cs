@@ -17,7 +17,14 @@ public class AIController : MonoBehaviour
         gradient = new GradientController();
     }
 
-    public void Move(Vector2 velocity)
+    // Use rock location
+    public void MoveRock(Vector2 velocity)
+    {
+        transform.position = gradient.GetAdjustedPosition(transform, velocity.x, velocity.y, yOffset: 1f);
+    }
+
+    // Use monster mesh location
+    public void MoveMonster(Vector2 velocity)
     {
         Vector3 withAccurateY = gradient.GetAdjustedPosition(centerOfMass, velocity.x, velocity.y, yOffset: 1f);
         transform.position = new Vector3(
@@ -26,7 +33,15 @@ public class AIController : MonoBehaviour
             transform.position.z - centerOfMass.position.z + withAccurateY.z
         );
     }
-    public void MoveTo(Vector2 position)
+
+    // Use rock location
+    public void MoveToRock(Vector2 position)
+    {
+        transform.position = ProjectToGround(position.x, position.y) + Vector3.up;
+    }
+
+    // Use monster mesh location
+    public void MoveToMonster(Vector2 position)
     {
         Vector3 withAccurateY = ProjectToGround(centerOfMass.position.x, centerOfMass.position.z) + Vector3.up;
         transform.position = new Vector3(
@@ -35,7 +50,9 @@ public class AIController : MonoBehaviour
             position.y
         );
     }
-    public void Correct()
+
+    // correct y position for monster mesh
+    public void CorrectToMonster()
     {
         Vector3 withAccurateY = ProjectToGround(centerOfMass.position.x, centerOfMass.position.z) + Vector3.up;
         transform.position = new Vector3(
@@ -44,7 +61,6 @@ public class AIController : MonoBehaviour
             transform.position.z
         );
     }
-
 
     public Vector2 GetDiff(bool normalized = true)
     {

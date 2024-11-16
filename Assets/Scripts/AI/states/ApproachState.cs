@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static Utils;
 
@@ -7,8 +9,16 @@ public class ApproachState : MonsterState
     private const float minHideDist = 15f;
     private bool isHiding = false;
     private const float speed = 3.4f;
+    private bool isAFK;
+    private const float afkChance = 0.05f;
+    private const float afkSeconds = 2f;
+    private Updater updater;
+    private Vector2 nearestRock = Vector2.zero;
+    private const float rockDirectFac = 5f;
 
-    public ApproachState(MonsterStateMachine stateMachine, AIController controller) : base(stateMachine, controller) { }
+    public ApproachState(MonsterStateMachine stateMachine, AIController controller) : base(stateMachine, controller) {
+        updater = new Updater(3f, UpdateNearestRock);
+    }
 
     private Vector2 GetSpawnLocation()
     {
@@ -16,25 +26,67 @@ public class ApproachState : MonsterState
         return new Vector2(camera.position.x + 30f * Mathf.Sin(theta), camera.position.z + 30f * Mathf.Cos(theta));
     }
 
+    private void InitiateAFK(float seconds)
+    {
+        if (isAFK) { return; }
+        isAFK = true;
+        RunDelay(() => { isAFK = false; }, seconds);
+    }
+
+    private void OnSwitchHideState()
+    {
+        // the moment of switch
+        if (!isHiding && Random.Range(0f, 1f) < afkChance)
+        {
+            Debug.Log("afk");
+            InitiateAFK(afkSeconds);
+        }
+    }
+
+    private void UpdateNearestRock()
+    {
+        float dist = float.PositiveInfinity;
+        Vector2 monsterPos = ToVector2(monster.position);
+        List<ProceduralAsset> rocks = TerrainGeneration.instance.GetNearAsset(monsterPos, (pa) => pa.ID() == "rock");
+        foreach (ProceduralAsset rock in rocks)
+        {
+            Vector2 rockPos = ToVector2(rock.transform.position);
+            float newDist = (rockPos - monsterPos).sqrMagnitude;
+            if (newDist < dist)
+            {
+                dist = newDist;
+                nearestRock = rockPos;
+            }
+        }
+    }
+
     public override void OnStateEnter()
     {
-        controller.MoveTo(GetSpawnLocation());
+        controller.MoveToRock(GetSpawnLocation());
         controller.ChangeMorph();
         lastDist = float.PositiveInfinity;
+        controller.ToggleMorph(true);
     }
 
     public override bool OnStateUpdate()
     {
+        Vector2 diff = ToVector2(monster.position - camera.position);
+        float dist = diff.magnitude;
+
         // Moving
-        if (!isHiding)
+        if (!isHiding && !isAFK)
         {
-            Vector2 velocity = controller.GetDiff() * speed * Time.deltaTime;
-            controller.Move(velocity);
+            Vector2 playerGoal = controller.GetDiff();
+            Vector2 rockGoal = (nearestRock - ToVector2(monster.position)).normalized;
+            Vector2 finalGoal = Vector2.Dot(playerGoal, rockGoal) < 0 || dist > minHideDist ?
+                playerGoal :
+                (playerGoal + rockGoal * rockDirectFac).normalized
+            ;
+            Vector2 velocity = finalGoal * speed * Time.deltaTime;
+            controller.MoveRock(velocity);
         }
 
         // Check distance
-        Vector2 diff = ToVector2(monster.position - camera.position);
-        float dist = diff.magnitude;
         if (dist > lastDist + 5f && dist < minHideDist)  // Backed off
         {
             return false;
@@ -46,9 +98,13 @@ public class ApproachState : MonsterState
 
         // Check look direction
         float dot = Vector2.Dot(ToVector2(camera.forward), diff);
-        bool facing = dot > 0f;
+        bool facing = dot > 0.01f;
+        bool lastIsHiding = isHiding;
         isHiding = facing && dist < minHideDist;
-        controller.ToggleMorph(isHiding);
+        if (lastIsHiding != isHiding) { OnSwitchHideState(); }
+        //controller.ToggleMorph(isHiding);
+
+        if (dist < minHideDist) { updater.Update(); }
 
         return true;
     }

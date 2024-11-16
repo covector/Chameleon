@@ -378,7 +378,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 730463554}
   m_HandleRect: {fileID: 730463553}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -456,7 +456,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 589.42, y: -1325.3411}
+  m_AnchoredPosition: {x: 589.42, y: -1472}
   m_SizeDelta: {x: 1154.692, y: 1007.31104}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &348683656
@@ -485,13 +485,11 @@ MonoBehaviour:
     https://sound-effects.bbcrewind.co.uk/search?q=NHU9707899
 
 
-
     <b>Footsteps
     Sound:</b>
 
     Footsteps On Stones & Shingle - Footsteps on shingle, 1 man.
     (With start and stop): https://sound-effects.bbcrewind.co.uk/search?q=07004065
-
 
 
     <b>Monster
@@ -500,6 +498,8 @@ MonoBehaviour:
     Chimpanzee (Pan Troglodytes) - close-up pant hooting and screaming:
     https://sound-effects.bbcrewind.co.uk/search?q=NHU05009090
 
+    Chimpanzee (Pan
+    Troglodytes) - Calls developing into screaming. Sounds of nutcracking: https://sound-effects.bbcrewind.co.uk/search?q=NHU05002148
 
 
     <b>Helicopter
@@ -509,13 +509,11 @@ MonoBehaviour:
     descent, land, switch off: https://sound-effects.bbcrewind.co.uk/search?q=07043036
 
 
-
     <b>Pick
     Up Items Sound:</b>
 
     Footsteps: Male: Undergrowth - Footsteps, walking through
     leaves & undergrowth: https://sound-effects.bbcrewind.co.uk/search?q=07041195
-
 
 
     <b>Bushes
@@ -525,12 +523,10 @@ MonoBehaviour:
     https://sound-effects.bbcrewind.co.uk/search?q=07004043
 
 
-
     <b>Scanner Static
     Noise:</b>
 
     Radio: Interference - Severe mains hum and static: https://sound-effects.bbcrewind.co.uk/search?q=07075028
-
 
 
     <b>Scanner
@@ -540,7 +536,11 @@ MonoBehaviour:
     (BT) - playback with clicks, spooling tones then 28" noise for message placement:
     https://sound-effects.bbcrewind.co.uk/search?q=07070090
 
-'
+
+    <b>Typing Sound:</b>
+
+    Telegraph
+    Equipment - Creed keyboard perforator, 1925: https://sound-effects.bbcrewind.co.uk/search?q=07069041'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 31df7543dedf82d4ab773adb04d12b4a, type: 2}
   m_sharedMaterial: {fileID: 7148261196231098074, guid: 31df7543dedf82d4ab773adb04d12b4a, type: 2}
@@ -789,7 +789,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 73.719, y: -773}
+  m_AnchoredPosition: {x: 73.719, y: -925}
   m_SizeDelta: {x: 147.43, y: 48.406982}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &443272760
@@ -1502,14 +1502,16 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<b>Ground Texture:</b>\r\nGroundDirtRocky020: https://www.poliigon.com/texture/fine-rocky-dirt-ground-texture/7006\n\r\n<b>Stone
-    Texture:</b> \r\nCoastSandRocks02: https://polyhaven.com/a/coast_sand_rocks_02\r\n\r\n<b>Tree
-    Texture:</b>\r\nBarkWillow: https://polyhaven.com/a/bark_willow\r\n\r\n<b>Leave
-    Texture:</b>\r\nfoilage_36: https://texture.ninja/textures/Leaves/4?texture=foliage_36.png\r\nfoilage_55:
-    https://texture.ninja/textures/Leaves/4?texture=foliage_55.png\r\nfoilage_94:
-    https://texture.ninja/textures/Leaves/4?texture=foliage_94.png\n\n<b>Helicopter
-    Interior Textures:</b>\r\nGreenMetalRust: https://polyhaven.com/a/green_metal_rust\r\nMetalPlate:
-    https://polyhaven.com/a/metal_plate\r\nRustyMetalSheet: https://polyhaven.com/a/rusty_metal_sheet"
+  m_text: "<b>Ground Texture:</b>\r\nAerial Rocks 04: https://polyhaven.com/a/aerial_rocks_04\r\nForest
+    Leaves 04: https://polyhaven.com/a/forest_leaves_04\n\r\n<b>Stone Texture:</b>
+    \r\nRock 04: https://polyhaven.com/a/rock_04\r\n\r\n<b>Tree Texture:</b>\r\nBark
+    Willow: https://polyhaven.com/a/bark_willow\r\nBark Willow 02: https://polyhaven.com/a/bark_willow_02\r\n\r\n<b>Leave
+    Texture:</b>\r\nfoilage_36: https://texture.ninja/textures/Leaves/4?texture=foliage_36.png\r\nfoilage_94:
+    https://texture.ninja/textures/Leaves/4?texture=foliage_94.png\r\nfoilage_98:
+    https://texture.ninja/textures/Leaves/4?texture=foliage_98.png\n\n<b>Straw Texture:</b>\r\nPalm
+    Tree Bark: https://polyhaven.com/a/palm_tree_bark\n\n<b>Helicopter Interior Textures:</b>\r\nGreen
+    Metal Rust: https://polyhaven.com/a/green_metal_rust\r\nMetal Plate: https://polyhaven.com/a/metal_plate\r\nRusty
+    Metal Sheet: https://polyhaven.com/a/rusty_metal_sheet"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 31df7543dedf82d4ab773adb04d12b4a, type: 2}
   m_sharedMaterial: {fileID: 7148261196231098074, guid: 31df7543dedf82d4ab773adb04d12b4a, type: 2}
@@ -2531,7 +2533,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1544405478}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 8fe8189afec2cff45a39648cdc75dd47, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 59be54af303d0a845ab9ea9b1df81c78, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 1903185585}
@@ -3351,7 +3353,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 589.42, y: -2305}
+  m_AnchoredPosition: {x: 589.42, y: -2358}
   m_SizeDelta: {x: 1154.692, y: 177.09497}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2072621715
@@ -3377,10 +3379,8 @@ MonoBehaviour:
   m_text: '<font="Positive System SDF">Positive System Font</font>: https://www.dafont.com/positive-system.font
 
 
-
     <font="Negative
     System SDF">Negative System Font</font>: https://www.dafont.com/negative-system.font
-
 
 
     <b>Wednesday
@@ -3867,7 +3867,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 73.721, y: -2173}
+  m_AnchoredPosition: {x: 73.721, y: -2224}
   m_SizeDelta: {x: 147.433, y: 46.814026}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2121027400

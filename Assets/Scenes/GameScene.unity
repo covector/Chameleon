@@ -1938,7 +1938,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.471
+  m_Volume: 0.273
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2958,7 +2958,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.682
+  m_Volume: 0.24
   m_Pitch: 1
   Loop: 0
   Mute: 0

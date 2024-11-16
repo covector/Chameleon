@@ -20,6 +20,11 @@ public class RockGeneration : PreGenerate<RockGeneration>
         }
     }
 
+    public override string ID()
+    {
+        return "rock";
+    }
+
     protected override void Edit(List<MeshBuilder> builders)
     {
         TryInit();
@@ -30,10 +35,10 @@ public class RockGeneration : PreGenerate<RockGeneration>
     public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
     {
         float offset = chunkSize / 2f;
-        const float spacing = 20f;
+        const float spacing = 15f;
         const float strength = 3f;
         Vector2Int jitterCount = new Vector2Int(8, 12);
-        JitterPoissonSampling jps = new JitterPoissonSampling(chunkSize, chunkSize, spacing, strength, jitterCount, seed: seed);
+        JitterPoissonSampling jps = new JitterPoissonSampling(chunkSize, chunkSize, spacing, strength, jitterCount, seed: seed, singleProb: 0.3f);
         return jps.fill();
     }
 

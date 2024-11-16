@@ -5,6 +5,10 @@ using static Utils;
 
 public class StrawGeneration : PreGenerate<StrawGeneration>
 {
+    public override string ID()
+    {
+        return "straw";
+    }
     public MeshRenderer[] meshRenderers;
     protected Vector2 segmentLength = new Vector2(0.2f, 0.3f);
     protected Vector2 width = new Vector2(0.01f, 0.02f);
