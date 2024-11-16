@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.Rendering;
@@ -5,6 +6,14 @@ using UnityEngine.Rendering.Universal;
 
 public class DeathCoordinator : MonoBehaviour
 {
+    [Serializable]
+    public struct AudioClips
+    {
+        public AudioClip camera_knocking;
+        public AudioClip camera_knocking_2;
+        public AudioClip impact_dirt;
+        public AudioClip chimpanzee_close;
+    }
     public Transform cam;
     public PlayerControl playerControl;
     public Flashlight flashlight;
@@ -15,9 +24,12 @@ public class DeathCoordinator : MonoBehaviour
     public GameObject scanner;
     public Volume volume;
     public Transform[] monsterEyes;
+    public AudioSource audioSource;
+    public AudioClips clips;
 
     public void StartDeathScene()
     {
+        FindFirstObjectByType<PauseGame>().canPause = false;
         DepthOfField dof;
         volume.profile.TryGet(out dof);
         dof.focusDistance.value = 5f;
@@ -31,6 +43,8 @@ public class DeathCoordinator : MonoBehaviour
         //cam.localPosition = Vector3.up;
         GetComponent<Animator>().ResetTrigger("Knocked");
         GetComponent<Animator>().SetTrigger("Knocked");
+        audioSource.PlayOneShot(clips.camera_knocking, 1f);
+        FindFirstObjectByType<RandomLocationSound>().GetComponent<AudioSource>().Stop();
     }
 
     public void OffFlashlight()
@@ -42,6 +56,7 @@ public class DeathCoordinator : MonoBehaviour
     {
         cam.localEulerAngles = new Vector3(0, 0, 0);
         FindFirstObjectByType<SceneTransition>().BlockScreen();
+        audioSource.PlayOneShot(clips.impact_dirt, 1f);
     }
 
     public void LookUp()
@@ -58,6 +73,7 @@ public class DeathCoordinator : MonoBehaviour
         monsterAnimator.ResetTrigger("Kill");
         monsterAnimator.SetTrigger("Kill");
         monster.GetComponent<AnimatedTexture>().SetTo(0f);
+        monster.GetComponent<AudioSource>().PlayOneShot(clips.chimpanzee_close, 0.4f);
     }
 
     public void TextureChange()
@@ -65,9 +81,16 @@ public class DeathCoordinator : MonoBehaviour
         monster.GetComponent<AnimatedTexture>().Play();
     }
 
+    public void PlayFall()
+    {
+        audioSource.PlayOneShot(clips.camera_knocking, 1f);
+    }
+
     public void Death()
     {
-        FindFirstObjectByType<SceneTransition>().BlockScreen();
+        FindFirstObjectByType<DeathScreen>().Play();
+        audioSource.Stop();
+        monster.GetComponent<AudioSource>().Stop();
     }
 
     private bool lookAt = false;

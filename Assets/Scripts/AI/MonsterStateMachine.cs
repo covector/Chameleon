@@ -50,6 +50,8 @@ public class MonsterStateMachine : MonoBehaviour
         {
             case State.Idle:
                 current = State.Approach;
+                //current = State.Jumpscare;
+                //intercept = false;
                 break;
             case State.Approach:
                 current = State.Run;

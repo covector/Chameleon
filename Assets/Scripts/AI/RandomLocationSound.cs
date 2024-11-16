@@ -45,7 +45,7 @@ public class RandomLocationSound : MonoBehaviour
 
     IEnumerator SchedulePlaySound()
     {
-        yield return new WaitForSeconds(Random.Range(10f, 20f));
+        yield return new WaitForSeconds(Random.Range(20f, 30f));
         playAtNextAvailable = true;
     }
 
@@ -72,6 +72,6 @@ public class RandomLocationSound : MonoBehaviour
 
     bool CanPlaySound()
     {
-        return stateMachine.current.Equals("Approach") && (monster.position - player.position).sqrMagnitude > 100f;
+        return stateMachine.current == MonsterStateMachine.State.Approach && (monster.position - player.position).sqrMagnitude > 100f;
     }
 }

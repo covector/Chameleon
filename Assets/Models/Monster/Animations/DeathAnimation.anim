@@ -27,6 +27,24 @@ AnimationClip:
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
         outWeight: {x: 0.21707058, y: 0.47360855, z: 0.4144075}
       - serializedVersion: 3
+        time: 0.06666667
+        value: {x: 33.819828, y: -3.291113, z: 18.53732}
+        inSlope: {x: 508.88873, y: 73.090904, z: 237.02289}
+        outSlope: {x: 508.88873, y: 73.090904, z: 237.02289}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+      - serializedVersion: 3
+        time: 0.083333336
+        value: {x: 41.562393, y: -1.4715418, z: 21.350082}
+        inSlope: {x: 411.27274, y: 140.90982, z: 88.90909}
+        outSlope: {x: 411.27274, y: 140.90982, z: 88.90909}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
+      - serializedVersion: 3
         time: 0.18333334
         value: {x: 75.4, y: 13.4, z: 16.3}
         inSlope: {x: 0, y: 0, z: 0}
@@ -369,6 +387,15 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.21707058
       - serializedVersion: 3
+        time: 0.083333336
+        value: 41.562393
+        inSlope: 411.27274
+        outSlope: 411.27274
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
         time: 0.18333334
         value: 75.4
         inSlope: 0
@@ -462,6 +489,15 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.47360855
       - serializedVersion: 3
+        time: 0.06666667
+        value: -3.291113
+        inSlope: 73.090904
+        outSlope: 73.090904
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
         time: 0.18333334
         value: 13.4
         inSlope: 0
@@ -545,6 +581,15 @@ AnimationClip:
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.4144075
+      - serializedVersion: 3
+        time: 0.083333336
+        value: 21.350082
+        inSlope: 88.90909
+        outSlope: 88.90909
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.18333334
         value: 16.3
@@ -700,6 +745,13 @@ AnimationClip:
     messageOptions: 0
   - time: 2.7666667
     functionName: StopLookAt
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 3.55
+    functionName: PlayFall
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

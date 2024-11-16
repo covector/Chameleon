@@ -10,6 +10,7 @@ public class PauseGame : MonoBehaviour
     private bool uiLock = false;
     public bool isFrozen { get; private set; }
     public bool pauseLock { get; private set; }
+    public bool canPause { get; set; }
 
     public Canvas pauseCanvas;
     public Canvas optionCanvas;
@@ -20,6 +21,7 @@ public class PauseGame : MonoBehaviour
         FindFirstObjectByType<SceneTransition>().DelayedFadeIn();
         instance = this;
         Resume();
+        canPause = true;
     }
 
     private void ToggleDOF(bool toggle)
@@ -51,6 +53,7 @@ public class PauseGame : MonoBehaviour
 
     public void Pause()
     {
+        if (!canPause) { return; }
         ToggleDOF(false);
         Cursor.lockState = CursorLockMode.None;
         pauseCanvas.enabled = true;
