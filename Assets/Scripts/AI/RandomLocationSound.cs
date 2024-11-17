@@ -8,27 +8,22 @@ public class RandomLocationSound : MonoBehaviour
     public Transform player;
     RandomAudio randomAudio;
     AudioSource audioSource;
-    private bool playAtNextAvailable = true;
     private bool playing = false;
     private float theta = 0.0f;
     private float angularSpeed = 1.0f;
     private bool fading = false;
+    private Updater updater;
 
     private void Start()
     {
         randomAudio = GetComponent<RandomAudio>();
         stateMachine = monster.GetComponent<MonsterStateMachine>();
         audioSource = GetComponent<AudioSource>();
+        updater = new Updater(Random.Range(15f, 30f), TryPlaySound);
     }
 
     private void Update()
     {
-        if (playAtNextAvailable && CanPlaySound())
-        {
-            playAtNextAvailable = false;
-            StartCoroutine(SchedulePlaySound());
-        }
-
         if (playing)
         {
             theta += angularSpeed * Time.deltaTime;
@@ -41,12 +36,16 @@ public class RandomLocationSound : MonoBehaviour
                 StartCoroutine(FadeOutAudio());
             }
         }
+        updater.Update();
     }
 
-    IEnumerator SchedulePlaySound()
+    void TryPlaySound()
     {
-        yield return new WaitForSeconds(Random.Range(20f, 30f));
-        playAtNextAvailable = true;
+        if (!playing && CanPlaySound())
+        {
+            PlayRandomSound();
+        }
+        updater.period = Random.Range(15f, 30f);
     }
 
     IEnumerator FadeOutAudio()
@@ -67,7 +66,6 @@ public class RandomLocationSound : MonoBehaviour
         angularSpeed = Random.Range(0.5f, 1.5f);
         playing = true;
         randomAudio.PlayRandomSound(volume);
-        StartCoroutine(SchedulePlaySound());
     }
 
     bool CanPlaySound()

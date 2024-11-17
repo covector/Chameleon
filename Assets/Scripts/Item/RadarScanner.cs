@@ -28,33 +28,39 @@ public class RadarScanner : MonoBehaviour
             if (!isEnabled)
             {
                 TurnOnRadar();
-                isEnabled = true;
             } else
             {
                 TurnOffRadar();
-                isEnabled = false;
             }
+            if (Tutorial.waitingScanner) { Tutorial.Scanner(); }
         }
-        if (isEnabled ? t > 0f : t < 1f)
+        if (!Tutorial.inProgress)
         {
-            t += isEnabled ? -Time.deltaTime : Time.deltaTime;
-            dof.focusDistance.value = Mathf.Lerp(0.7f, 5f, t);
-        }
-        if (isEnabled ? t < 0f : t > 1f)
-        {
-            t = isEnabled ? 0f : 1f;
+            if (isEnabled ? t > 0f : t < 1f)
+            {
+                t += isEnabled ? -Time.deltaTime : Time.deltaTime;
+                dof.focusDistance.value = Mathf.Lerp(0.7f, 5f, t);
+            }
+            if (isEnabled ? t < 0f : t > 1f)
+            {
+                t = isEnabled ? 0f : 1f;
+            }
         }
     }
 
-    void TurnOnRadar()
+    public void TurnOnRadar()
     {
+        if (isEnabled) { return; }
+        isEnabled = true;
         animator.ResetTrigger("RadarOut");
         animator.SetTrigger("RadarOut");
         switchOnSound.Play();
     }
 
-    void TurnOffRadar()
+    public void TurnOffRadar()
     {
+        if (!isEnabled) { return; }
+        isEnabled = false;
         animator.ResetTrigger("RadarIn");
         animator.SetTrigger("RadarIn");
     }

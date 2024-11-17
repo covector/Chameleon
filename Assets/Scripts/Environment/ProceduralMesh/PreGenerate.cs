@@ -22,7 +22,7 @@ public abstract class PreGenerate<T> : ProceduralAsset where T : class
         }
     }
 
-    public void ReloadPreGen()
+    public override void ClearPreGen()
     {
         s_preGenerated = new List<List<Mesh>>();
         s_maxDims = new List<float>();

@@ -540,7 +540,14 @@ MonoBehaviour:
     <b>Typing Sound:</b>
 
     Telegraph
-    Equipment - Creed keyboard perforator, 1925: https://sound-effects.bbcrewind.co.uk/search?q=07069041'
+    Equipment - Creed keyboard perforator, 1925: https://sound-effects.bbcrewind.co.uk/search?q=07069041
+
+
+    <b>Tutorial
+    Speaking Sound:</b>
+
+    Radio: Interference - VHF receiver with aerial disconnected.
+    Speech, heavily distorted: https://sound-effects.bbcrewind.co.uk/search?q=07069068'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 31df7543dedf82d4ab773adb04d12b4a, type: 2}
   m_sharedMaterial: {fileID: 7148261196231098074, guid: 31df7543dedf82d4ab773adb04d12b4a, type: 2}
@@ -1414,7 +1421,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -1933,7 +1940,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -2126,7 +2133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -2319,7 +2326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -2520,7 +2527,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1045197010}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.1685248
+  m_Size: 0.16214028
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3334,7 +3341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -3546,7 +3553,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 589.42, y: -2358}
+  m_AnchoredPosition: {x: 589.42, y: -2482.9998}
   m_SizeDelta: {x: 1154.692, y: 177.09497}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2072621715
@@ -3833,7 +3840,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0.000080784645}
-  m_SizeDelta: {x: 0, y: 2542.534}
+  m_SizeDelta: {x: 0, y: 2642.65}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2103749219
 GameObject:
@@ -3985,7 +3992,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -4062,7 +4069,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 73.721, y: -2224}
+  m_AnchoredPosition: {x: 73.721, y: -2349}
   m_SizeDelta: {x: 147.433, y: 46.814026}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2121027400
@@ -4271,7 +4278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -4581,7 +4588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -4953,6 +4960,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2076119424}
     m_Modifications:
+    - target: {fileID: 387932271813134995, guid: 67337f264488f2647a8c1a669c33156c, type: 3}
+      propertyPath: confirm
+      value: 
+      objectReference: {fileID: 1798757995}
     - target: {fileID: 551583317004598735, guid: 67337f264488f2647a8c1a669c33156c, type: 3}
       propertyPath: m_Name
       value: Option Canvas

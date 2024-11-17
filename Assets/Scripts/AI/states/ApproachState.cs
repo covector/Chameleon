@@ -47,7 +47,7 @@ public class ApproachState : MonsterState
     {
         float dist = float.PositiveInfinity;
         Vector2 monsterPos = ToVector2(monster.position);
-        List<ProceduralAsset> rocks = TerrainGeneration.instance.GetNearAsset(monsterPos, (pa) => pa.ID() == "rock");
+        List<ProceduralAsset> rocks = TerrainGeneration.instance.GetNearAsset(monsterPos, (pa) => pa.ID() == AssetID.ROCK);
         foreach (ProceduralAsset rock in rocks)
         {
             Vector2 rockPos = ToVector2(rock.transform.position);
@@ -70,13 +70,14 @@ public class ApproachState : MonsterState
 
     public override bool OnStateUpdate()
     {
-        Vector2 diff = ToVector2(monster.position - camera.position);
+        Vector2 diff = controller.GetDiff(normalized: false);
         float dist = diff.magnitude;
+        diff = diff / dist;
 
         // Moving
         if (!isHiding && !isAFK)
         {
-            Vector2 playerGoal = controller.GetDiff();
+            Vector2 playerGoal = diff;
             Vector2 rockGoal = (nearestRock - ToVector2(monster.position)).normalized;
             Vector2 finalGoal = Vector2.Dot(playerGoal, rockGoal) < 0 || dist > minHideDist ?
                 playerGoal :
@@ -97,7 +98,8 @@ public class ApproachState : MonsterState
         }
 
         // Check look direction
-        float dot = Vector2.Dot(ToVector2(camera.forward), diff);
+        //Vector3 diff3D = (controller.GetMorphPosition() - camera.position).normalized;
+        float dot = Vector2.Dot(ToVector2(camera.forward), -diff);
         bool facing = dot > 0.01f;
         bool lastIsHiding = isHiding;
         isHiding = facing && dist < minHideDist;

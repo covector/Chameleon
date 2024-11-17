@@ -16,6 +16,12 @@ public class RandomAudio : MonoBehaviour
         audioSource.PlayOneShot(GetRandomClip(), volume);
     }
 
+    public void PlayRandomSoundStoppable()
+    {
+        audioSource.clip = GetRandomClip();
+        audioSource.Play();
+    }
+
     public AudioClip GetRandomClip()
     {
         return audioClips[Random.Range(0, audioClips.Length)];

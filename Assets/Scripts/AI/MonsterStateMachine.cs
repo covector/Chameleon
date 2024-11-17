@@ -41,7 +41,7 @@ public class MonsterStateMachine : MonoBehaviour
 
     private void InitState()
     {
-        current = State.Tutorial;
+        current = GameSettings.includeTutorial ? State.Tutorial : State.Idle;
         ((IdleState)states[State.Idle]).waitTime = 5f;
     }
 
@@ -50,12 +50,12 @@ public class MonsterStateMachine : MonoBehaviour
         switch (current)
         {
             case State.Tutorial:
-                current = State.Idle;
+                current = State.Run;
                 break;
             case State.Idle:
                 current = State.Approach;
-                current = State.Jumpscare;
-                intercept = false;
+                //current = State.Jumpscare;
+                //intercept = false;
                 break;
             case State.Approach:
                 current = State.Run;

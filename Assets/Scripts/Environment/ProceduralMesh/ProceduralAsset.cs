@@ -52,7 +52,7 @@ public abstract class ProceduralAsset : MonoBehaviour
 
     public abstract void Generate(int seed);
 
-    public virtual string ID() { return "unknown"; }
+    public abstract AssetID ID();
     private static List<int> defaultMaterialCount = new List<int> { 1 };
     protected virtual List<int> MaterialCount() { return defaultMaterialCount; }
     protected abstract void Edit(List<MeshBuilder> meshBuilders);
@@ -69,4 +69,5 @@ public abstract class ProceduralAsset : MonoBehaviour
     public virtual float SpawnYOffset() { return -0.1f; }
     private static List<float> defaultRRS = new List<float> { -1f };
     public virtual List<float> RenderRadiusSquare() { return defaultRRS; }
+    public abstract void ClearPreGen();
 }

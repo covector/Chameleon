@@ -10,6 +10,7 @@ public class TerrainGeneration : ChunkSystem
     public int seed;
     public ItemSpawning itemSpawning;
     public static TerrainGeneration instance;
+    public bool generating = true;
 
     public TerrainGeneration() : base(10f, 4, 5) {}
     
@@ -20,9 +21,14 @@ public class TerrainGeneration : ChunkSystem
         ChunkGeneration.Init(chunkSize, step, perlins, seed);
     }
 
+    public void ResetPreGen()
+    {
+        chunkPrefab.GetComponent<ChunkGeneration>().ResetPreGen();
+    }
+
     protected override bool CanLoadChunk(Vector2Int chunkInd, bool playerInChunk)
     {
-        return !chunks.ContainsKey(chunkInd) || !chunks[chunkInd].GetComponent<MeshRenderer>().enabled;
+        return generating && (!chunks.ContainsKey(chunkInd) || !chunks[chunkInd].GetComponent<MeshRenderer>().enabled);
     }
 
     protected override void LoadChunk(Vector2Int chunkInd, bool playerInChunk)
@@ -120,7 +126,7 @@ public class TerrainGeneration : ChunkSystem
         {
             Vector2Int chunkInd = Utils.GetChunkIndFromCoord(pos, chunkSize) + neighbour;
             if (!chunks.ContainsKey(chunkInd)) { continue; }
-            chunks[chunkInd].GetComponent<ChunkGeneration>().GetNearAsset(pos, filter);
+            pas.AddRange(chunks[chunkInd].GetComponent<ChunkGeneration>().GetNearAsset(pos, filter));
         }
         return pas;
     }

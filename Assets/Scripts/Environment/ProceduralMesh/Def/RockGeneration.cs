@@ -20,9 +20,9 @@ public class RockGeneration : PreGenerate<RockGeneration>
         }
     }
 
-    public override string ID()
+    public override AssetID ID()
     {
-        return "rock";
+        return AssetID.ROCK;
     }
 
     protected override void Edit(List<MeshBuilder> builders)

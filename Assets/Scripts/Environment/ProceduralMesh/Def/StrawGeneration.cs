@@ -5,9 +5,9 @@ using static Utils;
 
 public class StrawGeneration : PreGenerate<StrawGeneration>
 {
-    public override string ID()
+    public override AssetID ID()
     {
-        return "straw";
+        return AssetID.STRAW;
     }
     public MeshRenderer[] meshRenderers;
     protected Vector2 segmentLength = new Vector2(0.2f, 0.3f);

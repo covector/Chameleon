@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Updater
 {
-    private float period;
+    public float period;
     private Action callback;
     private float counter = float.PositiveInfinity;
 

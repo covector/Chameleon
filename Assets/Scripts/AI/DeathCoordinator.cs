@@ -54,12 +54,7 @@ public class DeathCoordinator : MonoBehaviour
 
     public void FallOnTheGround()
     {
-        //cam.localEulerAngles = new Vector3(0, 0, 0);
-        cam.rotation = cameraCoordinator.rotation;
-        Debug.Log("Camera Angle: " + cam.eulerAngles);
-        Debug.Log("Camera coordinator Angle: " + cameraCoordinator.eulerAngles);
-        Debug.Log("Coordinator Angle: " + transform.eulerAngles);
-        Debug.Log("Camera Local Angle: " + cam.localEulerAngles);
+        cam.localEulerAngles = new Vector3(0, 0, 0);
         FindFirstObjectByType<SceneTransition>().BlockScreen();
         audioSource.PlayOneShot(clips.impact_dirt, 1f);
     }
@@ -69,6 +64,7 @@ public class DeathCoordinator : MonoBehaviour
         flashlight.ToggleFlashlight(true);
         monster.position = transform.position;
         monster.rotation = transform.rotation;
+        monsterAnimator.transform.localRotation = Quaternion.identity;
         FindFirstObjectByType<SceneTransition>().UnblockScreen();
     }
 

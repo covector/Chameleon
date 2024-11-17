@@ -9,9 +9,9 @@ public class BushGeneration : GenericTreeGeneration<BushGeneration>
         randomAudio = GetComponent<RandomAudio>();
     }
 
-    public override string ID()
+    public override AssetID ID()
     {
-        return "bush";
+        return AssetID.BUSH;
     }
 
     public BushGeneration() : base(

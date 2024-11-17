@@ -113,7 +113,8 @@ public class AssetTemplate : ScriptableObject
     }
 
     public class MutableTree: GenericTreeGeneration<MutableTree>, MutableAsset
-    {      
+    {
+        public override AssetID ID() { return AssetID.UNKNOWN; }
         public MutableTree() : base() {}
 
         public void EditParam(MutableParam param)

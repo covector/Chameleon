@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class SmallTreeGeneration : GenericTreeGeneration<SmallTreeGeneration>
 {
-    public override string ID()
+    public override AssetID ID()
     {
-        return "smallTree";
+        return AssetID.SMALLTREE;
     }
     public SmallTreeGeneration() : base(
         depth: 15,

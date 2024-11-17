@@ -73,7 +73,7 @@ public class PauseGame : MonoBehaviour
     {
         if (uiLock) { return; }
         pauseCanvas.enabled = false;
-        optionCanvas.enabled = true;
+        optionCanvas.GetComponent<PlayerOptions>().Open();
         ToggleLensDistort(true);
         FindFirstObjectByType<UIState>().Push("Page");
     }
@@ -81,7 +81,7 @@ public class PauseGame : MonoBehaviour
     public void Back()
     {
         pauseCanvas.enabled = true;
-        optionCanvas.enabled = false;
+        optionCanvas.GetComponent<PlayerOptions>().Close();
         ToggleLensDistort(false);
         FindFirstObjectByType<UIState>().Remove("Page");
     }
@@ -93,6 +93,7 @@ public class PauseGame : MonoBehaviour
         {
             if (yes) {
                 uiLock = true;
+                TerrainGeneration.instance.ResetPreGen();
                 FindFirstObjectByType<SceneTransition>().FadeOut(callback:() => SceneManager.LoadScene("Title")); 
             }
         });

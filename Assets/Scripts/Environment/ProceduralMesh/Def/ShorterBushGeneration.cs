@@ -9,9 +9,9 @@ public class ShorterBushGeneration : GenericTreeGeneration<ShorterBushGeneration
         randomAudio = GetComponent<RandomAudio>();
     }
 
-    public override string ID()
+    public override AssetID ID()
     {
-        return "shorterBush";
+        return AssetID.SHORTERBUSH;
     }
 
     public ShorterBushGeneration() : base(

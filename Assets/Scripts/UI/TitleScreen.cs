@@ -32,7 +32,7 @@ public class TitleScreen : MonoBehaviour
         if (uiLock) { return; }
         titleCanvas.enabled = false;
         creditCanvas.enabled = false;
-        optionCanvas.enabled = true;
+        optionCanvas.GetComponent<PlayerOptions>().Open();
         FindFirstObjectByType<UIState>().Push("Page");
     }
 
@@ -41,7 +41,7 @@ public class TitleScreen : MonoBehaviour
         if (uiLock) { return; }
         titleCanvas.enabled = false;
         creditCanvas.enabled = true;
-        optionCanvas.enabled = false;
+        optionCanvas.GetComponent<PlayerOptions>().Close();
         FindFirstObjectByType<UIState>().Push("Page");
     }
 
@@ -49,7 +49,7 @@ public class TitleScreen : MonoBehaviour
     {
         titleCanvas.enabled = true;
         creditCanvas.enabled = false;
-        optionCanvas.enabled = false;
+        optionCanvas.GetComponent<PlayerOptions>().Close();
         FindFirstObjectByType<UIState>().Remove("Page");
     }
 

@@ -14,13 +14,17 @@ public class Typing : MonoBehaviour
 
     void Start()
     {
-        if (audioSource == null && GetComponent<AudioSource>() != null)
+        if (GetComponent<AudioSource>() != null)
+        {
+            audioSource = gameObject.GetComponent<AudioSource>();
+        }
+        if (typingSound != null && GetComponent<AudioSource>() == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
     }
 
-    IEnumerator TypingSequence(float waitSeconds, Action callback = null)
+    IEnumerator TypingSequence(float waitSeconds, Action callback = null, Action onType = null)
     {
         int totalChar = text.GetParsedText().Length;
         for (int i = 0; i <= totalChar; i++)
@@ -33,17 +37,17 @@ public class Typing : MonoBehaviour
             {
                 audioSource.PlayOneShot(typingSound, volume);
             }
-            
+            if (onType != null) { onType(); }
             yield return new WaitForSeconds(waitSeconds);
         }
         currentCoroutine = null;
         if (callback != null) { callback(); }
     }
 
-    public void Play(float waitSeconds, Action callback = null)
+    public void Play(float waitSeconds, Action callback = null, Action onType = null)
     {
         if (currentCoroutine == null) {
-            currentCoroutine = StartCoroutine(TypingSequence(waitSeconds, callback));
+            currentCoroutine = StartCoroutine(TypingSequence(waitSeconds, callback, onType));
         }
     }
 

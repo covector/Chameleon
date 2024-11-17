@@ -72,6 +72,11 @@ public class AIController : MonoBehaviour
         return normalized ? diff.normalized : diff;
     }
 
+    public Vector3 GetMorphPosition()
+    {
+        return currentMorph == null ? Vector3.zero : currentMorph.transform.position;
+    }
+
     public void ChangeMorph()
     {
         if (currentMorph == null)
@@ -79,7 +84,7 @@ public class AIController : MonoBehaviour
             currentMorph = Instantiate(morphPrefabs[0]);
         }
         currentMorph.GetComponent<ProceduralAsset>().enabled = true;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 15; i++)
         {
             currentMorph.GetComponent<ProceduralAsset>().Generate(UnityEngine.Random.Range(0, 10000));
             if (currentMorph.GetComponent<ProceduralAsset>().MaxDim() > 0.5f) { break; }

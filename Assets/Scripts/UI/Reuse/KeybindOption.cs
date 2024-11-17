@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static Utils;
 
 public class KeybindOption : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
@@ -17,14 +18,9 @@ public class KeybindOption : MonoBehaviour, ISelectHandler, IDeselectHandler
         assigned.text = ToReadable(assignedKey);
     }
 
-    private string ToReadable(KeyCode keyCode)
-    {
-        if ((int)keyCode >= (int)KeyCode.Alpha0 && (int)keyCode <= (int)KeyCode.Alpha9) { return ((int)keyCode - (int)KeyCode.Alpha0).ToString(); }
-        return keyCode.ToString();
-    }
-
     public void OnSelect(BaseEventData eventData)
     {
+        Debug.Log("onselect");
         isEditing = true;
         assigned.text = "-";
         FindFirstObjectByType<UIState>().Push("Keybind");
@@ -32,6 +28,7 @@ public class KeybindOption : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     public void OnDeselect(BaseEventData eventData)
     {
+        Debug.Log("ondeselect");
         isEditing = true;
         assigned.text = ToReadable(assignedKey);
     }
@@ -49,7 +46,10 @@ public class KeybindOption : MonoBehaviour, ISelectHandler, IDeselectHandler
         {
             if (!Event.current.Equals(Event.KeyboardEvent("escape")) && FindFirstObjectByType<UIState>().IsState("Keybind"))
             {
-                assignedKey = Event.current.keyCode;
+                if (FindFirstObjectByType<PlayerOptions>().canEdit)
+                {
+                    assignedKey = Event.current.keyCode;
+                }
                 OnChangeCallback(assignedKey);
             }
             StopEditing();

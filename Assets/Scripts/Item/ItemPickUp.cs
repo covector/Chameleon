@@ -19,12 +19,22 @@ public class ItemPickUp : MonoBehaviour
     {
         if (Input.GetKeyDown(PlayerOptions.instance.KeyBinds["PickUp"]))
         {
-            if (scanner.activeSelf && canBePickenUp())
+            if (!Tutorial.lockPickUp && scanner.activeSelf && canBePickenUp())
             {
                 scanner.SetActive(false);
                 pickedUp = true;
                 randomAudio.PlayRandomSound();
                 FindAnyObjectByType<ItemCounter>().Increment();
+                if (Tutorial.waitingPickup || Tutorial.waitingPickupFew) { Tutorial.PickUp(); }
+            }
+        }
+        if (Tutorial.waitingLocateItem)
+        {
+            Vector3 diff = transform.position - cam.position;
+            float sqrMag = diff.sqrMagnitude;
+            if (sqrMag < pickUpDistSqr)
+            {
+                Tutorial.LocatedItem();
             }
         }
     }

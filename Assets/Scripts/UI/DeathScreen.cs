@@ -40,6 +40,7 @@ public class DeathScreen : MonoBehaviour
                 }, 4f);
             });
         }, 3f);
+        TerrainGeneration.instance.ResetPreGen();
     }
 
     private float counter = 0;
@@ -48,7 +49,7 @@ public class DeathScreen : MonoBehaviour
         if (glowText)
         {
             backText.color = new Color(0.3f, 0.3f, 0.3f, MapValues(Mathf.Cos(counter), -1f, 1f, 1f, 0.2f));
-            counter += Time.deltaTime * frequency;
+            counter += Time.unscaledDeltaTime * frequency;
         }
     }
 

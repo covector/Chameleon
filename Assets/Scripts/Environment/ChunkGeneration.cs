@@ -190,6 +190,14 @@ public class ChunkGeneration : MonoBehaviour
         return pas;
     }
 
+    public void ResetPreGen()
+    {
+        foreach (GameObject prefab in assetPrefabs)
+        {
+            prefab.GetComponent<ProceduralAsset>().ClearPreGen();
+        }
+    }
+
     void PlaceAssets()
     {
         System.Random rand = new System.Random(chunkSeed);

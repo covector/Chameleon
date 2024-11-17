@@ -129,7 +129,13 @@ public class Utils
     {
         float subRange = (float)random.NextDouble() * sigma;
         return RandomRange(random, -subRange, subRange);
-    } 
+    }
+
+    public static string ToReadable(in KeyCode keyCode)
+    {
+        if ((int)keyCode >= (int)KeyCode.Alpha0 && (int)keyCode <= (int)KeyCode.Alpha9) { return ((int)keyCode - (int)KeyCode.Alpha0).ToString(); }
+        return keyCode.ToString();
+    }
 
     public static KeyCode TryParseKey(string key, KeyCode fallback)
     {
@@ -165,5 +171,9 @@ public class Utils
     {
         yield return unscaledTime ? new WaitForSecondsRealtime(delay) : new WaitForSeconds(delay);
         action();
+    }
+
+    public static string Wednesday(string text) {
+        return $"<font=\"Wednesday SDF\">{text}</font>";
     }
 }
