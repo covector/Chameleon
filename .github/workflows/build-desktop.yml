@@ -21,7 +21,7 @@ jobs:
           - StandaloneOSX
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Cache
         uses: actions/cache@v3
         with:
@@ -64,16 +64,16 @@ jobs:
           echo "date=$date" >> $GITHUB_ENV
           echo "tag=$tag" >> $GITHUB_ENV
       - name: Download build artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: artifacts
       - name: Create release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           name: "Release #${{ github.run_number }} ${{ env.date }}"
           tag_name: ${{ env.tag }}
           files: artifacts/**/*.*
           generate_release_notes: true
-      - uses: geekyeggo/delete-artifact@v2
+      - uses: geekyeggo/delete-artifact@v5
         with:
           name: ${{ env.projectName }}*
