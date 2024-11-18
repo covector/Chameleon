@@ -2802,7 +2802,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a72c4098835f1ed4993f3ca8433f8de4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url: https://covector.github.io/Chameleon/Build/prerender.webm
+  url: https://covector.github.io/Chameleon/prerender.webm
 --- !u!1 &1572596959
 GameObject:
   m_ObjectHideFlags: 0

@@ -168,7 +168,7 @@ public class Tutorial : MonoBehaviour
             d.useGlitch1 = true;
             d.Say("Luckily you are able to pick up o@r s#gnal-", () =>
             {
-                d.useGlitch1 = true;
+                d.useGlitch2 = true;
                 d.Say("#t w@ld ahve ###been ba@@d #f...", () =>
                 {
                     d.HideAll(); OffAllFlags();
