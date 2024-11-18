@@ -43,7 +43,6 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
-          buildName: ${{ env.tag }}
       - name: Zip output
         run: |
           cd ./build/${{ matrix.targetPlatform }}

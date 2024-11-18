@@ -2,9 +2,9 @@ name: WebGL - Build and publish to GitHub Pages
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
+  # push:
+  #   branches:
+  #     - master
 
 jobs:
   build:
