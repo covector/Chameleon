@@ -26,6 +26,8 @@ jobs:
           sudo apt clean
           docker rmi $(docker image ls -aq)
           df -h
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
       - name: Build project
         uses: game-ci/unity-builder@v4
         env:
@@ -35,7 +37,7 @@ jobs:
         with:
           targetPlatform: WebGL
       - name: Move video assets into deployment directory
-        run: cp ./Assets/Models/Helicopter/prerender.webm ./build/WebGL/WebGL/prerender.webm
+        run: sudo cp ./Assets/Models/Helicopter/prerender.webm ./build/WebGL/WebGL/prerender.webm
       - name: Set up GitHub Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
