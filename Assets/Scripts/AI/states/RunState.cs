@@ -15,6 +15,7 @@ public class RunState : MonsterState
     {
         stateMachine.StartCoroutine(Morph(0.1f));
         isRunning = false;
+        RunDelay(stateMachine, () => Object.FindFirstObjectByType<ProximityCue>().IsInRange(false), 5f);
     }
 
     IEnumerator Morph(float time)

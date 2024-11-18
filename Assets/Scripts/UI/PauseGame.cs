@@ -24,25 +24,27 @@ public class PauseGame : MonoBehaviour
         canPause = true;
     }
 
-    private void ToggleDOF(bool toggle)
+    private void ToggleEffects(bool toggle)
     {
         DepthOfField dof;
         FindFirstObjectByType<Volume>().profile.TryGet(out dof);
         dof.active = toggle;
-    }
 
-    private void ToggleLensDistort(bool toggle)
-    {
         LensDistortion lensDistort;
         FindFirstObjectByType<Volume>().profile.TryGet(out lensDistort);
         lensDistort.active = toggle;
+
+        ChromaticAberration aberration;
+        FindFirstObjectByType<Volume>().profile.TryGet(out aberration);
+        aberration.active = toggle;
     }
 
     public void Resume()
     {
         if (uiLock) { return; }
-        ToggleDOF(true);
-        Cursor.lockState = FindFirstObjectByType<Dialogue>().CursorIsLocked() ? CursorLockMode.Locked : CursorLockMode.None;
+        ToggleEffects(true);
+        //Cursor.lockState = FindFirstObjectByType<Dialogue>().CursorIsLocked() ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.Locked;
         pauseCanvas.enabled = false;
         FindFirstObjectByType<UIState>().Clear();
         isFrozen = false;
@@ -54,7 +56,7 @@ public class PauseGame : MonoBehaviour
     public void Pause()
     {
         if (!canPause) { return; }
-        ToggleDOF(false);
+        ToggleEffects(false);
         Cursor.lockState = CursorLockMode.None;
         pauseCanvas.enabled = true;
         isFrozen = true;
@@ -74,7 +76,6 @@ public class PauseGame : MonoBehaviour
         if (uiLock) { return; }
         pauseCanvas.enabled = false;
         optionCanvas.GetComponent<PlayerOptions>().Open();
-        ToggleLensDistort(true);
         FindFirstObjectByType<UIState>().Push("Page");
     }
 
@@ -82,7 +83,6 @@ public class PauseGame : MonoBehaviour
     {
         pauseCanvas.enabled = true;
         optionCanvas.GetComponent<PlayerOptions>().Close();
-        ToggleLensDistort(false);
         FindFirstObjectByType<UIState>().Remove("Page");
     }
 

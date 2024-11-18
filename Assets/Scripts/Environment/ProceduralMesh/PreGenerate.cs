@@ -40,7 +40,7 @@ public abstract class PreGenerate<T> : ProceduralAsset where T : class
         else
         {
             InitPreGen(PreGenCount());
-            int index = rand.Next(s_preGenerated.Count);
+            int index = seed % s_preGenerated.Count;
             list = s_preGenerated[index];
             maxDim = maxDims[index];
         }
@@ -55,6 +55,4 @@ public abstract class PreGenerate<T> : ProceduralAsset where T : class
             }
         }
     }
-
-    protected virtual int PreGenCount() { return 20; }
 }

@@ -35,7 +35,7 @@ public class TreeGeneration : GenericTreeGeneration<TreeGeneration>
         return Mathf.PerlinNoise(globalX * size, globalZ * size + maskSeed / 1000) > threshold;
     }
 
-    protected override int PreGenCount() { return 40; }
+    public override int PreGenCount() { return 40; }
     public override bool ItemSpawnCheck() { return true; }
     public override bool CollisionCheck() { return true; }
     private static List<float> RRS = new List<float> { -1, 600f };

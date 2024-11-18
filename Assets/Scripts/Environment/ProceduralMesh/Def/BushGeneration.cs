@@ -47,7 +47,7 @@ public class BushGeneration : GenericTreeGeneration<BushGeneration>
     }
 
     public override float MaxDim() { return 0.6f; }
-    protected override int PreGenCount() { return 30; }
+    public override int PreGenCount() { return 30; }
     public override bool IntersectionCheck() { return true; }
     public override void OnIntersect(float sqrSpeed)
     {

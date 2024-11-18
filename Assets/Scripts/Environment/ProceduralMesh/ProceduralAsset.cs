@@ -70,4 +70,5 @@ public abstract class ProceduralAsset : MonoBehaviour
     private static List<float> defaultRRS = new List<float> { -1f };
     public virtual List<float> RenderRadiusSquare() { return defaultRRS; }
     public abstract void ClearPreGen();
+    public virtual int PreGenCount() { return 20; }
 }

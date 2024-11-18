@@ -18,7 +18,7 @@ public class Dialogue : MonoBehaviour
     virtual void Start()
     {
         dialogueBox.SetActive(false);
-        nextButton.onClick.AddListener(() => { OnClickNext(); });
+        //nextButton.onClick.AddListener(() => { OnClickNext(); });
         nextButton.gameObject.SetActive(false);
         dialogueText.text = string.Empty;
     }
@@ -38,7 +38,7 @@ public class Dialogue : MonoBehaviour
             {
                 if (!manualNext)
                 {
-                    Cursor.lockState = CursorLockMode.None; 
+                    //Cursor.lockState = CursorLockMode.None; 
                     nextButton.gameObject.SetActive(true);
                 } else { CallCallback(); }
                 OnFinishTyping();
@@ -61,7 +61,7 @@ public class Dialogue : MonoBehaviour
 
     private void CallCallback()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
         Action temp = currentCallback;
         currentCallback = null;
         Utils.RunDelay(temp, 0.02f);
@@ -73,12 +73,12 @@ public class Dialogue : MonoBehaviour
 
     private void Update()
     {
-        //if (currentCallback != null && (
-        //    Input.GetKeyDown(KeyCode.Space) || Input.GetKeyUp(KeyCode.Return) || Input.GetKeyUp(KeyCode.RightArrow)
-        //))
-        //{
-        //    OnClickNext();
-        //}
+        if (currentCallback != null && (
+            Input.GetKeyDown(KeyCode.Space) || Input.GetKeyUp(KeyCode.Return) || Input.GetMouseButtonDown(0)
+        ) && !FindFirstObjectByType<PauseGame>().pauseLock)
+        {
+            OnClickNext();
+        }
     }
 
     public void HideAll()

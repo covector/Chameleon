@@ -15,6 +15,7 @@ public class ApproachState : MonsterState
     private Updater updater;
     private Vector2 nearestRock = Vector2.zero;
     private const float rockDirectFac = 5f;
+    private ProximityCue proximityCue;
 
     public ApproachState(MonsterStateMachine stateMachine, AIController controller) : base(stateMachine, controller) {
         updater = new Updater(3f, UpdateNearestRock);
@@ -66,6 +67,7 @@ public class ApproachState : MonsterState
         controller.ChangeMorph();
         lastDist = float.PositiveInfinity;
         controller.ToggleMorph(true);
+        proximityCue = Object.FindFirstObjectByType<ProximityCue>();
     }
 
     public override bool OnStateUpdate()
@@ -105,6 +107,8 @@ public class ApproachState : MonsterState
         isHiding = facing && dist < minHideDist;
         if (lastIsHiding != isHiding) { OnSwitchHideState(); }
         //controller.ToggleMorph(isHiding);
+
+        proximityCue.IsInRange(dist < minHideDist + 2f);
 
         if (dist < minHideDist) { updater.Update(); }
 

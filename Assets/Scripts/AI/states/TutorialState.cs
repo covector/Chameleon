@@ -39,6 +39,7 @@ public class TutorialState : MonsterState
             {
                 initialized = true;
                 InitiateFirstEncounter();
+                Object.FindFirstObjectByType<ProximityCue>().IsInRange(true);
             }
 
             // check look

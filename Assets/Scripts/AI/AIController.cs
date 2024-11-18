@@ -83,11 +83,22 @@ public class AIController : MonoBehaviour
         {
             currentMorph = Instantiate(morphPrefabs[0]);
         }
-        currentMorph.GetComponent<ProceduralAsset>().enabled = true;
+        ProceduralAsset pa = currentMorph.GetComponent<ProceduralAsset>();
+        pa.enabled = true;
+        bool haveCandidate = false;
         for (int i = 0; i < 15; i++)
         {
-            currentMorph.GetComponent<ProceduralAsset>().Generate(UnityEngine.Random.Range(0, 10000));
-            if (currentMorph.GetComponent<ProceduralAsset>().MaxDim() > 0.5f) { break; }
+            pa.Generate(UnityEngine.Random.Range(0, 10000));
+            if (pa.MaxDim() > 0.5f) { haveCandidate = true; break; }
+        }
+        if (!haveCandidate)
+        {
+            int startInd = UnityEngine.Random.Range(0, pa.PreGenCount());
+            for (int i = 0; i < pa.PreGenCount(); i++) 
+            {
+                pa.Generate(startInd + i);
+                if (pa.MaxDim() > 0.5f) { break; }
+            }
         }
         currentMorph.GetComponent<MeshRenderer>().enabled = false;
         currentMorph.GetComponent<ProceduralAsset>().enabled = false;

@@ -148,7 +148,7 @@ public class AssetTemplate : ScriptableObject
             return new List<Vector2>();
         }
 
-        protected override int PreGenCount() { return 0; }
+        public override int PreGenCount() { return 0; }
         private static List<float> defaultRRS = new List<float> { -1f };
         public override List<float> RenderRadiusSquare() { return defaultRRS; }
     }
@@ -191,7 +191,7 @@ public class AssetTemplate : ScriptableObject
             MutableRockParam rockParam = (MutableRockParam)param;
         }
 
-        protected override int PreGenCount() { return 0; }
+        public override int PreGenCount() { return 0; }
         private static List<float> defaultRRS = new List<float> { -1f };
         public override List<float> RenderRadiusSquare() { return defaultRRS; }
     }
@@ -246,7 +246,7 @@ public class AssetTemplate : ScriptableObject
             this.duplicateSpread = strawParam.duplicateSpread;
         }
 
-        protected override int PreGenCount() { return 0; }
+        public override int PreGenCount() { return 0; }
         private static List<float> defaultRRS = new List<float> { -1f };
         public override List<float> RenderRadiusSquare() { return defaultRRS; }
     }

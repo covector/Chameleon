@@ -6,7 +6,7 @@ public class RockGeneration : PreGenerate<RockGeneration>
 {
     public MeshRenderer[] meshRenderers;
     public override bool ItemSpawnCheck() { return true; }
-    protected override int PreGenCount() { return 60; }
+    public override int PreGenCount() { return 60; }
     protected override bool RecalculateNormals() { return true; }
 
     public static TempMesh UNIT_CUBESPHERE;
