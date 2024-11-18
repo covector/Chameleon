@@ -2,9 +2,9 @@ name: WebGL - Build and publish to GitHub Pages
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - master
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -34,6 +34,8 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: WebGL
+      - name: Move video assets into deployment directory
+        run: cp ./Assets/Models/Helicopter/prerender.webm ./build/WebGL/WebGL/prerender.webm
       - name: Set up GitHub Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
