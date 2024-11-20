@@ -104,6 +104,7 @@ public class AIController : MonoBehaviour
         currentMorph.GetComponent<ProceduralAsset>().enabled = false;
         currentMorph.transform.parent = transform;
         currentMorph.transform.localPosition = new Vector3(0f, -1f, 0f);
+        currentMorph.transform.localScale = Vector3.one;
     }
     public void TryInitMorph()
     {

@@ -11,6 +11,7 @@ public class Typing : MonoBehaviour
     public RandomAudio randomAudio;
     private AudioSource audioSource;
     private Coroutine currentCoroutine = null;
+    private Action callback = null;
 
     void Start()
     {
@@ -27,6 +28,7 @@ public class Typing : MonoBehaviour
     IEnumerator TypingSequence(float waitSeconds, Action callback = null, Action onType = null)
     {
         int totalChar = text.GetParsedText().Length;
+        this.callback = callback;
         for (int i = 0; i <= totalChar; i++)
         {
             text.maxVisibleCharacters = i;
@@ -68,5 +70,15 @@ public class Typing : MonoBehaviour
     public void ShowAll()
     {
         text.maxVisibleCharacters = text.text.Length;
+    }
+
+    public void Finish()
+    {
+        if (currentCoroutine != null)
+        {
+            Stop();
+            ShowAll();
+            if (callback != null) { callback(); }
+        }
     }
 }

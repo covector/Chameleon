@@ -96,7 +96,7 @@ public class ApproachState : MonsterState
         }
         if (dist < lastDist - 0.5f)  // Update lastDist
         {
-            lastDist = dist;
+            lastDist = Mathf.Max(dist, 2f);
         }
 
         // Check look direction

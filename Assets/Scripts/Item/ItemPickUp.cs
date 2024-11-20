@@ -6,7 +6,11 @@ public class ItemPickUp : MonoBehaviour
     const float pickUpDistSqr = 9f;
     const float pickUpAngle = 0.98f;
     public GameObject scanner;
-    public bool pickedUp = false;
+    public bool pickedUp {
+        get { return !scanner.activeSelf; }
+        set { scanner.SetActive(!value); }
+    }
+
     RandomAudio randomAudio;
 
     void Start()
@@ -19,9 +23,8 @@ public class ItemPickUp : MonoBehaviour
     {
         if (Input.GetKeyDown(PlayerOptions.instance.KeyBinds["PickUp"]))
         {
-            if (!Tutorial.lockPickUp && scanner.activeSelf && canBePickenUp())
+            if (!Tutorial.lockPickUp && !pickedUp && canBePickenUp())
             {
-                scanner.SetActive(false);
                 pickedUp = true;
                 randomAudio.PlayRandomSound();
                 FindAnyObjectByType<ItemCounter>().Increment();
