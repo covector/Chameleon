@@ -62,10 +62,9 @@ public class StrawGeneration : PreGenerate<StrawGeneration>
 
     public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
     {
-        float offset = chunkSize / 2f;
         const float spacing = 4f;
         const float strength = 4f;
-        JitterGridSampling jgs = new JitterGridSampling(chunkSize, chunkSize, spacing, strength, globalPosition - new Vector3(offset, 0, offset), seed);
+        JitterGridSampling jgs = new JitterGridSampling(chunkSize, chunkSize, spacing, strength, globalPosition, seed);
         return jgs.fill();
     }
 
