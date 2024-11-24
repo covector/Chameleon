@@ -34,7 +34,6 @@ public class RockGeneration : PreGenerate<RockGeneration>
 
     public override List<Vector2> SamplePoints(float chunkSize, Vector3 globalPosition, int seed)
     {
-        float offset = chunkSize / 2f;
         const float spacing = 15f;
         const float strength = 3f;
         Vector2Int jitterCount = new Vector2Int(8, 12);

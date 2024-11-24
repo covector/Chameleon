@@ -13,7 +13,7 @@ public class LoopAudio : MonoBehaviour
     private bool playing = false;
     private bool fading = false;
     public bool playOnAwake = true;
-    void Start()
+    void Awake()
     {
         audioSource1 = gameObject.AddComponent<AudioSource>();
         audioSource2 = gameObject.AddComponent<AudioSource>();
@@ -85,14 +85,14 @@ public class LoopAudio : MonoBehaviour
         fading = false;
     }
 
-    public void SetVolume(float volume)
+    public void SetVolume(float volumeMultiplier)
     {
+        finalVolume = volume * volumeMultiplier;
         if (!fading)
         {
-            audioSource1.volume = volume;
-            audioSource2.volume = volume;
+            audioSource1.volume = finalVolume;
+            audioSource2.volume = finalVolume;
         }
-        finalVolume = volume;
     }
 
     public void Play()

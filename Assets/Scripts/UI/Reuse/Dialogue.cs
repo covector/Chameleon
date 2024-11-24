@@ -13,9 +13,8 @@ public class Dialogue : MonoBehaviour
     protected Action currentCallback = null;
     public float secBetweenWords = 0.1f;
     public float delayBeforeType = 0.4f;
-    public
-
-    virtual void Start()
+    private Typing currentTyping = null;
+    public virtual void Start()
     {
         dialogueBox.SetActive(false);
         //nextButton.onClick.AddListener(() => { OnClickNext(); });
@@ -34,7 +33,8 @@ public class Dialogue : MonoBehaviour
         Utils.RunDelay(this, () =>
         {
             OnStartTyping();
-            GetComponent<Typing>().Play(secBetweenWords, () =>
+            currentTyping = GetComponent<Typing>();
+            currentTyping.Play(secBetweenWords, () =>
             {
                 if (!manualNext)
                 {
@@ -42,6 +42,7 @@ public class Dialogue : MonoBehaviour
                     nextButton.gameObject.SetActive(true);
                 } else { CallCallback(); }
                 OnFinishTyping();
+                currentTyping = null;
             }, onType: OnTyping);
         }, delayBeforeType);
     }
@@ -77,7 +78,14 @@ public class Dialogue : MonoBehaviour
             Input.GetKeyDown(KeyCode.Space) || Input.GetKeyUp(KeyCode.Return) || Input.GetMouseButtonDown(0)
         ) && !FindFirstObjectByType<PauseGame>().pauseLock)
         {
-            OnClickNext();
+            if (currentTyping == null)
+            {
+                OnClickNext();
+            }
+            else
+            {
+                currentTyping.Finish();
+            }
         }
     }
 

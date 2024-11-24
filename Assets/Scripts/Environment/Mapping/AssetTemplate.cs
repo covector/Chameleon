@@ -39,8 +39,7 @@ public class AssetTemplate : ScriptableObject
                     FastPoissonDiskSampling fpds = new FastPoissonDiskSampling(chunkSize, chunkSize, spacing, seed: seed);
                     return fpds.fill();
                 case SamplingAlgo.JITTER_GRID:
-                    float offset = chunkSize / 2f;
-                    JitterGridSampling jgs = new JitterGridSampling(chunkSize, chunkSize, spacing, strength, globalPosition - new Vector3(offset, 0, offset), seed);
+                    JitterGridSampling jgs = new JitterGridSampling(chunkSize, chunkSize, spacing, strength, globalPosition, seed);
                     return jgs.fill();
                 case SamplingAlgo.JITTER_POISSON:
                     JitterPoissonSampling jps = new JitterPoissonSampling(chunkSize, chunkSize, spacing, strength, jitterCount, seed: seed);

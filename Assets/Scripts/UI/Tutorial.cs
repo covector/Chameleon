@@ -79,6 +79,7 @@ public class Tutorial : MonoBehaviour
         if (!waitingLocateItem) { return; }
         waitingLocateItem = false;
         Dialogue d = FindFirstObjectByType<Dialogue>();
+        FindFirstObjectByType<RadarScanner>().TurnOffRadar();
         d.Say($"Amazing! You have found your first item.", () =>
         d.Say($"We will need you to look at the device-like item on the ground. And press -{ToReadable(PlayerOptions.instance.KeyBinds["PickUp"])}- to pick it up.",
         manualNext: true, callback: () =>
@@ -160,7 +161,7 @@ public class Tutorial : MonoBehaviour
         // unlock everything
         lockTurn = false;
         TutorialDialogue d = FindFirstObjectByType<TutorialDialogue>();
-        d.Say("Phew, that was close. I forgot to mention earlier it is known that a monster lurks in these woods.", () =>
+        d.Say("Phew, that was close. I forgot to mention earlier, it is known that one such monster lurks in these woods.", () =>
         d.Say("It can shape-shift and blends in with the environment.", () =>
         d.Say("But don't worry, we are equipped with state-of-the-art quantum surveillance radar.\nLocating this monster will be a piece of cake.", () =>
         d.Say("We will just alert you when it gets close.", () =>

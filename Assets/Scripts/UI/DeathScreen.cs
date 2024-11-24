@@ -18,6 +18,7 @@ public class DeathScreen : MonoBehaviour
         glowText = false;
         canExit = false;
         uiLock = false;
+        canvas = GetComponent<Canvas>();
     }
     public void Play()
     {
@@ -26,7 +27,6 @@ public class DeathScreen : MonoBehaviour
         int itemsCollected = FindFirstObjectByType<ItemCounter>().GetCount();
         failText.text = "SUBJECT ID." + TerrainGeneration.instance.seed.ToString().PadLeft(5, '0') + "\n-<b>FAILED</b>-" + "\nCOLLECTED." + itemsCollected;
         GetComponent<Typing>().HideAll();
-        canvas = GetComponent<Canvas>();
         canvas.enabled = true;
         GetComponent<AudioSource>().PlayOneShot(beep);
         RunDelay(this, () =>
@@ -52,18 +52,20 @@ public class DeathScreen : MonoBehaviour
             backText.color = new Color(0.3f, 0.3f, 0.3f, MapValues(Mathf.Cos(counter), -1f, 1f, 1f, 0.2f));
             counter += Time.unscaledDeltaTime * frequency;
         }
-    }
 
-    private void OnGUI()
-    {
-        if (!canExit || canvas.enabled == false || uiLock) return;
-        if (
-            ((Event.current.isMouse) ||
-            (Event.current.isKey && Event.current.Equals(Event.KeyboardEvent("return"))))
-        )
+        if (canvas.enabled && !uiLock && (
+            Input.GetKeyDown(KeyCode.Space) || Input.GetKeyUp(KeyCode.Return) || Input.GetMouseButtonDown(0)
+        ))
         {
-            uiLock = true;
-            FindFirstObjectByType<SceneTransition>().FadeOut(callback: () => SceneManager.LoadScene("Title"));
+            if (canExit)
+            {
+                uiLock = true;
+                FindFirstObjectByType<SceneTransition>().FadeOut(callback: () => SceneManager.LoadScene("Title"));
+            }
+            else
+            {
+                GetComponent<Typing>().Finish();
+            }
         }
     }
 }
